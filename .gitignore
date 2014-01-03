@@ -7,3 +7,4 @@
 build/
 *.iml
 ivy.xml.MD5
+/lib/
