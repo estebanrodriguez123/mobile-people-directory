@@ -1,0 +1,270 @@
+@import url(main_responsive.css);
+
+#people-directory-container {
+    border: 1px solid #C3C3C3;
+    border-radius: 10px 10px 0px 0px;
+    background: #E3E3E3;
+    color: #5D5D5D;
+    padding: 10px;
+}
+
+.small-profile-box {
+    display: none;
+}
+
+.simpleSearchFullName{
+    width: 300px;
+}
+
+.simple-search-keywords input{
+    width: 250px;
+}
+
+.simple-search-keywords-help-message{
+
+}
+
+.business-card{
+    border:2px solid #a1a1a1;
+    padding:10px 40px;
+    width:300px;
+    border-radius:25px;
+    margin-bottom: 15px;
+}
+
+.business-card .full-name{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.business-card .job-title{
+    font-size: 15px;
+}
+
+.business-card .email-address{
+    text-decoration: underline;
+}
+
+.small-profile-box {
+    position: relative;
+	width: 95%;
+	background-color: white;
+	display: block;
+	border: 1px solid #5D5D5D;
+    border-radius: 3px;
+    padding: 2%;
+    margin: 10px 0;
+}
+
+.small-photo-box {
+	-moz-box-shadow: 0 0 2px 2px #888;
+	-webkit-box-shadow: 0 0 2px 2px#888;
+	box-shadow: 0 0 2px 2px #888;
+	height: 55px;
+	width: 55px;
+	margin-left: 5px;
+	float: left;
+}
+
+.summary-box {
+	margin-left: 15px;
+	padding-left: 15px;
+	margin-top: 5px;	
+	border-left: 1px solid gray;	
+	border-left-style: dotted;
+	float: left;
+}
+
+.field-value {
+	font-size: 15px;
+	font-weight: bold;
+	letter-spacing: 0;
+	text-shadow: 1px 1px 1px #FFFFFF;
+	font-family: 'Rokkitt',serif;
+}
+
+
+.slide-up,
+.slide-down {
+    position: absolute;
+    top: 2px;
+    right: 2px;    
+}
+
+.slide-up {
+	background: url("../images/minus.png") no-repeat scroll 0 0 transparent;
+	width: 25px;
+	height: 37px;
+}
+
+.slide-down {
+	background: url("../images/plus.png") no-repeat scroll 0 0 transparent;
+	width: 25px;
+	height: 37px;
+}
+
+.profile-box {
+	width: 100%;
+	height: 245px;
+	background-color: #DABD95;
+    background-position: center bottom, left top;
+    background-repeat: repeat-x;
+    overflow: hidden;
+    display: block;
+    vertical-align: baseline;
+    border: 1px solid #522F1D;
+    border-radius: 3px;
+}
+
+.profile-box {
+	width: 100%;
+	height: 245px;
+	background-color: #DABD95;
+    background-position: center bottom, left top;
+    background-repeat: repeat-x;
+    overflow: hidden;
+    display: block;
+    vertical-align: baseline;
+    border: 1px solid #522F1D;
+    border-radius: 3px;
+}
+
+.about {
+    float: left;
+    margin-left: 20px;
+    margin-top: 30px;
+    width: 376px;
+}
+
+.profile-box .photo-inner {
+    background: url("http://rbista.com/demos/zwin/images/photo-inner.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 212px;
+    padding: 12px 0 0 20px;
+    width: 164px;
+}
+.profile-box .photo-inner img {
+    background-color: #FFFFFF;
+}
+.profile-box h1 {
+    color: #FFFFFF;
+    line-height: 1px;
+    margin-top: 12px;
+}
+.profile-box h3 {
+    color: #FFFFFF;
+    font-size: 13px;
+    line-height: 0px;
+    margin-top: -3px;
+}
+
+.more-info {
+    float: left;
+}
+
+.more-info label {
+    border-radius: 9px 9px 9px 9px;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.summary-box{
+	border-left: 0px dotted gray;
+}
+
+#articleView img {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #CCC;
+	float:left;
+	margin: 0 10px 10px 0;
+	padding: 4px;
+	width:150px;	
+}
+
+#articleView .article-body {
+	margin-top: 4px;
+}
+
+#articleView {
+	padding:15px;
+	margin-bottom: -25px;
+	position:relative;
+}
+#articleView h1 {
+	font-size: 1.4em;
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+#articleView h2 {
+	font-size: 13px;
+	font-weight: bold;
+	margin-top: 0;
+}
+#articleView h3 {
+	font-size: 11px;
+	font-weight: normal;
+	margin-top: 0;
+}
+#articleView ul, ol {
+	list-style-position: inside;
+}
+#articleView .article-content {
+position:relative;
+}
+#articleView .article-body {
+margin-top: 10px;
+}
+
+.back-link {
+	background: #727C81;
+	margin: -24px 0 0 -24px;
+    padding: 9px 24px 28px;
+    width: 100%;
+}
+
+
+.back-link-url a {
+	float: right;
+	text-decoration: none;
+	font-family: helvetica;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 5px;
+    color: #FFFFFF;
+}
+
+
+.configuration{
+	margin-top: -28px;
+}
+
+div.more-info table tr td {
+    padding-left: 22px;
+}
+
+.paginator-link.paginator-page-link {
+	width: 25px;
+	margin: 2px;
+	text-align: center;
+}
+
+.paginator-link.paginator-page-link.paginator-current-page {
+	color: #FFF;
+}
+
+select.paginator-rows-per-page {
+	display: none;
+}
+
+div.people-directory-portlet {
+    .small-profile-box .clearfix {
+        width: 100%;
+    }
+    .lfr-pagination {
+        width: 100%;
+    }
+}

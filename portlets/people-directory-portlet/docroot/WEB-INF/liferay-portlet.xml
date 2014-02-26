@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+
+<liferay-portlet-app>
+	<portlet>
+		<portlet-name>people-directory</portlet-name>
+		<icon>/icon.png</icon>
+		<configuration-action-class>com.rivetlogic.configuration.ConfigurationActionImpl</configuration-action-class>
+		<instanceable>false</instanceable>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/aui-paginator-core.css</header-portlet-css>
+		<header-portlet-css>/css/aui-paginator-skin.css</header-portlet-css>
+		<header-portlet-css>/css/aui-paginator.css</header-portlet-css>
+		<header-portlet-css>http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css</header-portlet-css>
+		<header-portlet-javascript>http://code.jquery.com/jquery-1.6.4.min.js</header-portlet-javascript>
+		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js</header-portlet-javascript>
+		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/aui-paginator-old.js</footer-portlet-javascript>
+		<css-class-wrapper>people-directory-portlet</css-class-wrapper>
+	</portlet>
+	
+	<role-mapper>
+		<role-name>administrator</role-name>
+		<role-link>Administrator</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>guest</role-name>
+		<role-link>Guest</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>power-user</role-name>
+		<role-link>Power User</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>user</role-name>
+		<role-link>User</role-link>
+	</role-mapper>
+</liferay-portlet-app>
