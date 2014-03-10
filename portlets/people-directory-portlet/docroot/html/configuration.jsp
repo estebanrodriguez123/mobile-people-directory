@@ -1,5 +1,5 @@
 <%--
-/*
+/**
  * Copyright (C) 2005-2014 Rivet Logic Corporation.
  * 
  * This program is free software; you can redistribute it and/or modify it under
