@@ -20,7 +20,7 @@
 <%@ include file="init.jsp"%>
 
 <%
-	String portletResource = ParamUtil.getString(request,"portletResource");
+	String portletResource = ParamUtil.getString(request, Constants.PORTLET_RESOURCE);
 	if (Validator.isNotNull(portletResource)) {
 		preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
 	}

@@ -25,10 +25,9 @@
 			<aui:input type="hidden" id="maxItems" name="maxItems" value='<%=PortletProps.get("max.search.items")%>' />
 			
 			<%
-				String tabValue = ParamUtil.getString(request, "tab", "search");
+				String tabValue = ParamUtil.getString(request, Constants.TAB, Constants.SEARCH);
 				PortletURL portletURL = renderResponse.createRenderURL();
-				String currentURL = PortalUtil.getCurrentURL(renderRequest);
-				portletURL.setParameter("tab", tabValue);
+				portletURL.setParameter(Constants.TAB, tabValue);
 				
 				int recordCount = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT)); 
 			%>
@@ -37,21 +36,21 @@
 				url='<%=portletURL.toString()%>' param="tab" />
 				
 			<c:choose>
-				<c:when test='<%= tabValue.equals("search") %>'>
+				<c:when test='<%= tabValue.equals(Constants.SEARCH) %>'>
 					<div id="simpleSearchForm">
 						<aui:fieldset cssClass="search-criteria">
-							<aui:input id="<%= PeopleDirectoryPortlet.PARAMETER_KEYWORDS %>" name="<%= PeopleDirectoryPortlet.PARAMETER_KEYWORDS %>" type="text"
+							<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
 								cssClass="simple-search-keywords" label="people-directory.label.search-user"
 								placeholder="people-directory.label.type-keywords" />
 						</aui:fieldset>
 					</div>
 				</c:when>
- 				<c:when test='<%= tabValue.equals("view") %>'>
+ 				<c:when test='<%= tabValue.equals(Constants.VIEW) %>'>
 		 			<div id="viewAll">
 						<%
 						    LinkedHashMap<String, Object> userParams = PeopleDirectoryUtil.getUserParams();
-									String orderByCol = ParamUtil.getString(request, "orderByCol",CustomComparatorUtil.COLUMN_FIRST_NAME);
-									String orderByType = ParamUtil.getString(request,"orderByType", CustomComparatorUtil.ORDER_DEFAULT);
+									String orderByCol = ParamUtil.getString(request, Constants.ORDER_BY_COL,CustomComparatorUtil.COLUMN_FIRST_NAME);
+									String orderByType = ParamUtil.getString(request, Constants.ORDER_BY_TYPE, CustomComparatorUtil.ORDER_DEFAULT);
 									OrderByComparator orderComparator = CustomComparatorUtil
 											.getUserOrderByComparator(orderByCol, orderByType);
 						%>
@@ -76,9 +75,9 @@
 								className="com.liferay.portal.model.User" keyProperty="userId" modelVar="user">
 								<%
 									PortletURL profileURL = renderResponse.createRenderURL();
-									profileURL.setParameter("mvcPath","/html/profile.jsp");
-									profileURL.setParameter(PeopleDirectoryPortlet.PARAMETER_USER_ID, String.valueOf(user.getUserId()));
-									profileURL.setParameter("backURL", currentURL);
+									profileURL.setParameter(Constants.MVC_PATH, Constants.PEOPLE_DIRECTORY_PROFILE_PAGE);
+									profileURL.setParameter(Constants.PARAMETER_USER_ID, String.valueOf(user.getUserId()));
+									profileURL.setParameter(Constants.BACK_URL, currentURL);
 									String columnHref = profileURL.toString();
 								%>
 								<liferay-ui:search-container-column-text name="name"
@@ -129,7 +128,7 @@ AUI().ready('node', 'event','event-key', function(A) {
 	if (themeDisplay.isSignedIn()){
 		if (A.one('#' + portletNamespace + 'keywords') != null){
 		    A.one('#' + portletNamespace + 'keywords').on('keyup', function(){
-		           var searchText =A.one('#' + portletNamespace + 'keywords').get('value');
+		           var searchText = A.one('#' + portletNamespace + 'keywords').get('value');
 		           
 		           // Disabling "Search By Content" for now           
 		           var searchContent = false;

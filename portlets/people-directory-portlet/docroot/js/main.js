@@ -35,7 +35,7 @@ AUI().use('node', 'event','event-key','aui-io-request', 'node-event-simulate','e
                        '</div>' +
                        '<div class="summary-box" id ="{id}-summary-box">' +
                            '<div class="field-value">{fullName}</div>' +
-                           '<div class="mail field-value"><a href="mailto: {emailAddress}">{emailAddress}</a></div>' +
+                           '<div class="mail field-value"><a href="mailto:{emailAddress}">{emailAddress}</a></div>' +
                            '<div class="more-info" style="display:none" id="{id}-more-info"></div>' +
                        '</div>' +
                        '<div class="slide-down" data-user-id="{id}" id="{id}-slide-down" ></div>' + 

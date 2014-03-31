@@ -32,7 +32,6 @@
 <%@ page import="com.liferay.portal.model.User" %>
 <%@ page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam"%>
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
-<%@ page import="com.liferay.portal.kernel.util.Constants"%>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.OrderByComparator"%>
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil"%>
@@ -48,9 +47,9 @@
 <%@ page import="com.liferay.portal.NoSuchUserException"%>
 
 
-<%@ page import="com.rivetlogic.portlet.peopledirectory.PeopleDirectoryPortlet" %>
 <%@ page import="com.rivetlogic.util.CustomComparatorUtil"%>
 <%@ page import="com.rivetlogic.util.PeopleDirectoryUtil"%>
+<%@ page import="com.rivetlogic.util.Constants"%>
 <%@ page import="com.rivetlogic.configuration.ConfigurationActionImpl"%>
 
 <%@ page import="java.util.LinkedHashMap"%>
@@ -61,6 +60,7 @@
 <liferay-theme:defineObjects />
 
 <%
+	String currentURL = PortalUtil.getCurrentURL(renderRequest);
 	String DEFAULT_RECORD_COUNT = PeopleDirectoryUtil.getDefaultRowCount(renderRequest);
 	PortletPreferences preferences = renderRequest.getPreferences();
 	Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);

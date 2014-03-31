@@ -20,7 +20,7 @@
 <%@ include file="init.jsp"%>
 
 <%
-long userId = ParamUtil.getLong(request, PeopleDirectoryPortlet.PARAMETER_USER_ID);
+long userId = ParamUtil.getLong(request, Constants.PARAMETER_USER_ID);
 
 User userSelected = null;
 
@@ -31,7 +31,7 @@ try {
 	SessionErrors.add(renderRequest, e.getClass());
 }
 
-String backURL = ParamUtil.getString(request, "backURL");
+String backURL = ParamUtil.getString(request, Constants.BACK_URL);
    String imageId = userId + "-picture";
 %>
 
