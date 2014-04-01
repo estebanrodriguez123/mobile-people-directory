@@ -29,6 +29,11 @@ AUI.add(
                 instance.rowCount = params.rowCount;
 
                 instance.setComponents();
+                
+                instance.PEOPLE_DIRECTORY_TEMPLATES.searchResultsHeader = A.one('#search-result-header-template').get('innerHTML');
+                instance.PEOPLE_DIRECTORY_TEMPLATES.contentSearchItem = A.one('#content-search-item-template').get('innerHTML');
+                instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable = A.one('#profile-info-table-template').get('innerHTML');
+                instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult = A.one('#profile-result-template').get('innerHTML');
             },
 
             setComponents: function (container) {
@@ -137,9 +142,7 @@ AUI.add(
                     });
 
                     if (pdAction == "keyword-search") {
-                        //alert("showSearchResults, results array length: " + responseData.resultsArray.length);
                         for (var i = 0; i < responseData.resultsArray.length; i++) {
-                            //alert(responseData.resultsArray[i].fullName);
                             searchResults += instance.addSearchResult(responseData.resultsArray[i], i);
                         }
                     } else if (pdAction == "content-search") {
@@ -209,15 +212,13 @@ AUI.add(
 
             slideDown: function (event) {
                 /* to adjust size for some mobile devices 768 comes from liferay default mobile viewport breakpoints */
-                var boxSize = (A.one('body').get('winWidth') <= 768) ? '80px' : '130px';
+                var boxSize = (A.one('body').get('winWidth') <= Liferay.PeopleDirectory.CONSTANTS.LIFERAY_PHONE_BREAKPOINT) ? Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE_PHONE : Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE;
                 event.halt();
                 var item = event.currentTarget;
                 var user_id = item.attr('data-user-id');
                 $("#" + user_id + "-slide-down").hide();
-                //$("#" + user_id + "-small-profile-box").animate( {height: boxSize}, "slow");
                 $("#" + user_id + "-more-info").show();
                 $("#" + user_id + "-slide-up").show();
-                //$("#" + user_id + "-picture").width("120px");
                 $("#" + user_id + "-picture").height(boxSize).width(boxSize);
                 $("#" + user_id + "-small-photo-box").animate({
                     height: boxSize,
@@ -230,52 +231,36 @@ AUI.add(
                 var item = event.currentTarget;
                 var user_id = item.attr('data-user-id');
                 $("#" + user_id + "-slide-up").hide();
-                //$("#" + user_id + "-small-profile-box").animate( {height: "55px"}, "slow");	
                 $("#" + user_id + "-more-info").hide();
                 $("#" + user_id + "-slide-down").show();
-                //$("#" + user_id + "-picture").width("60px");
                 $("#" + user_id + "-picture").animate({
-                    height: "55px",
-                    width: "55px"
+                    height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
+                    width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
                 }, "slow");
                 $("#" + user_id + "-small-photo-box").animate({
-                    height: "55px",
-                    width: "55px"
+                    height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
+                    width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
                 }, "slow");
             },
 
             PEOPLE_DIRECTORY_TEMPLATES: {
-                searchResultsHeader: '<div class="results">Total: {total} user{pluralization} found</div>',
-                contentSearchItem: '<div class="business-card">' +
-                    '<div class="document-title">{title}</div>' +
-                    '<div class="document-url">{description}</div>' +
-                    '<div class="full-name">{username}</div>' +
-                    '</div>',
-                profileInfoTable: '<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
-                    '<tr><td>Job Title:</td><td class="info">{jobTitle}</td></tr>' +
-                    '<tr><td>Screen Name:</td><td class="info" >{screenName}</td></tr>' +
-                    '<tr><td>City:</td><td class="info" >{city}</td></tr>' +
-                    '<tr><td>Phone:</td><td class="info">{phone}</td></tr>' +
-                    '</table>',
-                profileResult: '<div class="small-profile-box page{itemNumber}" id ="{id}-small-profile-box">' +
-                    '<div class="small-photo-box" id="{id}-small-photo-box">' +
-                    '<img src="{portraitUrl}" height="55" id="{id}-picture" />' +
-                    '</div>' +
-                    '<div class="summary-box" id ="{id}-summary-box">' +
-                    '<div class="field-value">{fullName}</div>' +
-                    '<div class="mail field-value"><a href="mailto:{emailAddress}">{emailAddress}</a></div>' +
-                    '<div class="more-info" style="display:none" id="{id}-more-info"></div>' +
-                    '</div>' +
-                    '<div class="slide-down" data-user-id="{id}" id="{id}-slide-down" ></div>' +
-                    '<div class="slide-up" data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>' +
-                    '<div class="clearfix"></div>' +
-                    '</div>'
+                searchResultsHeader: null,
+                contentSearchItem: null,
+                profileInfoTable: null,
+                profileResult: null
             },
 
             container: null,
             paginator: null,
-            rowCount: null
-
+            rowCount: null,
+            
+            
+            CONSTANTS: {
+                LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
+                PICTURE_SIZE: '55px', // picture size, width and height
+                SLIDE_DOWN_PICTURE_SIZE_PHONE: '80px', // image size when user is expanded
+                SLIDE_DOWN_PICTURE_SIZE: '130px' // image size when user is expanded
+            }
         };
     },
     '', {
