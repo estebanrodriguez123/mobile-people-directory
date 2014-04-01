@@ -68,7 +68,5 @@
 %>
 
 <script type="text/javascript">
-	var peopleDirectoryPortlet_rowCount = "<%=searchResultsPerPage%>";
-	var <portlet:namespace />portletNamespace = "<portlet:namespace />";
 	var peopleDirectoryPortlet_ResourceUrl = "<portlet:resourceURL />";
 </script>
