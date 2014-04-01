@@ -161,9 +161,9 @@ AUI.add(
                     A.one("#searchResults").empty().append(searchResults);
                 }
                 // add handlers for the new elements
-                A.all('div.slide-down').on('click', instance.performCompleteProfileSearch);
-                A.all('div.slide-down').on('click', instance.slideDown);
-                A.all('div.slide-up').on('click', instance.slideUp);
+                A.all('div.slide-down').on('click', A.bind(instance.performCompleteProfileSearch, this));
+                A.all('div.slide-down').on('click', A.bind(instance.slideDown, this));
+                A.all('div.slide-up').on('click', A.bind(instance.slideUp, this));
 
             },
 
