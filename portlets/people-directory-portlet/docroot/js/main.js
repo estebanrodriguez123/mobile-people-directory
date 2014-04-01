@@ -156,7 +156,7 @@ AUI.add(
                         }
                     }
                 } else {
-                    searchResults += "<div>No Search Results Found</div>";
+                    searchResults += Liferay.Language.get("no-search-results-found");
                 }
                 if (A.UA.gecko > 0) {
                     A.one("#searchResults").html(searchResults);
