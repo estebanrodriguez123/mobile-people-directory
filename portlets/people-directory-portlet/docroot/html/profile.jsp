@@ -39,24 +39,19 @@ String backURL = ParamUtil.getString(request, Constants.BACK_URL);
 
 <c:if test="<%= Validator.isNotNull(userSelected) %>">
 	<article id="articleView">
-	
-		<liferay-ui:header backURL="<%=backURL%>" title="<%=HtmlUtil.escape(userSelected.getFullName())%>"/>
-		
+        
+        <liferay-ui:header cssClass="profile-info-title" backURL="<%=backURL%>" title="<%=HtmlUtil.escape(userSelected.getFullName())%>"/>
+        		
 		<img src="<%=userSelected.getPortraitURL(themeDisplay)%>" height="55" width="60" id="<%=imageId %>" alt="<%= HtmlUtil.escapeAttribute(userSelected.getFullName()) %>" />
 		
-		<dl>
-			<dt><liferay-ui:message key="people-directory.label.job-title" />:</dt>
-			<dd><%= HtmlUtil.escape(userSelected.getJobTitle()) %></dd>
-			
-			<dt><liferay-ui:message key="people-directory.label.email" />:</dt>
-			<dd><%= HtmlUtil.escape(userSelected.getEmailAddress()) %></dd>
-			
-			<dt><liferay-ui:message key="people-directory.label.city" />:</dt>
-			<dd><%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></dd>
-			
-			<dt><liferay-ui:message key="people-directory.label.phone" />:</dt>
-			<dd><%= (userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></dd>
-		</dl>
+        <div class="profile-info">
+            <span><label><liferay-ui:message key="people-directory.label.job-title" />:</label> <%= HtmlUtil.escape(userSelected.getJobTitle()) %></span>
+            <span><label><liferay-ui:message key="people-directory.label.email" />:</label> <%= HtmlUtil.escape(userSelected.getEmailAddress()) %></span>
+            <span><label><liferay-ui:message key="people-directory.label.city" />:</label> <%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></span>
+            <span><label><liferay-ui:message key="people-directory.label.phone" />:</label> <%= (userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></span>
+        </div>
 		
+        <div class="clearfix"></div>
+        
 	</article>
 </c:if>

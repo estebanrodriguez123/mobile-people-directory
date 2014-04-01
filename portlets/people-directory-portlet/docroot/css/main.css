@@ -207,6 +207,9 @@
 	font-weight: normal;
 	margin-top: 0;
 }
+#articleView h4 {
+    padding-bottom: 20px;
+}
 #articleView ul, ol {
 	list-style-position: inside;
 }
@@ -215,6 +218,33 @@ position:relative;
 }
 #articleView .article-body {
 margin-top: 10px;
+}
+
+#articleView .profile-info-title {
+    border: none;
+}
+
+#articleView .profile-info-title h3.header-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#articleView .profile-info {
+    float: left;
+}
+
+#articleView .profile-info span {
+    display: block;
+    padding-bottom: 20px;
+}
+
+#articleView .profile-info label {
+    display: inline;
+    font-weight: bold;
+}
+
+#articleView .clearfix {
+    width: 100%;
 }
 
 .back-link {
