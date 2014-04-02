@@ -27,7 +27,7 @@
        <div class="more-info" style="display:none" id="{id}-more-info"></div>
        </div>
        <div class="slide-down" data-user-id="{id}" id="{id}-slide-down" ></div>
-       <div class="slide-upsi " data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>
+       <div class="slide-up" data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>
        <div class="clearfix"></div>
    </div>
 </script>
