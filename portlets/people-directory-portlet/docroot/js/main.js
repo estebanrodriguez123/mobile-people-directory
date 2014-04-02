@@ -22,9 +22,9 @@ AUI.add(
 
             init: function (params) {
                 var instance = this;
-
+                
+                instance.portletId = params.portletId;
                 instance.namespace = params.namespace;
-                instance.resourceURL = params.resourceURL;
                 instance.container = params.container;
                 instance.rowCount = params.rowCount;
 
@@ -63,21 +63,24 @@ AUI.add(
 
             performSearch: function (searchText, searchContent, maxItems) {
                 var instance = this;
-                var url = instance.resourceURL;
                 var pdAction = searchContent == 'true' ? "content-search" : "keyword-search";
-                A.io.request(url, {
+                
+                var resourceURL = Liferay.PortletURL.createResourceURL();
+    			resourceURL.setPortletId(instance.portletId);
+    			resourceURL.setParameter("pdAction", pdAction);
+    			resourceURL.setParameter("keywords", searchText);
+    			resourceURL.setParameter("start", 0);
+    			resourceURL.setParameter("end", maxItems);
+    			
+    			A.io(resourceURL.toString(), {
                     method: "GET",
-                    data: {
-                        "pdAction": pdAction,
-                        "keywords": searchText,
-                        "start": 0,
-                        "end": maxItems
-                    },
                     dataType: 'json',
                     on: {
-                        success: function () {
-                            var responseData = this.get('responseData');
+                        success: function (transactionid, response) {
+                        	var responseData = A.JSON.parse(response.response);
+                        	
                             instance.showSearchResults(responseData, pdAction);
+                            
                             //creates paginator
                             if (!instance.paginator) {
                                 instance.paginator = instance.createPaginator(responseData.searchCount);
@@ -87,13 +90,13 @@ AUI.add(
                                 instance.paginator.set('page', 1);
                                 instance.paginator.changeRequest();
                             }
-
                         },
-                        failure: function (xhr, ajaxOptions, thrownError) {
+                        failure: function () {
                             displayError("Error searching for keywords");
                         }
                     }
-                });
+    			});
+
             },
 
             createPaginator: function (maxPagesLinks) {
@@ -136,9 +139,12 @@ AUI.add(
                 var instance = this;
                 var searchResults = "";
                 if (responseData.resultsArray.length > 0) {
+                	searchResultsText = A.Lang.sub(Liferay.Language.get("search-results-count"), {
+                		0: responseData.searchCount,
+                		1: (responseData.searchCount > 1 ? "s" : "")
+                	});
                     searchResults += A.Lang.sub(instance.PEOPLE_DIRECTORY_TEMPLATES.searchResultsHeader, {
-                        total: responseData.searchCount,
-                        pluralization: (responseData.searchCount > 1 ? "s" : "")
+                        results: searchResultsText
                     });
 
                     if (pdAction == "keyword-search") {
@@ -173,25 +179,27 @@ AUI.add(
             performCompleteProfileSearch: function (event) {
                 var instance = this;
                 event.halt();
-                var url = instance.resourceURL;
                 var item = event.currentTarget;
                 var userId = item.attr('data-user-id');
-                A.io.request(url, {
+                
+                var resourceURL = Liferay.PortletURL.createResourceURL();
+    			resourceURL.setPortletId(instance.portletId);
+    			resourceURL.setParameter("pdAction", "show-complete-profile");
+    			resourceURL.setParameter("userId", userId);
+    			
+    			A.io(resourceURL.toString(), {
                     method: "GET",
-                    data: {
-                        "pdAction": 'show-complete-profile',
-                        "userId": userId
-                    },
                     dataType: 'json',
                     on: {
-                        success: function () {
-                            instance.showCompleteProfile(this.get('responseData'), userId);
+                    	success: function (transactionid, response) {
+                         	var responseData = A.JSON.parse(response.response);
+                            instance.showCompleteProfile(responseData, userId);
                         },
                         failure: function (xhr, ajaxOptions, thrownError) {
                             displayError("Error searching for complete profile for userId" + userId);
                         }
-                    }
-                });
+                    } 
+    			});
             },
 
             showCompleteProfile: function (responseData, userId) {
@@ -249,11 +257,12 @@ AUI.add(
                 profileInfoTable: null,
                 profileResult: null
             },
-
+            
+            portletId: null,
+            namespace: null,
             container: null,
             paginator: null,
             rowCount: null,
-            
             
             CONSTANTS: {
                 LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
@@ -265,7 +274,7 @@ AUI.add(
     },
     '', {
         requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate',
-            'event-base', 'aui-paginator-old', 'aui-form-validator'
+            'event-base', 'aui-paginator-old', 'aui-form-validator', "liferay-portlet-url"
         ]
     }
 );

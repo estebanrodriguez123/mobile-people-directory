@@ -45,7 +45,7 @@
 <%@ page import="com.liferay.portal.theme.ThemeDisplay"%>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil"%>
 <%@ page import="com.liferay.portal.NoSuchUserException"%>
-
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 
 <%@ page import="com.rivetlogic.util.CustomComparatorUtil"%>
 <%@ page import="com.rivetlogic.util.PeopleDirectoryUtil"%>
@@ -63,10 +63,5 @@
 	String currentURL = PortalUtil.getCurrentURL(renderRequest);
 	String DEFAULT_RECORD_COUNT = PeopleDirectoryUtil.getDefaultRowCount(renderRequest);
 	PortletPreferences preferences = renderRequest.getPreferences();
-	Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
  	int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_SEARCH_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT));
 %>
-
-<script type="text/javascript">
-	var peopleDirectoryPortlet_ResourceUrl = "<portlet:resourceURL />";
-</script>

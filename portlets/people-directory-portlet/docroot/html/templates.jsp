@@ -1,5 +1,5 @@
 <script id="search-result-header-template" type="text/x-template">
-   <div class="results">Total: {total} user{pluralization} found</div>
+   <div class="results">{results}</div>
 </script>
 <script id="content-search-item-template" type="text/x-template">
    <div class="business-card">
@@ -9,11 +9,11 @@
    </div>
 </script>
 <script id="profile-info-table-template" type="text/x-template">
-   <table border="0" cellpadding="0" cellspacing="0" width="100%">
-       <tr><td>Job Title:</td><td class="info">{jobTitle}</td></tr>
-       <tr><td>Screen Name:</td><td class="info" >{screenName}</td></tr>
-       <tr><td>City:</td><td class="info" >{city}</td></tr>
-       <tr><td>Phone:</td><td class="info">{phone}</td></tr>
+   <table class="profile-info-table">
+       <tr><td><liferay-ui:message key="people-directory.label.job-title" />:</td><td class="info">{jobTitle}</td></tr>
+       <tr><td><liferay-ui:message key="people-directory.label.screen-name" />:</td><td class="info" >{screenName}</td></tr>
+       <tr><td><liferay-ui:message key="people-directory.label.city" />:</td><td class="info" >{city}</td></tr>
+       <tr><td><liferay-ui:message key="people-directory.label.phone" />:</td><td class="info">{phone}</td></tr>
    </table>
 </script>
 <script id="profile-result-template" type="text/x-template">
@@ -27,7 +27,7 @@
        <div class="more-info" style="display:none" id="{id}-more-info"></div>
        </div>
        <div class="slide-down" data-user-id="{id}" id="{id}-slide-down" ></div>
-       <div class="slide-up" data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>
+       <div class="slide-upsi " data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>
        <div class="clearfix"></div>
    </div>
 </script>

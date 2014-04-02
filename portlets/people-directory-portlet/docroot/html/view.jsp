@@ -125,8 +125,8 @@
 <aui:script use="people-directory-plugin">
 	Liferay.PeopleDirectory.init(
 		{
+			portletId: "<%= request.getAttribute(WebKeys.PORTLET_ID) %>",
 			namespace: "<portlet:namespace/>",
-			resourceURL: "<portlet:resourceURL />",
 			container: A.one("#<portlet:namespace/>view"),
 			rowCount: "<%=searchResultsPerPage%>"
 		}
