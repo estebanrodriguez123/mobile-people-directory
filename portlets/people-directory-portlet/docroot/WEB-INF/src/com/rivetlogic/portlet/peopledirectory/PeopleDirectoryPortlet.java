@@ -112,7 +112,6 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
                 JSONObject jsonUser = JSONFactoryUtil.createJSONObject();
                 jsonUser.put(Constants.JSON_USER_ID, user.getUserId());
                 jsonUser.put(Constants.JSON_USER_FULL_NAME, user.getFullName());
-                jsonUser.put(Constants.JSON_USER_SCREEN_NAME, user.getScreenName());
                 jsonUser.put(Constants.JSON_USER_EMAIL_ADDRESS, user.getDisplayEmailAddress());
                 jsonUser.put(Constants.JSON_USER_PORTRAIT_URL,
                         user.getPortraitURL((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)));

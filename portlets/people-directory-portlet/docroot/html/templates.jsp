@@ -10,10 +10,10 @@
 </script>
 <script id="profile-info-table-template" type="text/x-template">
    <table class="profile-info-table">
-       <tr><td><liferay-ui:message key="people-directory.label.job-title" />:</td><td class="info">{jobTitle}</td></tr>
-       <tr><td><liferay-ui:message key="people-directory.label.screen-name" />:</td><td class="info" >{screenName}</td></tr>
-       <tr><td><liferay-ui:message key="people-directory.label.city" />:</td><td class="info" >{city}</td></tr>
-       <tr><td><liferay-ui:message key="people-directory.label.phone" />:</td><td class="info">{phone}</td></tr>
+       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.job-title" />:</td><td class="info">{jobTitle}</td></tr>
+       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.screen-name" />:</td><td class="info" >{screenName}</td></tr>
+       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.city" />:</td><td class="info" >{city}</td></tr>
+       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.phone" />:</td><td class="info">{phone}</td></tr>
    </table>
 </script>
 <script id="profile-result-template" type="text/x-template">

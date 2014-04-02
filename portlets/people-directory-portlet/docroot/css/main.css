@@ -75,14 +75,13 @@
 	float: left;
 }
 
-.field-value {
+.field-value, .profile-description dt {
 	font-size: 15px;
 	font-weight: bold;
 	letter-spacing: 0;
 	text-shadow: 1px 1px 1px #FFFFFF;
 	font-family: 'Rokkitt',serif;
 }
-
 
 .slide-up,
 .slide-down {
@@ -169,10 +168,23 @@
     float: left;
 }
 
-.more-info label {
+.more-info .more-info-title  {
     border-radius: 9px 9px 9px 9px;
-    font-weight: bold;
     padding-right: 10px;
+}
+
+dl.profile-description {
+	overflow: hidden;
+}
+
+dl.profile-description dd, dl.profile-description dt {
+	float: left;
+}
+
+dl.profile-description dt {
+	clear: left;
+	padding: 0 0 10px;
+	width: 100px;
 }
 
 .summary-box{
@@ -277,10 +289,6 @@ margin-top: 10px;
 
 .configuration{
 	margin-top: -28px;
-}
-
-div.more-info table tr td {
-    padding-left: 22px;
 }
 
 .paginator-link.paginator-page-link {
