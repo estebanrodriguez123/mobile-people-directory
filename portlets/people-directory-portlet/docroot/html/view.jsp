@@ -132,4 +132,4 @@
 		}
 	);
 </aui:script>
-<%@ include file="templates.jsp"%>
+<%@ include file="templates.jspf"%>
