@@ -42,7 +42,7 @@
 							<aui:fieldset cssClass="search-criteria">
 								<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
 									cssClass="simple-search-keywords" label="people-directory.label.search-user"
-									placeholder="people-directory.label.type-keywords" />
+								/>
 							</aui:fieldset>
 						</div>
 					</c:when>

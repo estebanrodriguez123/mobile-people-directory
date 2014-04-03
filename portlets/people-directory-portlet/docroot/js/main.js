@@ -29,42 +29,69 @@ AUI.add(
                 instance.rowCount = params.rowCount;
 
                 instance.setComponents();
+            },
+
+            setComponents: function (container) {
+                var instance = this;
                 
                 instance.PEOPLE_DIRECTORY_TEMPLATES.searchResultsHeader = A.one('#search-result-header-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.contentSearchItem = A.one('#content-search-item-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable = A.one('#profile-info-table-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult = A.one('#profile-result-template').get('innerHTML');
-            },
-
-            setComponents: function (container) {
-                var instance = this;
+                
+                instance.searchInput = instance.container.one('#' + instance.namespace + 'keywords');
+                instance.placeholderText = Liferay.Language.get("people-directory.label.type-keywords");
+                
+                instance.enablePlaceholder();
                 instance.enableSearch();
             },
 
             enableSearch: function () {
                 var instance = this;
-
-                if (themeDisplay.isSignedIn()) {
-                    if (A.one('#' + instance.namespace + 'keywords') != null) {
-                        A.one('#' + instance.namespace + 'keywords').on('keyup', function () {
-                            var searchText = A.one('#' + instance.namespace + 'keywords').get('value');
-
-                            // Disabling "Search By Content" for now           
-                            var searchContent = false;
-
-                            var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
-                            if (searchText != null && searchText.length > 2) {
-                                instance.performSearch(searchText, searchContent, maxItems);
+                
+                if (instance.searchInput != null) {
+                    if (themeDisplay.isSignedIn()) {
+                        instance.searchInput.on('keyup', function () {
+                            var searchText = instance.searchInput.get('value');
+                            
+                            if (searchText != instance.placeholderText) {
+                                
+                                var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
+                                if (searchText != null && searchText.length > 2) {
+                                    instance.performSearch(searchText, maxItems);
+                                }
                             }
+
                         });
                     }
                 }
             },
-
-            performSearch: function (searchText, searchContent, maxItems) {
+            
+            enablePlaceholder: function() {
                 var instance = this;
-                var pdAction = searchContent == 'true' ? "content-search" : "keyword-search";
                 
+                if (instance.searchInput != null) {
+                    
+                    instance.searchInput.set('value', instance.placeholderText);
+                    
+                    instance.searchInput.on('focus', function() {
+                        if (instance.searchInput.get('value') == instance.placeholderText) {
+                            instance.searchInput.set('value', '');
+                        }
+                    });
+                    
+                    instance.searchInput.on('blur', function(){
+                        if (instance.searchInput.get('value') == '') {
+                            instance.searchInput.set('value', instance.placeholderText);
+                        }
+                    });
+                }
+            },
+
+            performSearch: function (searchText, maxItems) {
+                var instance = this;
+                
+                var pdAction = "keyword-search";
                 var resourceURL = Liferay.PortletURL.createResourceURL();
     			resourceURL.setPortletId(instance.portletId);
     			resourceURL.setParameter("pdAction", pdAction);
@@ -77,7 +104,7 @@ AUI.add(
                     dataType: 'json',
                     on: {
                         success: function (transactionid, response) {
-                        	var responseData = A.JSON.parse(response.response);
+                        	var responseData = A.JSON.parse(response.responseText);
                         	
                             instance.showSearchResults(responseData, pdAction);
                             
@@ -97,6 +124,32 @@ AUI.add(
                     }
     			});
 
+            },
+            
+            performCompleteProfileSearch: function (event) {
+                var instance = this;
+                event.halt();
+                var item = event.currentTarget;
+                var userId = item.attr('data-user-id');
+                
+                var resourceURL = Liferay.PortletURL.createResourceURL();
+    			resourceURL.setPortletId(instance.portletId);
+    			resourceURL.setParameter("pdAction", "show-complete-profile");
+    			resourceURL.setParameter("userId", userId);
+    			
+    			A.io(resourceURL.toString(), {
+                    method: "GET",
+                    dataType: 'json',
+                    on: {
+                    	success: function (transactionid, response) {
+                         	var responseData = A.JSON.parse(response.responseText);
+                            instance.showCompleteProfile(responseData, userId);
+                        },
+                        failure: function (xhr, ajaxOptions, thrownError) {
+                            displayError("Error searching for complete profile for userId" + userId);
+                        }
+                    } 
+    			});
             },
 
             createPaginator: function (maxPagesLinks) {
@@ -176,32 +229,6 @@ AUI.add(
 
             },
 
-            performCompleteProfileSearch: function (event) {
-                var instance = this;
-                event.halt();
-                var item = event.currentTarget;
-                var userId = item.attr('data-user-id');
-                
-                var resourceURL = Liferay.PortletURL.createResourceURL();
-    			resourceURL.setPortletId(instance.portletId);
-    			resourceURL.setParameter("pdAction", "show-complete-profile");
-    			resourceURL.setParameter("userId", userId);
-    			
-    			A.io(resourceURL.toString(), {
-                    method: "GET",
-                    dataType: 'json',
-                    on: {
-                    	success: function (transactionid, response) {
-                         	var responseData = A.JSON.parse(response.response);
-                            instance.showCompleteProfile(responseData, userId);
-                        },
-                        failure: function (xhr, ajaxOptions, thrownError) {
-                            displayError("Error searching for complete profile for userId" + userId);
-                        }
-                    } 
-    			});
-            },
-
             showCompleteProfile: function (responseData, userId) {
                 var instance = this;
                 var element = A.one("#" + userId + "-more-info");
@@ -263,6 +290,8 @@ AUI.add(
             container: null,
             paginator: null,
             rowCount: null,
+            searchInput: null,
+            placeholderText: null,
             
             CONSTANTS: {
                 LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
@@ -274,7 +303,7 @@ AUI.add(
     },
     '', {
         requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate',
-            'event-base', 'aui-paginator-old', 'aui-form-validator', "liferay-portlet-url"
+            'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse'
         ]
     }
 );
