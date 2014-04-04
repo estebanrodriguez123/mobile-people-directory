@@ -16,63 +16,52 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 --%>
-<%@page import="com.liferay.portal.theme.ThemeDisplay"%>
+
 <%@ include file="init.jsp"%>
 
 <%
-	User userSelected = UserLocalServiceUtil.getUser(ParamUtil.getLong(
-			request, "userId"));
-	String backURL = ParamUtil.getString(request, "backURL");
-    String imageId = userSelected.getUserId() + "-picture";
+long userId = ParamUtil.getLong(request, Constants.PARAMETER_USER_ID);
+
+User userSelected = null;
+
+try {
+	userSelected = UserLocalServiceUtil.getUser(userId);
+	
+} catch (NoSuchUserException e) {
+	SessionErrors.add(renderRequest, e.getClass());
+}
+
+String backURL = ParamUtil.getString(request, Constants.BACK_URL);
+   String imageId = userId + "-picture";
 %>
 
-<div class="back-link">
-	<div class="back-link-url">
-		<aui:a href='<%=backURL%>'><liferay-ui:message key ="people-directory.label.back-to-all"/></aui:a>
-	</div>
-</div>
+<liferay-ui:error exception="<%= NoSuchUserException.class %>" message="user-could-not-be-found"/>
 
-<article id="articleView">
-	
-	<table >
-		<tbody>
-			<tr>
-				<td colspan="2">
-					<h1><%=userSelected.getFullName()%></h1>
-				</td>
-			</tr>
-			<tr>
-				<td><img src="<%=userSelected.getPortraitURL(themeDisplay)%>" height="55" width="60" id="<%=imageId %>" /> </td>
-				<td valign="top">
-					<table>
-						<tr>
-							<td valign="top">
-								<h2><liferay-ui:message key="people-directory.label.job-title" /></h2>
-							</td>
-							<td valign="top"><%=userSelected.getJobTitle()%></td>
-						</tr>
-						<tr>
-							<td valign="top">
-								<h2><liferay-ui:message key="people-directory.label.email" /></h2>
-							</td>
-							<td valign="top"><%=userSelected.getEmailAddress()%></td>
-						</tr>
-						<tr>
-							<td valign="top">
-								<h2><liferay-ui:message key="people-directory.label.city" /></h2>
-							</td>
-							<td valign="top"><%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></td>
-						</tr>
-						<tr>
-							<td valign="top">
-								<h2><liferay-ui:message key="people-directory.label.phone" /></h2>
-							</td>
-							<td valign="top"><%=(userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-
-		</tbody>
-	</table>
-</article>
+<c:if test="<%= Validator.isNotNull(userSelected) %>">
+	<article id="articleView">
+        
+        <liferay-ui:header cssClass="profile-info-title" backURL="<%=backURL%>" title="<%=HtmlUtil.escape(userSelected.getFullName())%>"/>
+        		
+		<img src="<%=userSelected.getPortraitURL(themeDisplay)%>" height="55" width="60" id="<%=imageId %>" alt="<%= HtmlUtil.escapeAttribute(userSelected.getFullName()) %>" />
+        
+      	<dl class="profile-description">
+			<dt><liferay-ui:message key="people-directory.label.job-title" />:</dt>
+			<dd><%= HtmlUtil.escape(userSelected.getJobTitle()) %></dd>
+			
+			<dt><liferay-ui:message key="people-directory.label.screen-name" />:</dt>
+			<dd><%= HtmlUtil.escape(userSelected.getScreenName()) %></dd>
+			
+			<dt><liferay-ui:message key="people-directory.label.email" />:</dt>
+			<dd><%= HtmlUtil.escape(userSelected.getEmailAddress()) %></dd>
+			
+			<dt><liferay-ui:message key="people-directory.label.city" />:</dt>
+			<dd><%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></dd>
+			
+			<dt><liferay-ui:message key="people-directory.label.phone" />:</dt>
+			<dd><%= (userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></dd>
+		</dl>
+		
+        <div class="clearfix"></div>
+        
+	</article>
+</c:if>

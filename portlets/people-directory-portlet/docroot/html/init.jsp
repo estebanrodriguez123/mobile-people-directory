@@ -17,8 +17,9 @@
  */
 --%>
 
-<%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%>
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%>
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme"%>
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui"%>
 <%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
@@ -31,7 +32,6 @@
 <%@ page import="com.liferay.portal.model.User" %>
 <%@ page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam"%>
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
-<%@ page import="com.liferay.portal.kernel.util.Constants"%>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.OrderByComparator"%>
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil"%>
@@ -42,10 +42,14 @@
 <%@ page import="com.liferay.portlet.PortletPreferencesFactoryUtil"%>
 <%@ page import="com.liferay.util.portlet.PortletProps"%>
 <%@ page import="com.liferay.portal.kernel.util.StringPool"%>
+<%@ page import="com.liferay.portal.theme.ThemeDisplay"%>
+<%@ page import="com.liferay.portal.kernel.util.HtmlUtil"%>
+<%@ page import="com.liferay.portal.NoSuchUserException"%>
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 
-<%@ page import="com.rivetlogic.portlet.peopledirectory.PeopleDirectoryPortlet" %>
 <%@ page import="com.rivetlogic.util.CustomComparatorUtil"%>
 <%@ page import="com.rivetlogic.util.PeopleDirectoryUtil"%>
+<%@ page import="com.rivetlogic.util.Constants"%>
 <%@ page import="com.rivetlogic.configuration.ConfigurationActionImpl"%>
 
 <%@ page import="java.util.LinkedHashMap"%>
@@ -56,14 +60,8 @@
 <liferay-theme:defineObjects />
 
 <%
+	String currentURL = PortalUtil.getCurrentURL(renderRequest);
 	String DEFAULT_RECORD_COUNT = PeopleDirectoryUtil.getDefaultRowCount(renderRequest);
 	PortletPreferences preferences = renderRequest.getPreferences();
-	Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
  	int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_SEARCH_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT));
 %>
-
-<script type="text/javascript">
-	var peopleDirectoryPortlet_rowCount = "<%=searchResultsPerPage%>";
-	var <portlet:namespace />portletNamespace = "<portlet:namespace />";
-	var peopleDirectoryPortlet_ResourceUrl = "<portlet:resourceURL />";
-</script>

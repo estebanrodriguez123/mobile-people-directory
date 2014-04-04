@@ -75,14 +75,13 @@
 	float: left;
 }
 
-.field-value {
+.field-value, .profile-description dt {
 	font-size: 15px;
 	font-weight: bold;
 	letter-spacing: 0;
 	text-shadow: 1px 1px 1px #FFFFFF;
 	font-family: 'Rokkitt',serif;
 }
-
 
 .slide-up,
 .slide-down {
@@ -158,14 +157,34 @@
     margin-top: -3px;
 }
 
+.profile-info-table {
+	border: 0;
+	cellpadding: 0;
+	cellspacing: 0; 
+	width: "100%";
+}
+
 .more-info {
     float: left;
 }
 
-.more-info label {
+.more-info .more-info-title  {
     border-radius: 9px 9px 9px 9px;
-    font-weight: bold;
     padding-right: 10px;
+}
+
+dl.profile-description {
+	overflow: hidden;
+}
+
+dl.profile-description dd, dl.profile-description dt {
+	float: left;
+}
+
+dl.profile-description dt {
+	clear: left;
+	padding: 0 0 10px;
+	width: 100px;
 }
 
 .summary-box{
@@ -207,6 +226,9 @@
 	font-weight: normal;
 	margin-top: 0;
 }
+#articleView h4 {
+    padding-bottom: 20px;
+}
 #articleView ul, ol {
 	list-style-position: inside;
 }
@@ -215,6 +237,33 @@ position:relative;
 }
 #articleView .article-body {
 margin-top: 10px;
+}
+
+#articleView .profile-info-title {
+    border: none;
+}
+
+#articleView .profile-info-title h3.header-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#articleView .profile-info {
+    float: left;
+}
+
+#articleView .profile-info span {
+    display: block;
+    padding-bottom: 20px;
+}
+
+#articleView .profile-info label {
+    display: inline;
+    font-weight: bold;
+}
+
+#articleView .clearfix {
+    width: 100%;
 }
 
 .back-link {
@@ -240,10 +289,6 @@ margin-top: 10px;
 
 .configuration{
 	margin-top: -28px;
-}
-
-div.more-info table tr td {
-    padding-left: 22px;
 }
 
 .paginator-link.paginator-page-link {

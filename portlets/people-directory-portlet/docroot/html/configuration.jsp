@@ -16,11 +16,12 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 --%>
+
 <%@ include file="init.jsp"%>
 
 <%
-	String portletResource = ParamUtil.getString(request,"portletResource");
-	if (com.liferay.portal.kernel.util.Validator.isNotNull(portletResource)) {
+	String portletResource = ParamUtil.getString(request, Constants.PORTLET_RESOURCE);
+	if (Validator.isNotNull(portletResource)) {
 		preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
 	}
 
