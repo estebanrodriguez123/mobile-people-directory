@@ -70,6 +70,17 @@
         
         dl.profile-description {
 			overflow: visible;
+			dt {
+				width: auto;
+			}
 		}
     }
+}
+
+@include respond-to(phone, tablet) {
+    .aui div.people-directory-portlet {
+    	input.simple-search-keywords {
+    		font-size: 14px;
+		}
+	}
 }
