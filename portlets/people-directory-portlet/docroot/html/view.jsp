@@ -96,7 +96,7 @@
 									<liferay-ui:search-container-column-text name="<%= CustomComparatorUtil.COLUMN_CITY %>">
 										<%=PeopleDirectoryUtil.getCityField(user)%>
 									</liferay-ui:search-container-column-text>
-									<liferay-ui:search-container-column-text name="<%= CustomComparatorUtil.COLUMN_PHONE %>">
+									<liferay-ui:search-container-column-text name="<%= CustomComparatorUtil.COLUMN_PHONE %>" cssClass="">
 										<%=PeopleDirectoryUtil.getPhoneField(user)%>
 									</liferay-ui:search-container-column-text>
 					
@@ -128,7 +128,8 @@
 			portletId: "<%= request.getAttribute(WebKeys.PORTLET_ID) %>",
 			namespace: "<portlet:namespace/>",
 			container: A.one("#<portlet:namespace/>view"),
-			rowCount: "<%=searchResultsPerPage%>"
+			rowCount: "<%=searchResultsPerPage%>",
+			fields: ["name", "email", "job-title", "city", "phone"]
 		}
 	);
 </aui:script>
