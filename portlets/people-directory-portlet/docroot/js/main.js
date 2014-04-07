@@ -27,7 +27,8 @@ AUI.add(
                 instance.namespace = params.namespace;
                 instance.container = params.container;
                 instance.rowCount = params.rowCount;
-
+                instance.fields = params.fields;
+                
                 instance.setComponents();
             },
 
@@ -44,6 +45,7 @@ AUI.add(
                 
                 instance.enablePlaceholder();
                 instance.enableSearch();
+                instance.addFieldNameAttribute();
             },
 
             enableSearch: function () {
@@ -277,6 +279,19 @@ AUI.add(
                     width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
                 }, "slow");
             },
+            
+            /*For mobile devices adding header name in the same row of the value field
+             * using CSS3 content rule  */
+            addFieldNameAttribute: function() {
+            	var instance = this;
+            	var rows =  instance.container.all(".searchcontainer .table-data tr");
+            	rows.each(function(row){
+            		row.all("td").each(function(column, index){
+            			column.setAttribute("cell-data", Liferay.Language.get(instance.fields[index]));
+            		});
+            		
+            	});
+            },
 
             PEOPLE_DIRECTORY_TEMPLATES: {
                 searchResultsHeader: null,
@@ -292,12 +307,13 @@ AUI.add(
             rowCount: null,
             searchInput: null,
             placeholderText: null,
+            fields: null,
             
             CONSTANTS: {
                 LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
                 PICTURE_SIZE: '55px', // picture size, width and height
                 SLIDE_DOWN_PICTURE_SIZE_PHONE: '80px', // image size when user is expanded
-                SLIDE_DOWN_PICTURE_SIZE: '130px' // image size when user is expanded
+                SLIDE_DOWN_PICTURE_SIZE: '130px', // image size when user is expanded
             }
         };
     },
@@ -306,4 +322,4 @@ AUI.add(
             'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse'
         ]
     }
-);
+);778
