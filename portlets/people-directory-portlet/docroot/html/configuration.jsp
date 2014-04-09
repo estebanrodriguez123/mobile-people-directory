@@ -32,7 +32,7 @@
 <div class="configuration">
 	<aui:form action="<%=configurationURL%>" method="post" name="fm">
  	   <aui:input name="<%=Constants.CMD%>" type="hidden" value="<%=Constants.UPDATE%>" />
-	    <aui:fieldset label="Search Container">
+	    <aui:fieldset label="label.search.container">
 	        <aui:input name="<%= ConfigurationActionImpl.PARAMETER_VIEW_ALL_RESULTS_PER_PAGE%>" label="view-all-results-per-page" value='<%=viewAllResultsPerPage%>' />
 			<aui:input name="<%= ConfigurationActionImpl.PARAMETER_SEARCH_RESULTS_PER_PAGE%>" label="search-results-per-page" type="text" value="<%=searchResultsPerPage%>"/>
 	        <aui:button type="submit" />
