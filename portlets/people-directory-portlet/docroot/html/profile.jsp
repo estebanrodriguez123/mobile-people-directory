@@ -32,7 +32,7 @@ try {
 }
 
 String backURL = ParamUtil.getString(request, Constants.BACK_URL);
-   String imageId = userId + "-picture";
+String imageId = userId + "-picture";
 %>
 
 <liferay-ui:error exception="<%= NoSuchUserException.class %>" message="user-could-not-be-found"/>
