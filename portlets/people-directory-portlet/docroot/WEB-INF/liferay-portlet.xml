@@ -8,17 +8,9 @@
 		<configuration-action-class>com.rivetlogic.configuration.ConfigurationActionImpl</configuration-action-class>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
-		<header-portlet-css>/css/aui-paginator-core.css</header-portlet-css>
-		<header-portlet-css>/css/aui-paginator-skin.css</header-portlet-css>
-		<header-portlet-css>/css/aui-paginator.css</header-portlet-css>
-		<header-portlet-css>/css/jquery-ui.css</header-portlet-css>
-		<header-portlet-javascript>/js/jquery-1.6.4.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/jquery-ui.min.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/js/aui-paginator-old.js</footer-portlet-javascript>
 		<css-class-wrapper>people-directory-portlet</css-class-wrapper>
 	</portlet>
-	
 	<role-mapper>
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>

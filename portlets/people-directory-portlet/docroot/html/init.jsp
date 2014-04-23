@@ -47,10 +47,10 @@
 <%@ page import="com.liferay.portal.NoSuchUserException"%>
 <%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 
-<%@ page import="com.rivetlogic.util.CustomComparatorUtil"%>
+<%@ page import="com.rivetlogic.util.comparator.CustomComparatorUtil"%>
 <%@ page import="com.rivetlogic.util.PeopleDirectoryUtil"%>
 <%@ page import="com.rivetlogic.util.Constants"%>
-<%@ page import="com.rivetlogic.configuration.ConfigurationActionImpl"%>
+<%@ page import="com.rivetlogic.util.PropsValues"%>
 
 <%@ page import="java.util.LinkedHashMap"%>
 <%@ page import="javax.portlet.PortletPreferences"%>
@@ -60,8 +60,10 @@
 <liferay-theme:defineObjects />
 
 <%
-	String currentURL = PortalUtil.getCurrentURL(renderRequest);
-	String DEFAULT_RECORD_COUNT = PeopleDirectoryUtil.getDefaultRowCount(renderRequest);
-	PortletPreferences preferences = renderRequest.getPreferences();
- 	int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_SEARCH_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT));
+String currentURL = PortalUtil.getCurrentURL(renderRequest);
+PortletPreferences preferences = renderRequest.getPreferences();
+
+int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.PREFERENCE_SEARCH_RESULTS_PER_PAGE, PropsValues.DEFAULT_RECORD_COUNT));
+int viewAllResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, PropsValues.DEFAULT_RECORD_COUNT));
+boolean skypeEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKYPE_INTEGRATION, PropsValues.SKYPE_ENABLED));
 %>

@@ -15,22 +15,22 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.rivetlogic.util;
+package com.rivetlogic.util.comparator;
 
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 
-public class JobTitleComparator extends OrderByComparator {
+public class ScreenNameComparator extends OrderByComparator {
     
     private static final long serialVersionUID = 1L;
-    public static String ORDER_BY_ASC = "User_.jobTitle ASC";
-    public static String ORDER_BY_DESC = "User_.jobTitle DESC";
+    public static String ORDER_BY_ASC = "User_.screenName ASC";
+    public static String ORDER_BY_DESC = "User_.screenName DESC";
     
-    public JobTitleComparator() {
+    public ScreenNameComparator() {
         this(false);
     }
     
-    public JobTitleComparator(boolean asc) {
+    public ScreenNameComparator(boolean asc) {
         _asc = asc;
     }
     
@@ -39,7 +39,7 @@ public class JobTitleComparator extends OrderByComparator {
         User instance1 = (User) obj1;
         User instance2 = (User) obj2;
         
-        int value = instance1.getJobTitle().toLowerCase().compareTo(instance2.getJobTitle().toLowerCase());
+        int value = instance1.getScreenName().toLowerCase().compareTo(instance2.getScreenName().toLowerCase());
         
         if (_asc) {
             return value;

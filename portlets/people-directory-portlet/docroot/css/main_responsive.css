@@ -3,9 +3,11 @@
 
 @include respond-to(phone) {
     .aui div.people-directory-portlet {
+    
         .lfr-search-container {
             overflow: hidden;
         }
+        
         .summary-box {
             padding-left: 0;
             width:45%;
@@ -16,6 +18,7 @@
                 word-wrap:break-word;
             }
         }
+        
         .searchcontainer {
             /* Force table to not be like tables anymore */
             table, thead, tbody, th, td, tr {
@@ -65,12 +68,22 @@
 				width: auto;
 			}
 		}
+		
+		.skype-users-to-call #users li {
+			display: block;
+			text-align: center;
+			margin-right: 0;
+		}
+		
+		.skype-users-to-call .handle {
+ 			float: right;
+ 		}
     }
 }
 
 @include respond-to(phone, tablet) {
     .aui div.people-directory-portlet {
-    	input.simple-search-keywords {
+    	input.simple-search-keywords, button {
     		font-size: 14px;
 		}
 	}

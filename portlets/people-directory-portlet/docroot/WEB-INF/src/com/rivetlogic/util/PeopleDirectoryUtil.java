@@ -26,9 +26,6 @@ import com.rivetlogic.portlet.peopledirectory.PeopleDirectoryPortlet;
 
 import java.util.LinkedHashMap;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-
 /**
  * The Class PeopleDirectoryUtil.
  * 
@@ -38,18 +35,6 @@ public class PeopleDirectoryUtil {
     
     /** The Constant _log. */
     private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryPortlet.class);
-    
-    /**
-     * Gets the default row count.
-     * 
-     * @param renderRequest
-     *            the render request
-     * @return the default row count
-     */
-    public static String getDefaultRowCount(RenderRequest renderRequest) {
-        PortletPreferences preferences = renderRequest.getPreferences();
-        return preferences.getValue("DEFAULT_RECORD_COUNT", "5");
-    }
     
     /**
      * Gets the phone field.

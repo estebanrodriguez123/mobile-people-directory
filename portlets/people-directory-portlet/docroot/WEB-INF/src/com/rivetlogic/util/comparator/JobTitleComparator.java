@@ -15,26 +15,22 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.rivetlogic.util;
+package com.rivetlogic.util.comparator;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 
-public class PhoneComparator extends OrderByComparator {
+public class JobTitleComparator extends OrderByComparator {
     
     private static final long serialVersionUID = 1L;
-    private static final Log _log = LogFactoryUtil.getLog(PhoneComparator.class);
-    public static String ORDER_BY_ASC = "Phone.number_ ASC";
-    public static String ORDER_BY_DESC = "Phone.number_ DESC";
+    public static String ORDER_BY_ASC = "User_.jobTitle ASC";
+    public static String ORDER_BY_DESC = "User_.jobTitle DESC";
     
-    public PhoneComparator() {
+    public JobTitleComparator() {
         this(false);
     }
     
-    public PhoneComparator(boolean asc) {
+    public JobTitleComparator(boolean asc) {
         _asc = asc;
     }
     
@@ -43,13 +39,7 @@ public class PhoneComparator extends OrderByComparator {
         User instance1 = (User) obj1;
         User instance2 = (User) obj2;
         
-        int value = 0;
-        try {
-            value = instance1.getPhones().get(0).getNumber().toLowerCase()
-                    .compareTo(instance2.getPhones().get(0).getNumber().toLowerCase());
-        } catch (SystemException e) {
-            _log.warn(e);
-        }
+        int value = instance1.getJobTitle().toLowerCase().compareTo(instance2.getJobTitle().toLowerCase());
         
         if (_asc) {
             return value;

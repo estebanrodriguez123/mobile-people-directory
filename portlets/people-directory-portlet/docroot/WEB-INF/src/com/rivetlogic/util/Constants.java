@@ -68,6 +68,8 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     static final String JSON_USER_CITY = "city";
 
     static final String JSON_USER_PHONE = "phone";
+    
+    static final String JSON_USER_SKYPE_NAME = "skypeName";
 
     static final String JSON_RESULTS_ARRAY = "resultsArray";
 
@@ -78,5 +80,15 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     static final String BACK_URL = "backURL";
     
     static final String PORTLET_RESOURCE = "portletResource";
+    
+    static final String PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE = "VIEW_ALL_RESULTS_PER_PAGE";
+    
+    static final String PREFERENCE_SEARCH_RESULTS_PER_PAGE = "SEARCH_RESULTS_PER_PAGE";
+    
+    static final String PARAMETER_VIEW_ALL_RESULTS_PER_PAGE = "viewAllResultsPerPage";
+    
+    static final String PARAMETER_SEARCH_RESULTS_PER_PAGE = "searchResultsPerPage";
+    
+    static final String SKYPE_INTEGRATION = "skypeIntegratiion";
     
 }

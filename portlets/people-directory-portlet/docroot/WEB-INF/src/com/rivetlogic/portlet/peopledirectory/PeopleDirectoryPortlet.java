@@ -115,6 +115,9 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
                 jsonUser.put(Constants.JSON_USER_EMAIL_ADDRESS, user.getDisplayEmailAddress());
                 jsonUser.put(Constants.JSON_USER_PORTRAIT_URL,
                         user.getPortraitURL((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)));
+                jsonUser.put(Constants.JSON_USER_PHONE, 
+                	(user.getPhones().size() > 0 ? user.getPhones().get(0).getNumber(): StringPool.BLANK));
+                jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
                 usersArray.put(jsonUser);
             }
             
@@ -152,6 +155,7 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
                     : StringPool.BLANK));
             jsonUser.put(Constants.JSON_USER_PHONE, (user.getPhones().size() > 0 ? user.getPhones().get(0).getNumber()
                     : StringPool.BLANK));
+            jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
             
             writeJSON(request, response, jsonUser);
             

@@ -45,19 +45,19 @@ String imageId = userId + "-picture";
 		<img src="<%=userSelected.getPortraitURL(themeDisplay)%>" height="55" width="60" id="<%=imageId %>" alt="<%= HtmlUtil.escapeAttribute(userSelected.getFullName()) %>" />
         
       	<dl class="profile-description">
-			<dt><liferay-ui:message key="people-directory.label.job-title" />:</dt>
+			<dt><liferay-ui:message key="job-title" />:</dt>
 			<dd><%= HtmlUtil.escape(userSelected.getJobTitle()) %></dd>
 			
-			<dt><liferay-ui:message key="people-directory.label.screen-name" />:</dt>
+			<dt><liferay-ui:message key="screen-name" />:</dt>
 			<dd><%= HtmlUtil.escape(userSelected.getScreenName()) %></dd>
 			
-			<dt><liferay-ui:message key="people-directory.label.email" />:</dt>
+			<dt><liferay-ui:message key="email" />:</dt>
 			<dd><%= HtmlUtil.escape(userSelected.getEmailAddress()) %></dd>
 			
-			<dt><liferay-ui:message key="people-directory.label.city" />:</dt>
+			<dt><liferay-ui:message key="city" />:</dt>
 			<dd><%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></dd>
 			
-			<dt><liferay-ui:message key="people-directory.label.phone" />:</dt>
+			<dt><liferay-ui:message key="phone" />:</dt>
 			<dd><%= (userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></dd>
 		</dl>
 		

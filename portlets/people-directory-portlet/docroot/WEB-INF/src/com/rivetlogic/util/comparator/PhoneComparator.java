@@ -15,27 +15,26 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.rivetlogic.util;
+package com.rivetlogic.util.comparator;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 
-public class BirthdayComparator extends OrderByComparator {
-
-    private static final long serialVersionUID = 1L;
-    private static final Log _log = LogFactoryUtil.getLog(BirthdayComparator.class);
-    public static String ORDER_BY_ASC = "contact_.birthday ASC";
-    public static String ORDER_BY_DESC = "contact_.birthday DESC";
+public class PhoneComparator extends OrderByComparator {
     
-    public BirthdayComparator() {
+    private static final long serialVersionUID = 1L;
+    private static final Log _log = LogFactoryUtil.getLog(PhoneComparator.class);
+    public static String ORDER_BY_ASC = "Phone.number_ ASC";
+    public static String ORDER_BY_DESC = "Phone.number_ DESC";
+    
+    public PhoneComparator() {
         this(false);
     }
     
-    public BirthdayComparator(boolean asc) {
+    public PhoneComparator(boolean asc) {
         _asc = asc;
     }
     
@@ -46,9 +45,8 @@ public class BirthdayComparator extends OrderByComparator {
         
         int value = 0;
         try {
-            value = instance1.getBirthday().compareTo(instance2.getBirthday());
-        } catch (PortalException e) {
-            _log.warn(e);
+            value = instance1.getPhones().get(0).getNumber().toLowerCase()
+                    .compareTo(instance2.getPhones().get(0).getNumber().toLowerCase());
         } catch (SystemException e) {
             _log.warn(e);
         }
