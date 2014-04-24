@@ -198,7 +198,7 @@ dl.profile-description dt {
 		font-size: 20px;
 	}
     
-    span.icon-skype {
+    span.icon-skype, span.icon-phone {
         cursor: pointer;
     }
 }
