@@ -63,23 +63,28 @@
 </script>
 <script id="profile-result-template" type="text/x-handlebars-template">
 	<div class="small-profile-box page{{itemNumber}}" id="{{id}}-small-profile-box">
-		<div class="small-photo-box">
-			<img src="{{portraitUrl}}" height="55"/>
-		</div>
+		
 		<div class="summary-box">
-       		<div class="name field-value">{{fullName}}</div>
-       		<div class="mail field-value"><a href="mailto:{{emailAddress}}">{{emailAddress}}</a></div>
+       		<div class="small-photo-box">
+                <img src="{{portraitUrl}}" height="55"/>
+            </div>
+            <div class="brief-wrapper">
+                <div class="name field-value">{{fullName}}</div>
+       		    <div class="mail field-value"><a href="mailto:{{emailAddress}}">{{emailAddress}}</a></div>
+                <c:if test="<%= skypeEnabled %>">
+                    <div class="contact-short-info">
+                        {{#if skypeName}}
+                            <span class="icon icon-skype" title="{{skypeName}}" userId="{{id}}" username="{{fullName}}"></span>
+                        {{/if}}
+                        {{#if phone}}
+                            <span class="icon icon-phone" title="{{phone}}" userId="{{id}}" username="{{fullName}}"></span>
+                        {{/if}}
+                    </div>
+                </c:if>
+            </div>
+       		
        		<div class="more-info" style="display:none"></div>
-      		<c:if test="<%= skypeEnabled %>">
-      			<div class="contact-short-info">
-      				{{#if skypeName}}
-      					<span class="icon icon-skype" title="{{skypeName}}" userId="{{id}}" username="{{fullName}}"></span>
-      				{{/if}}
-      				{{#if phone}}
-      					<span class="icon icon-phone" title="{{phone}}" userId="{{id}}" username="{{fullName}}"></span>
-      				{{/if}}
-      			</div>
-      		</c:if>
+      		
 		</div>
        <div class="slide-down" data-user-id="{{id}}" data-full-name="{{fullName}}"></div>
        <div class="slide-up" data-user-id="{{id}}" style="display:none"></div>
