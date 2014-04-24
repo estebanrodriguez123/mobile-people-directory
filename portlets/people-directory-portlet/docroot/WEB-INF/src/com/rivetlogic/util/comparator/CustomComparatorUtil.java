@@ -15,7 +15,7 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.rivetlogic.util;
+package com.rivetlogic.util.comparator;
 
 import com.liferay.portal.kernel.util.OrderByComparator;
 

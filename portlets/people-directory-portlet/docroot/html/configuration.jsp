@@ -19,23 +19,15 @@
 
 <%@ include file="init.jsp"%>
 
-<%
-	String portletResource = ParamUtil.getString(request, Constants.PORTLET_RESOURCE);
-	if (Validator.isNotNull(portletResource)) {
-		preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
-	}
-
-	int viewAllResultsPerPage = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT));
-%>
-
 <liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
 <div class="configuration">
 	<aui:form action="<%=configurationURL%>" method="post" name="fm">
  	   <aui:input name="<%=Constants.CMD%>" type="hidden" value="<%=Constants.UPDATE%>" />
 	    <aui:fieldset label="label.search.container">
-	        <aui:input name="<%= ConfigurationActionImpl.PARAMETER_VIEW_ALL_RESULTS_PER_PAGE%>" label="view-all-results-per-page" value='<%=viewAllResultsPerPage%>' />
-			<aui:input name="<%= ConfigurationActionImpl.PARAMETER_SEARCH_RESULTS_PER_PAGE%>" label="search-results-per-page" type="text" value="<%=searchResultsPerPage%>"/>
-	        <aui:button type="submit" />
+	        <aui:input name="<%= Constants.PARAMETER_VIEW_ALL_RESULTS_PER_PAGE%>" label="view-all-results-per-page" value='<%=viewAllResultsPerPage%>' />
+			<aui:input name="<%= Constants.PARAMETER_SEARCH_RESULTS_PER_PAGE%>" label="search-results-per-page" type="text" value="<%=searchResultsPerPage%>"/>
+			<aui:input name="<%= Constants.SKYPE_INTEGRATION%>" label="skype-integrated" type="checkbox" value="<%= skypeEnabled %>"/>
 	    </aui:fieldset>
+			<aui:button type="submit" />
 	</aui:form>
 </div>

@@ -35,19 +35,21 @@ AUI.add(
             setComponents: function (container) {
                 var instance = this;
                 
+                instance.searchInput = instance.container.one('#' + instance.namespace + 'keywords');
+                instance.placeholderText = Liferay.Language.get("people-directory.label.type-keywords");
+                
+                instance.enablePlaceholder();
+                
                 instance.PEOPLE_DIRECTORY_TEMPLATES.searchResultsHeader = A.one('#search-result-header-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.contentSearchItem = A.one('#content-search-item-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable = A.one('#profile-info-table-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult = A.one('#profile-result-template').get('innerHTML');
                 
-                instance.searchInput = instance.container.one('#' + instance.namespace + 'keywords');
-                instance.placeholderText = Liferay.Language.get("people-directory.label.type-keywords");
                 
-                instance.enablePlaceholder();
                 instance.enableSearch();
                 instance.addFieldNameAttribute();
             },
-
+            
             enableSearch: function () {
                 var instance = this;
                 
@@ -133,6 +135,7 @@ AUI.add(
                 event.halt();
                 var item = event.currentTarget;
                 var userId = item.attr('data-user-id');
+                var fullName = item.attr('data-full-name');
                 
                 var resourceURL = Liferay.PortletURL.createResourceURL();
     			resourceURL.setPortletId(instance.portletId);
@@ -145,7 +148,9 @@ AUI.add(
                     on: {
                     	success: function (transactionid, response) {
                          	var responseData = A.JSON.parse(response.responseText);
-                            instance.showCompleteProfile(responseData, userId);
+                            responseData.id = userId;
+                            responseData.fullName = fullName;
+                            instance.showCompleteProfile(responseData);
                         },
                         failure: function (xhr, ajaxOptions, thrownError) {
                             displayError("Error searching for complete profile for userId" + userId);
@@ -231,20 +236,21 @@ AUI.add(
 
             },
 
-            showCompleteProfile: function (responseData, userId) {
+            showCompleteProfile: function (responseData) {
                 var instance = this;
-                var element = A.one("#" + userId + "-more-info");
+                var element = A.one("#" + responseData.id + "-small-profile-box .more-info");
                 element.setContent("");
-                var box = A.Lang.sub(instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable, responseData);
-                element.append(box);
+                var box = A.Handlebars.compile(instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable); 
+                element.append(box(responseData));
             },
 
             addSearchResult: function (user, i) {
                 var instance = this;
                 user.itemNumber = (i + 1);
-                var box = A.Lang.sub(instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult, user);
-
-                return box;
+                
+                var source = A.Handlebars.compile(instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult);
+                
+                return source(user);
             },
 
             slideDown: function (event) {
@@ -252,32 +258,40 @@ AUI.add(
                 var boxSize = (A.one('body').get('winWidth') <= Liferay.PeopleDirectory.CONSTANTS.LIFERAY_PHONE_BREAKPOINT) ? Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE_PHONE : Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE;
                 event.halt();
                 var item = event.currentTarget;
-                var user_id = item.attr('data-user-id');
-                $("#" + user_id + "-slide-down").hide();
-                $("#" + user_id + "-more-info").show();
-                $("#" + user_id + "-slide-up").show();
-                $("#" + user_id + "-picture").height(boxSize).width(boxSize);
-                $("#" + user_id + "-small-photo-box").animate({
+                var userId = item.attr('data-user-id');
+                var box = $("#" + userId + "-small-profile-box");
+                
+                box.find(".slide-down").hide();
+                box.find(".more-info").show();
+                box.find(".slide-up").show();
+                box.find(".small-photo-box img").height(boxSize).width(boxSize);
+                box.find(".small-photo-box").animate({
                     height: boxSize,
                     width: boxSize
                 }, "slow");
+                box.find(".contact-short-info").hide();
             },
 
             slideUp: function (event) {
                 event.halt();
                 var item = event.currentTarget;
-                var user_id = item.attr('data-user-id');
-                $("#" + user_id + "-slide-up").hide();
-                $("#" + user_id + "-more-info").hide();
-                $("#" + user_id + "-slide-down").show();
-                $("#" + user_id + "-picture").animate({
+                var userId = item.attr('data-user-id');
+                var box = $("#" + userId + "-small-profile-box");
+                
+                box.find(".slide-down").show();
+                box.find(".more-info").hide();
+                box.find(".slide-up").hide();;
+                box.find(".small-photo-box img").animate({
                     height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
                     width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
                 }, "slow");
-                $("#" + user_id + "-small-photo-box").animate({
+                box.find(".small-photo-box").animate({
                     height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
                     width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
                 }, "slow");
+                
+                box.find(".contact-short-info").show();
+                
             },
             
             /*For mobile devices adding header name in the same row of the value field
@@ -313,13 +327,14 @@ AUI.add(
                 LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
                 PICTURE_SIZE: '55px', // picture size, width and height
                 SLIDE_DOWN_PICTURE_SIZE_PHONE: '80px', // image size when user is expanded
-                SLIDE_DOWN_PICTURE_SIZE: '130px', // image size when user is expanded
+                SLIDE_DOWN_PICTURE_SIZE: '130px' // image size when user is expanded
             }
         };
     },
     '', {
-        requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate',
-            'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse'
+        requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate', 'handlebars',
+            'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse',
+            'jquery'
         ]
     }
-);778
+);

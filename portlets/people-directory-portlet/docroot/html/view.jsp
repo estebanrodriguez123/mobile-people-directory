@@ -19,18 +19,16 @@
 
 <%@ include file="init.jsp"%>
 
-<div id="<portlet:namespace/>view" >
+<div id="<portlet:namespace/>view">
 	<c:choose>
 		<c:when test="<%= themeDisplay.isSignedIn() %>">
 			<div id="people-directory-container">
-				<aui:input type="hidden" id="maxItems" name="maxItems" value='<%=PortletProps.get("max.search.items")%>' />
+				<aui:input type="hidden" id="maxItems" name="maxItems" value='<%= PropsValues.MAX_SEARCH_ITEMS %>' />
 				
 				<%
 					String tabValue = ParamUtil.getString(request, Constants.TAB, Constants.SEARCH);
 					PortletURL portletURL = renderResponse.createRenderURL();
 					portletURL.setParameter(Constants.TAB, tabValue);
-					
-					int recordCount = GetterUtil.getInteger(preferences.getValue(ConfigurationActionImpl.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, DEFAULT_RECORD_COUNT)); 
 				%>
 				
 				<liferay-ui:tabs names="search,view-all" tabsValues="search,view"
@@ -38,6 +36,24 @@
 					
 				<c:choose>
 					<c:when test='<%= tabValue.equals(Constants.SEARCH) %>'>
+						<c:if test="<%= skypeEnabled %>">
+							<div id="modal"></div>
+							<div class="skype-users-to-call">
+								<span class="action-header"><liferay-ui:message key="skype-actions"/></span>
+								<ul id="users">
+								</ul>
+							    <div class="portlet-msg-error"><liferay-ui:message key="error.message.select.one.user"/></div>
+							    <hr>
+							    <aui:button-row>
+									<aui:button name="skype-open" icon="icon-skype" value="action.open.skype"/>
+									<aui:button name="skype-call" icon="icon-phone" value="action.call.skype"/>
+							    </aui:button-row>
+							    <div class="alredy-in-list-msg">
+								    <h3 class="header"><liferay-ui:message key="error"/></h3>
+									<p class="content"><liferay-ui:message key="already-in-list"/></p>							    
+							    </div>
+							</div>
+						</c:if>
 						<div id="simpleSearchForm">
 							<aui:fieldset cssClass="search-criteria">
 								<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
@@ -55,7 +71,7 @@
 										OrderByComparator orderComparator = CustomComparatorUtil
 												.getUserOrderByComparator(orderByCol, orderByType);
 							%>
-							<liferay-ui:search-container delta="<%=recordCount %>"
+							<liferay-ui:search-container delta="<%= viewAllResultsPerPage %>"
 								emptyResultsMessage="no-users-were-found" orderByCol="<%=orderByCol%>"
 								orderByType="<%=orderByType%>" orderByColParam="orderByCol"
 								orderByTypeParam="orderByType"
@@ -122,7 +138,56 @@
 		</c:otherwise>
 	</c:choose>
 </div>
-<aui:script use="people-directory-plugin">
+<aui:script>
+	AUI().applyConfig({
+	    groups : {
+	    	'aui-paginator-old': {
+	    		base : '<%= request.getContextPath()%>',
+	            async : false,
+	            modules : {
+	            	'aui-paginator-old': {
+	        			path: '/js/aui-paginator-old.js',
+	        			requires: ['aui-paginator.css','aui-paginator-core-css', 'aui-paginator-skin.css']
+	        		},
+	        		'aui-paginator-core-css': {
+	        			path: '/css/aui-paginator-core.css'
+	        		}, 
+	        		'aui-paginator-skin.css': {
+	        			path: '/css/aui-paginator-skin.css'
+	        		},
+	        		'aui-paginator.css': {
+	        			path: '/css/aui-paginator.css'
+	        		}
+	            }		
+	    	},
+	    	'jquery': {
+	    		base : '<%= request.getContextPath()%>/js/',
+	            async : false,
+	            modules : {
+	            	'jquery': {
+	                	path: 'jquery-1.6.4.min.js'
+	                }
+	            }
+	    	},
+	        'people-directory' : {
+	            base : '<%= request.getContextPath()%>/js/',
+	            async : false,
+	            modules : {
+	        	<c:if test="<%= skypeEnabled %>">
+	        		'skype-plugin-people-directory': {
+	        			path: 'skype-plugin.js',
+	        			requires: ['skype-ui']
+	        		},
+	        		'skype-ui': {
+	        			path: 'skype-uri.js'
+	        		}
+	        	</c:if>
+	            }
+	        }
+	    }
+	});
+</aui:script>
+<aui:script use="people-directory-plugin,skype-plugin-people-directory">
 	Liferay.PeopleDirectory.init(
 		{
 			portletId: "<%= request.getAttribute(WebKeys.PORTLET_ID) %>",
@@ -132,5 +197,13 @@
 			fields: ["name", "email", "job-title", "city", "phone"]
 		}
 	);
+	<c:if test="<%= skypeEnabled %>">
+		Liferay.SkypePluginPeopleDirectory.init(
+			{
+				namespace: "<portlet:namespace/>",
+				container: A.one("#<portlet:namespace/>view"),
+			}
+		);	
+	</c:if>
 </aui:script>
 <%@ include file="templates.jspf"%>

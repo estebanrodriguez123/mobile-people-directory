@@ -27,26 +27,71 @@
        <div class="full-name">{username}</div>
    </div>
 </script>
-<script id="profile-info-table-template" type="text/x-template">
-   <table class="profile-info-table">
-       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.job-title" />:</td><td class="info">{jobTitle}</td></tr>
-       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.screen-name" />:</td><td class="info" >{screenName}</td></tr>
-       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.city" />:</td><td class="info" >{city}</td></tr>
-       <tr><td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.phone" />:</td><td class="info">{phone}</td></tr>
-   </table> 
+<script id="profile-info-table-template" type="text/x-handlebars-template">
+  <table class="profile-info-table">
+      <tr>
+        <td class="field-value more-info-title"><liferay-ui:message key="job-title" />:</td>
+        <td class="info">{{jobTitle}}</td>
+      </tr>
+      <tr>
+        <td class="field-value more-info-title"><liferay-ui:message key="screen-name" />:</td>
+        <td class="info" >{{screenName}}</td>
+      </tr>
+      <tr>
+        <td class="field-value more-info-title"><liferay-ui:message key="city" />:</td>
+        <td class="info" >{{city}}</td>
+      </tr>
+      <tr>
+        <td class="field-value more-info-title"><liferay-ui:message key="phone" />:</td>
+        <td class="info">{{phone}}</td>
+		<c:if test="<%= skypeEnabled %>">
+			{{#if phone}}
+				<td><span class="icon icon-phone" title="{{phone}}" userId="{{id}}" username="{{fullName}}"></span></td>
+			{{/if}}
+		</c:if>
+      </tr>
+  	<c:if test="<%= skypeEnabled %>">
+      <tr>
+        <td class="field-value more-info-title"><liferay-ui:message key="skype" />:</td>
+        <td class="info">{{skypeName}}</td>
+		{{#if skypeName}}		
+			<td><span class="icon icon-skype" title="{{skypeName}}" userId="{{id}}" username="{{fullName}}"></span></td>
+		{{/if}}
+      </tr>
+	</c:if>
+  </table>  
 </script>
-<script id="profile-result-template" type="text/x-template">
-	<div class="small-profile-box page{itemNumber}" id ="{id}-small-profile-box">
-		<div class="small-photo-box" id="{id}-small-photo-box">
-			<img src="{portraitUrl}" height="55" id="{id}-picture" />
+<script id="profile-result-template" type="text/x-handlebars-template">
+	<div class="small-profile-box page{{itemNumber}}" id="{{id}}-small-profile-box">
+		<div class="small-photo-box">
+			<img src="{{portraitUrl}}" height="55"/>
 		</div>
-		<div class="summary-box" id ="{id}-summary-box">
-       		<div class="field-value">{fullName}</div>
-       		<div class="mail field-value"><a href="mailto:{emailAddress}">{emailAddress}</a></div>
-       		<div class="more-info" style="display:none" id="{id}-more-info"></div>
+		<div class="summary-box">
+       		<div class="name field-value">{{fullName}}</div>
+       		<div class="mail field-value"><a href="mailto:{{emailAddress}}">{{emailAddress}}</a></div>
+       		<div class="more-info" style="display:none"></div>
+      		<c:if test="<%= skypeEnabled %>">
+      			<div class="contact-short-info">
+      				{{#if skypeName}}
+      					<span class="icon icon-skype" title="{{skypeName}}" userId="{{id}}" username="{{fullName}}"></span>
+      				{{/if}}
+      				{{#if phone}}
+      					<span class="icon icon-phone" title="{{phone}}" userId="{{id}}" username="{{fullName}}"></span>
+      				{{/if}}
+      			</div>
+      		</c:if>
 		</div>
-       <div class="slide-down" data-user-id="{id}" id="{id}-slide-down" ></div>
-       <div class="slide-up" data-user-id="{id}" id="{id}-slide-up" style="display:none"></div>
+       <div class="slide-down" data-user-id="{{id}}" data-full-name="{{fullName}}"></div>
+       <div class="slide-up" data-user-id="{{id}}" style="display:none"></div>
        <div class="clearfix"></div>
    </div>
 </script>
+<c:if test="<%= skypeEnabled %>">
+	<script id="skype-item-template" type="text/x-handlebars-template">
+    	<li class="{{type}}-chat" skypeId="{{skypeId}}" user="{{userId}}">
+        	<span class="icon-{{type}}"></span>
+        	{{name}}
+        	<span class="handle"></span>
+    	</li>
+	</script>
+</c:if>

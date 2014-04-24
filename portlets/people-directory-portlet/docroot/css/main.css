@@ -8,10 +8,6 @@
     padding: 10px;
 }
 
-.small-profile-box {
-    display: none;
-}
-
 input.simple-search-keywords {
     width: 260px;
 }
@@ -38,6 +34,7 @@ input.simple-search-keywords {
 }
 
 .small-profile-box {
+	display: none;
     position: relative;
 	width: 95%;
 	background-color: white;
@@ -158,11 +155,15 @@ input.simple-search-keywords {
 
 .more-info {
     float: left;
-}
-
-.more-info .more-info-title  {
-    border-radius: 9px 9px 9px 9px;
-    padding-right: 10px;
+    
+    .more-info-title  {
+    	border-radius: 9px 9px 9px 9px;
+    	padding-right: 10px;
+	}
+	
+	.icon {
+		margin-left: 10px;
+	}
 }
 
 dl.profile-description {
@@ -181,6 +182,10 @@ dl.profile-description dt {
 
 .summary-box{
 	border-left: 0px dotted gray;
+	
+	span.icon {
+		font-size: 20px;
+	}
 }
 
 #articleView img {
@@ -298,10 +303,102 @@ select.paginator-rows-per-page {
 }
 
 div.people-directory-portlet {
-    .small-profile-box .clearfix {
-        width: 100%;
-    }
+    .small-profile-box {  
+    	.clearfix {
+        	width: 100%;
+		}
+		
+		.contact-short-info {
+			overflow: hidden;
+			margin-top: 5px;
+			
+			span {
+				margin: 0 5px;
+			}		
+		}
+	}
+	
     .lfr-pagination {
         width: 100%;
     }
+}
+
+/* -------------- SKYPE INTEGRATION -------------- */
+
+.skype-users-to-call {
+	border: solid 1px #CCC;
+	padding: 1em;
+	margin: 2em 0;
+	background-color: white;
+}
+
+.skype-users-to-call #users li {
+	list-style: none;
+	background: #DEF;
+	padding: .5em;
+	display: inline-block;
+	margin: 0 .5em .5em 0;
+	border: 1px solid #B5D2FF;
+	
+	.icon-skype, .icon-phone {
+		margin-left: .5em;
+	}
+}
+
+.skype-users-to-call button {
+	min-width: 135px;
+}
+
+.skype-users-to-call #users li:hover {
+	background: #CDE;
+}
+
+.skype-users-to-call .handle:after {
+	content: "\f00d";
+	width: 1em;
+	height: 1em;
+	font-family: 'fontawesome-alloy';
+	padding: 0.5em;
+	color: #b7414d;
+	font-size: 1.2em;
+}
+
+.skype-users-to-call .handle {
+ 	cursor: pointer;
+ }
+
+ #people-directory-container .portlet-msg-error {
+ 	display: none;
+ 	margin-top: 1.5em;
+ }
+ 
+ #people-directory-container .alredy-in-list-msg {
+ 	display: none;
+ }
+
+#users {
+	padding: 0;
+	margin: 0;
+}
+
+.skype-users-to-call .action-header {
+	font-weight: bold;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.skype-users-to-call .button-holder {
+	margin: 10px 0 0;
+}
+
+.skype-users-to-call hr {
+	margin: 0;
+}
+
+.icon-remove:hover {
+    color: red;
+}
+
+#modal * {
+	z-index: 300 !important;
 }

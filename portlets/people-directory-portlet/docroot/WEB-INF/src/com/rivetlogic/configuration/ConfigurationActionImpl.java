@@ -18,8 +18,8 @@
 package com.rivetlogic.configuration;
 
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.rivetlogic.util.Constants;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -29,11 +29,6 @@ import javax.portlet.PortletConfig;
  * The Class ConfigurationActionImpl.
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
-    
-    public static final String PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE = "VIEW_ALL_RESULTS_PER_PAGE";
-    public static final String PREFERENCE_SEARCH_RESULTS_PER_PAGE = "SEARCH_RESULTS_PER_PAGE";
-    public static final String PARAMETER_VIEW_ALL_RESULTS_PER_PAGE = "viewAllResultsPerPage";
-    public static final String PARAMETER_SEARCH_RESULTS_PER_PAGE = "searchResultsPerPage";
     
     /*
      * (non-Javadoc)
@@ -49,10 +44,12 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
         
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         if (cmd.equals(Constants.UPDATE)) {
-            setPreference(actionRequest, PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE,
-                    ParamUtil.getString(actionRequest, PARAMETER_VIEW_ALL_RESULTS_PER_PAGE));
-            setPreference(actionRequest, PREFERENCE_SEARCH_RESULTS_PER_PAGE,
-                    ParamUtil.getString(actionRequest, PARAMETER_SEARCH_RESULTS_PER_PAGE));
+            setPreference(actionRequest, Constants.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE,
+                    ParamUtil.getString(actionRequest, Constants.PARAMETER_VIEW_ALL_RESULTS_PER_PAGE));
+            setPreference(actionRequest, Constants.PREFERENCE_SEARCH_RESULTS_PER_PAGE,
+                    ParamUtil.getString(actionRequest, Constants.PARAMETER_SEARCH_RESULTS_PER_PAGE));
+            setPreference(actionRequest, Constants.SKYPE_INTEGRATION,
+                ParamUtil.getString(actionRequest, Constants.SKYPE_INTEGRATION));
         }
         super.processAction(portletConfig, actionRequest, actionResponse);
     }
