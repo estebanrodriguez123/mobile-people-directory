@@ -3,14 +3,33 @@
 
 @include respond-to(phone) {
     .aui div.people-directory-portlet {
-    
+        
+        input.simple-search-keywords {
+            width: 90%;
+        }
+        
+        .field-value, .profile-description dt {
+            width: 100%;
+        }
+        
+        .more-info {
+            width: 100%;
+            padding: 10px;
+            
+            .profile-info-table {
+                .field-value {
+                    width: 100%;
+                }
+            }
+        }
+        
         .lfr-search-container {
             overflow: hidden;
         }
         
         .summary-box {
             padding-left: 0;
-            width:45%;
+            width: 100%;
             div.more-info table tr td {
                 padding-left: 0;
             }
