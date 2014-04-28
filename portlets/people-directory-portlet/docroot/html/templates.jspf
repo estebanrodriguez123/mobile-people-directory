@@ -66,7 +66,7 @@
 		
 		<div class="summary-box">
        		<div class="small-photo-box">
-                <img src="{{portraitUrl}}" height="55"/>
+             	<img src="{{portraitUrl}}"/>
             </div>
             <div class="brief-wrapper">
                 <div class="name field-value">{{fullName}}</div>
