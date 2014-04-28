@@ -17,9 +17,7 @@
             padding: 10px;
             
             .profile-info-table {
-                .field-value {
-                    width: 100%;
-                }
+            	width: 90%;
             }
         }
         
@@ -88,15 +86,20 @@
 			}
 		}
 		
-		.skype-users-to-call #users li {
-			display: block;
-			text-align: center;
-			margin-right: 0;
-		}
-		
-		.skype-users-to-call .handle {
- 			float: right;
- 		}
+		.skype-users-to-call {
+			#users li {
+				display: block;
+				text-align: center;
+				margin-right: 0;
+				
+				.handle {
+ 					float: right;
+ 				}
+			}
+ 			hr {
+ 				margin: 20px 0;
+ 			}
+		} 
     }
 }
 

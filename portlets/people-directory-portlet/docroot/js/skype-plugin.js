@@ -35,6 +35,7 @@ AUI.add(
                 instance.messageError = instance.container.all(".portlet-msg-error");
                 instance.alreadyInListMessage = instance.container.all(".alredy-in-list-msg");
                 instance.skypeList = instance.container.one(".skype-users-to-call");
+                instance.searchResults = instance.container.one("#searchResults");
                 
                 instance.SKYPE_TEMPLATES.skypeItem = A.one("#skype-item-template").get("innerHTML");
                 
@@ -52,11 +53,10 @@ AUI.add(
             *    users to call. Specific for skype icon
             */
             setSkypeUserListener: function(type) {
-            	var instance = this,
-            	searchResults = instance.container.one("#searchResults");
+            	var instance = this;
             	
-            	if (searchResults) {
-            		searchResults.delegate("click", function(e){
+            	if (instance.searchResults) {
+            		instance.searchResults.delegate("click", function(e){
             			instance.messageError.setStyle("display", "none");
             			instance.addUserToGroup({
             				type: type,
@@ -71,9 +71,12 @@ AUI.add(
             
             setRemoveUserListener: function() {
                 var instance = this;
-                instance.skypeList.delegate("click", function(){
-                    this.ancestor("li").remove();
-                }, ".handle");
+                
+                if (instance.skypeList) {
+                	instance.skypeList.delegate("click", function(){
+                		this.ancestor("li").remove();
+                	}, ".handle");
+                }
             },
             
             /**
@@ -81,18 +84,21 @@ AUI.add(
             */
             setSkypeActionListener: function(node, action) {
                 var instance = this;
-                node.on("click", function() { 
-                    var items = instance.container.all("#users li");
-
-                    if (items.size() != 0) {
-                        Skype.tryAnalyzeSkypeUri('chat', '0');
-                        var users = instance.getCurrentSkypeUsers();
-                        location.href = "skype:" + users + "?"+action;
-                    }
-                    else {
-                        instance.messageError.setStyle("display", "block");
-                    }
-                })
+                
+                if (node) {
+                	node.on("click", function() { 
+                		var items = instance.container.all("#users li");
+                		
+                		if (items.size() != 0) {
+                			Skype.tryAnalyzeSkypeUri('chat', '0');
+                			var users = instance.getCurrentSkypeUsers();
+                			location.href = "skype:" + users + "?"+action;
+                		}
+                		else {
+                			instance.messageError.setStyle("display", "block");
+                		}
+                	});
+                }
             },
             
             /** -------------------------------- RENDERING FUNCTIONS ---------------------------------*/
@@ -129,7 +135,7 @@ AUI.add(
             */
             isInList: function(personId) {
                 var instance = this, 
-                users = instance.getCurrentSkypeUsers();
+                	users = instance.getCurrentSkypeUsers();
 
                 return users.indexOf(personId) != -1;
             },
@@ -139,7 +145,7 @@ AUI.add(
             */
             getCurrentSkypeUsers: function() {
                 var instance = this,
-                users = "";
+                	users = "";
                 
                 instance.container.all("#users li").each(function(li){
                     users += li.getAttribute("skypeId") + ";";
@@ -157,6 +163,7 @@ AUI.add(
             messageError: null,
             alreadyInListMessage: null,
             skypeList: null,
+            searchResults: null,
             
             CONSTANTS: {
                 SKYPE_CONTACT_TYPE: "skype",

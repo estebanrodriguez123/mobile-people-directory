@@ -45,7 +45,6 @@ AUI.add(
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable = A.one('#profile-info-table-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.profileResult = A.one('#profile-result-template').get('innerHTML');
                 
-                
                 instance.enableSearch();
                 instance.addFieldNameAttribute();
             },
@@ -252,42 +251,60 @@ AUI.add(
                 
                 return source(user);
             },
-
+            
+            /** Expands user information */
             slideDown: function (event) {
-                /* to adjust size for some mobile devices 768 comes from liferay default mobile viewport breakpoints */
-                var boxSize = (A.one('body').get('winWidth') <= Liferay.PeopleDirectory.CONSTANTS.LIFERAY_PHONE_BREAKPOINT) ? Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE_PHONE : Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE;
                 event.halt();
-                var item = event.currentTarget;
-                var userId = item.attr('data-user-id');
-                var box = $("#" + userId + "-small-profile-box");
+                /* to adjust size for some mobile devices 768 comes from liferay default mobile viewport breakpoints */
+                var boxWidth = (A.one('body').get('winWidth') <= Liferay.PeopleDirectory.CONSTANTS.LIFERAY_PHONE_BREAKPOINT) ? Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE_PHONE : Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE,
+                	item = event.currentTarget,
+                	userId = item.attr('data-user-id'),
+                	box = $("#" + userId + "-small-profile-box"),
+                	image = box.find(".small-photo-box img"),
+                	/*calculating image proportional height*/
+                	boxHeight = image.height() * boxWidth.substring(0, boxWidth.length -2) / image.width();
+                
+                if (!boxHeight || boxHeight <= 0) boxHeight = boxWidth;
                 
                 box.find(".slide-down").hide();
                 box.find(".more-info").show();
                 box.find(".slide-up").show();
-                box.find(".small-photo-box img").height(boxSize).width(boxSize);
+                
+                image.height(boxHeight).width(boxWidth);
+                
                 box.find(".small-photo-box").animate({
-                    height: boxSize,
-                    width: boxSize
+                    height: boxHeight,
+                    width: boxWidth
                 }, "slow");
+                
                 box.find(".contact-short-info").hide();
             },
 
             slideUp: function (event) {
+            	
                 event.halt();
-                var item = event.currentTarget;
-                var userId = item.attr('data-user-id');
-                var box = $("#" + userId + "-small-profile-box");
+                
+                var item = event.currentTarget,
+                	userId = item.attr('data-user-id'),
+                	box = $("#" + userId + "-small-profile-box"),
+                	image = box.find(".small-photo-box img"),
+                	boxWidth = Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
+                	/*calculating image proportional height*/
+                	boxHeight = image.height() * boxWidth.substring(0, boxWidth.length -2) / image.width();
+                
+                if (!boxHeight || boxHeight <= 0) boxHeight = boxWidth;
                 
                 box.find(".slide-down").show();
                 box.find(".more-info").hide();
-                box.find(".slide-up").hide();;
-                box.find(".small-photo-box img").animate({
-                    height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
-                    width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
+                box.find(".slide-up").hide();
+                
+                image.animate({
+                	height: boxHeight,
+                    width: boxWidth
                 }, "slow");
                 box.find(".small-photo-box").animate({
-                    height: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
-                    width: Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE
+                    height: boxHeight,
+                    width: boxWidth
                 }, "slow");
                 
                 box.find(".contact-short-info").show();

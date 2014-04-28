@@ -50,7 +50,6 @@ input.simple-search-keywords {
 	-moz-box-shadow: 0 0 2px 2px #888;
 	-webkit-box-shadow: 0 0 2px 2px#888;
 	box-shadow: 0 0 2px 2px #888;
-	height: 55px;
 	width: 55px;
 	margin-left: 5px;
 	float: left;
@@ -146,7 +145,6 @@ input.simple-search-keywords {
 	border: 0;
 	cellpadding: 0;
 	cellspacing: 0; 
-	width: 90%;
     
     .field-value {
         width: 90%;
