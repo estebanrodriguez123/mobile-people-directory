@@ -326,7 +326,7 @@ div.people-directory-portlet {
 			padding: 5px 12px;
 			width: 100%;
 			span {
-				margin: 0 5px;
+				margin: 0 5px 0 0;
 			}		
 		}
 	}
