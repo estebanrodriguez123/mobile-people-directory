@@ -86,13 +86,15 @@ AUI.add(
                 var instance = this;
                 
                 if (node) {
+                    var skypeClientFrameId = this.skypeHelper.generateDetectionFrame(node.get('id'));
                 	node.on("click", function() { 
                 		var items = instance.container.all("#users li");
                 		
                 		if (items.size() != 0) {
                 			Skype.tryAnalyzeSkypeUri('chat', '0');
                 			var users = instance.getCurrentSkypeUsers();
-                			location.href = "skype:" + users + "?"+action;
+                            instance.skypeHelper.openSkypeURI(skypeClientFrameId, "skype:" + users + "?" + action);
+                			//location.href = "skype:" + users + "?"+action;
                 		}
                 		else {
                 			instance.messageError.setStyle("display", "block");
@@ -100,6 +102,28 @@ AUI.add(
                 	});
                 }
             },
+            
+            /* Skype helper: generates detection iframe and opens skype */
+            skypeHelper: {
+                /* Generates detection iframe */
+                generateDetectionFrame: function(buttonId) {
+                    Skype.createDetectionFrame(document.getElementById(buttonId));
+                    return Skype.detectSkypeClientFrameId;
+                },
+                /* Opens skype with the given uri */
+                openSkypeURI: function(skypeClientFrameId, uri) {
+                    if (Skype.isIE10 || Skype.isIE9 || Skype.isIE8) {
+                        Skype.trySkypeUri_IE9_IE8(uri, '', '');
+                    } else if ((Skype.isIOS6 || Skype.isIOS5 || Skype.isIOS4) && Skype.isSafari) {
+                        Skype.trySkypeUri_IOS_Safari(uri, skypeClientFrameId, '');
+                    } else if (this.isAndroid && this.isFF) {
+                        Skype.trySkypeUri_Android_Firefox(uri, skypeClientFrameId, '');
+                    } else {
+                        Skype.trySkypeUri_Generic(uri, skypeClientFrameId, '');
+                    }
+                }
+            },
+            
             
             /** -------------------------------- RENDERING FUNCTIONS ---------------------------------*/
             
