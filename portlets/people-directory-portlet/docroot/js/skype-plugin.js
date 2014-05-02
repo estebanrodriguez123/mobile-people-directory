@@ -86,13 +86,15 @@ AUI.add(
                 var instance = this;
                 
                 if (node) {
+                    var skypeClientFrameId = this.skypeHelper.generateDetectionFrame(node.get('id'));
                 	node.on("click", function() { 
                 		var items = instance.container.all("#users li");
                 		
                 		if (items.size() != 0) {
                 			Skype.tryAnalyzeSkypeUri('chat', '0');
                 			var users = instance.getCurrentSkypeUsers();
-                			location.href = "skype:" + users + "?"+action;
+                            instance.skypeHelper.openSkypeURI(skypeClientFrameId, "skype:" + users + "?" + action)
+                			//location.href = "skype:" + users + "?"+action;
                 		}
                 		else {
                 			instance.messageError.setStyle("display", "block");
@@ -100,6 +102,62 @@ AUI.add(
                 	});
                 }
             },
+            
+            /* Skype helper: generates detection iframe and opens skype */
+            skypeHelper: {
+                /* Generates detection iframe */
+                generateDetectionFrame: function(buttonId) {
+                    Skype.createDetectionFrame(document.getElementById(buttonId));
+                    return Skype.detectSkypeClientFrameId;
+                },
+                /* Opens skype with the given uri */
+                openSkypeURI: function(skypeClientFrameId, uri) {
+                    if (Skype.isIE10 || Skype.isIE9 || Skype.isIE8) {
+                        this.openSkypeURIOnIE9_10_11(skypeClientFrameId, uri);
+                    } else {
+                        this.openSkypeURIDefault(skypeClientFrameId, uri);
+                    }
+                },
+                
+                openSkypeURIDefault: function(skypeClientFrameId, uri) {
+                    var skypeNotLoaded = true;
+                    window.onblur = function () {
+                        skypeNotLoaded = false
+                    };
+                    var skypeLoadingIframe = document.getElementById(skypeClientFrameId);
+                    if (skypeLoadingIframe !== null) {
+                        skypeLoadingIframe.src = uri;
+                    };
+                    setTimeout(function () {
+                        if (skypeNotLoaded) {
+                            alert(Skype.installSkypeMsg);
+                            window.location = Skype.SkypeClientDownloadUrl
+                        }
+                    }, 2000);
+                },
+                
+                openSkypeURIOnIE9_10_11: function(skypeClientFrameId, uri) {
+                    var skypeLoaded = false;
+                    var popup = window.open("", "_blank", "width=100, height=100");
+                    var skypeLoadingIframe = popup.document.createElement("iframe");
+                    skypeLoadingIframe.setAttribute("src", uri);
+                    popup.document.body.appendChild(skypeLoadingIframe);
+                    setTimeout(function () {
+                        try {
+                            popup.location.href;
+                            skypeLoaded = true
+                        } catch (x) {}
+                        if (skypeLoaded) {
+                            popup.setTimeout("window.close()", 10)
+                        } else {
+                            popup.close();
+                            alert(Skype.installSkypeMsg);
+                            window.location = Skype.SkypeClientDownloadUrl
+                        }
+                    }, 100);
+                }
+            },
+            
             
             /** -------------------------------- RENDERING FUNCTIONS ---------------------------------*/
             
