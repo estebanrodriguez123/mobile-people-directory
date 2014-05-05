@@ -50,23 +50,22 @@ AUI.add(
             },
             
             enableSearch: function () {
+            	var timeout;
                 var instance = this;
-                
-                if (instance.searchInput != null) {
-                    if (themeDisplay.isSignedIn()) {
-                        instance.searchInput.on('keyup', function () {
-                            var searchText = instance.searchInput.get('value');
-                            
-                            if (searchText != instance.placeholderText) {
-                                
-                                var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
-                                if (searchText != null && searchText.length > 2) {
-                                    instance.performSearch(searchText, maxItems);
-                                }
-                            }
-
-                        });
-                    }
+                if ((themeDisplay.isSignedIn()) && (instance.searchInput != null)) {
+                	instance.searchInput.on('keypress', function () {
+                		if(timeout){
+                			clearTimeout(timeout);
+                		}
+                		timeout = setTimeout(function (){
+	                        var searchText = instance.searchInput.get('value');
+	                        searchText = searchText.trim();
+	                        if (searchText != null && searchText.length > 2 && searchText != instance.placeholderText) {
+	                        	var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
+	                        		instance.performSearch(searchText, maxItems);
+	                        }
+                		}, 1000);
+                	});
                 }
             },
             

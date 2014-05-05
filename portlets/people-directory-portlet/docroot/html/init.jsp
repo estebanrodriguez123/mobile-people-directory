@@ -31,6 +31,7 @@
 <%@ page import="com.liferay.portal.model.Group" %>
 <%@ page import="com.liferay.portal.model.User" %>
 <%@ page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam"%>
+<%@ page import="com.liferay.portal.kernel.dao.search.ResultRow"%>
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.OrderByComparator"%>
