@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
 import com.rivetlogic.portlet.peopledirectory.PeopleDirectoryPortlet;
 
@@ -44,7 +45,7 @@ public class PeopleDirectoryUtil {
      * @return the phone field
      */
     public static String getPhoneField(User user) {
-        String phoneStr = "";
+        String phoneStr = StringPool.BLANK;
         try {
             if (user.getPhones().size() > 0) {
                 for (com.liferay.portal.model.Phone phone : user.getPhones()) {
@@ -68,7 +69,7 @@ public class PeopleDirectoryUtil {
      * @return the city field
      */
     public static String getCityField(User user) {
-        String cityStr = "";
+        String cityStr = StringPool.BLANK;
         try {
             if (user.getAddresses().size() > 0) {
                 for (com.liferay.portal.model.Address address : user.getAddresses()) {

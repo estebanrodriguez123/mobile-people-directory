@@ -97,10 +97,11 @@
 										profileURL.setParameter(Constants.BACK_URL, currentURL);
 										String columnHref = profileURL.toString();
 									%>
+									
 									<liferay-ui:search-container-column-text name="name"
 										property="fullName" orderable="true" orderableProperty="<%= CustomComparatorUtil.COLUMN_FIRST_NAME %>"
 										href='<%=columnHref%>' />
-						
+											
 									<liferay-ui:search-container-column-text name="email"
 										property="emailAddress" orderable="true"
 										orderableProperty="<%= CustomComparatorUtil.COLUMN_EMAIL_ADDRESS %>" href='<%=columnHref%>' />
@@ -112,9 +113,7 @@
 									<liferay-ui:search-container-column-text name="<%= CustomComparatorUtil.COLUMN_CITY %>">
 										<%=PeopleDirectoryUtil.getCityField(user)%>
 									</liferay-ui:search-container-column-text>
-									<liferay-ui:search-container-column-text name="<%= CustomComparatorUtil.COLUMN_PHONE %>" cssClass="">
-										<%=PeopleDirectoryUtil.getPhoneField(user)%>
-									</liferay-ui:search-container-column-text>
+									<liferay-ui:search-container-column-jsp name="<%= CustomComparatorUtil.COLUMN_PHONE %>" path="/html/include/phone_with_skype.jsp" />
 					
 								</liferay-ui:search-container-row>
 						

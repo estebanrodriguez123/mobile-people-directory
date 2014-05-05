@@ -34,6 +34,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.comparator.UserScreenNameComparator;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.util.Constants;
+import com.rivetlogic.util.PeopleDirectoryUtil;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -115,8 +116,7 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
                 jsonUser.put(Constants.JSON_USER_EMAIL_ADDRESS, user.getDisplayEmailAddress());
                 jsonUser.put(Constants.JSON_USER_PORTRAIT_URL,
                         user.getPortraitURL((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)));
-                jsonUser.put(Constants.JSON_USER_PHONE, 
-                	(user.getPhones().size() > 0 ? user.getPhones().get(0).getNumber(): StringPool.BLANK));
+                jsonUser.put(Constants.JSON_USER_PHONE, PeopleDirectoryUtil.getPhoneField(user));
                 jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
                 usersArray.put(jsonUser);
             }
@@ -151,10 +151,8 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
             jsonUser.put(Constants.JSON_USER_JOB_TITLE, user.getJobTitle());
             jsonUser.put(Constants.JSON_USER_SCREEN_NAME, user.getScreenName());
             jsonUser.put(Constants.JSON_USER_DOB, (new SimpleDateFormat(Constants.DOB_FORMAT)).format(user.getBirthday()));
-            jsonUser.put(Constants.JSON_USER_CITY, (user.getAddresses().size() > 0 ? user.getAddresses().get(0).getCity()
-                    : StringPool.BLANK));
-            jsonUser.put(Constants.JSON_USER_PHONE, (user.getPhones().size() > 0 ? user.getPhones().get(0).getNumber()
-                    : StringPool.BLANK));
+            jsonUser.put(Constants.JSON_USER_CITY, PeopleDirectoryUtil.getCityField(user));
+            jsonUser.put(Constants.JSON_USER_PHONE, PeopleDirectoryUtil.getPhoneField(user));
             jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
             
             writeJSON(request, response, jsonUser);
