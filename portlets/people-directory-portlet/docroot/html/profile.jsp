@@ -55,10 +55,13 @@ String imageId = userId + "-picture";
 			<dd><%= HtmlUtil.escape(userSelected.getEmailAddress()) %></dd>
 			
 			<dt><liferay-ui:message key="city" />:</dt>
-			<dd><%=(userSelected.getAddresses().size() > 0 ? userSelected.getAddresses().get(0).getCity() : StringPool.BLANK)%></dd>
+			<dd><%= PeopleDirectoryUtil.getCityField(userSelected)%></dd>
 			
 			<dt><liferay-ui:message key="phone" />:</dt>
-			<dd><%= (userSelected.getPhones().size() > 0 ? userSelected.getPhones().get(0).getNumber() : StringPool.BLANK)%></dd>
+			<dd><%= PeopleDirectoryUtil.getPhoneField(userSelected)%></dd>
+			
+			<dt><liferay-ui:message key="skype" />:</dt>
+			<dd><%= userSelected.getContact().getSkypeSn()%></dd>
 		</dl>
 		
         <div class="clearfix"></div>
