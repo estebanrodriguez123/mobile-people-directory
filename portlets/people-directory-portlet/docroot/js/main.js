@@ -36,9 +36,6 @@ AUI.add(
                 var instance = this;
                 
                 instance.searchInput = instance.container.one('#' + instance.namespace + 'keywords');
-                instance.placeholderText = Liferay.Language.get("people-directory.label.type-keywords");
-                
-                instance.enablePlaceholder();
                 
                 instance.PEOPLE_DIRECTORY_TEMPLATES.searchResultsHeader = A.one('#search-result-header-template').get('innerHTML');
                 instance.PEOPLE_DIRECTORY_TEMPLATES.contentSearchItem = A.one('#content-search-item-template').get('innerHTML');
@@ -50,8 +47,8 @@ AUI.add(
             },
             
             enableSearch: function () {
-            	var timeout;
-                var instance = this;
+                var instance = this,
+                	timeout = null;
                 if ((themeDisplay.isSignedIn()) && (instance.searchInput != null)) {
                 	instance.searchInput.on('keypress', function () {
                 		if(timeout){
@@ -60,33 +57,12 @@ AUI.add(
                 		timeout = setTimeout(function (){
 	                        var searchText = instance.searchInput.get('value');
 	                        searchText = searchText.trim();
-	                        if (searchText != null && searchText.length > 2 && searchText != instance.placeholderText) {
+	                        if (searchText != null && searchText.length > 2) {
 	                        	var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
 	                        		instance.performSearch(searchText, maxItems);
 	                        }
                 		}, 1000);
                 	});
-                }
-            },
-            
-            enablePlaceholder: function() {
-                var instance = this;
-                
-                if (instance.searchInput != null) {
-                    
-                    instance.searchInput.set('value', instance.placeholderText);
-                    
-                    instance.searchInput.on('focus', function() {
-                        if (instance.searchInput.get('value') == instance.placeholderText) {
-                            instance.searchInput.set('value', '');
-                        }
-                    });
-                    
-                    instance.searchInput.on('blur', function(){
-                        if (instance.searchInput.get('value') == '') {
-                            instance.searchInput.set('value', instance.placeholderText);
-                        }
-                    });
                 }
             },
 
@@ -336,7 +312,6 @@ AUI.add(
             paginator: null,
             rowCount: null,
             searchInput: null,
-            placeholderText: null,
             fields: null,
             
             CONSTANTS: {
