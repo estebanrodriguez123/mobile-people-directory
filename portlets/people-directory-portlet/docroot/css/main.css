@@ -7,6 +7,10 @@
     border: none;
 }
 
+.people-directory-portlet .button-holder button i {
+    background: none !important;
+}
+
 #people-directory-container {
     border: 1px solid #C3C3C3;
     border-radius: 10px 10px 0px 0px;
