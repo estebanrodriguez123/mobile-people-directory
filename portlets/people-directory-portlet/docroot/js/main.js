@@ -63,6 +63,19 @@ AUI.add(
 	                        }
                 		}, 1000);
                 	});
+                    
+                    /* placeholder in older browsers */
+                    if (A.UA.ie == 9) {
+                        var placeholder = instance.searchInput.getAttribute('placeholder');
+                        instance.searchInput.set('value', placeholder);
+                        instance.searchInput.on('focus', function() {
+                            instance.searchInput.set('value', (placeholder == instance.searchInput.get('value') ? '' : instance.searchInput.get('value') ));
+                        });
+                        instance.searchInput.on('blur', function() {
+                            instance.searchInput.set('value', ('' == instance.searchInput.get('value') ? placeholder : instance.searchInput.get('value') ));
+                        });
+                    }
+                    
                 }
             },
 
