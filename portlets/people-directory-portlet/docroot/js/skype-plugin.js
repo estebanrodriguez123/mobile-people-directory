@@ -112,6 +112,10 @@ AUI.add(
                 },
                 /* Opens skype with the given uri */
                 openSkypeURI: function(skypeClientFrameId, uri) {
+                    if (Skype.isChrome && Skype.httpProtocol == 'https:') {
+                        window.location = uri;
+                        return;
+                    }
                     if (Skype.isIE10 || Skype.isIE9 || Skype.isIE8) {
                         Skype.trySkypeUri_IE9_IE8(uri, '', '');
                     } else if ((Skype.isIOS6 || Skype.isIOS5 || Skype.isIOS4) && Skype.isSafari) {

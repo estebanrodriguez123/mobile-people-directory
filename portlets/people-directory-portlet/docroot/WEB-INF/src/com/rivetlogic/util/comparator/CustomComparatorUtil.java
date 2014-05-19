@@ -26,7 +26,7 @@ public class CustomComparatorUtil {
     public static final String COLUMN_EMAIL_ADDRESS = "emailAddress";
     public static final String COLUMN_JOB_TITLE = "jobTitle";
     public static final String COLUMN_CITY = "city";
-    public static final String COLUMN_PHONE = "phone";
+    public static final String COLUMN_PHONE = "phone-skype-column";
     
     public static OrderByComparator getUserOrderByComparator(String orderByCol, String orderByType) {
         

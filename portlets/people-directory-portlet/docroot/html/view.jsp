@@ -97,14 +97,13 @@
 										profileURL.setParameter(Constants.BACK_URL, currentURL);
 										String columnHref = profileURL.toString();
 									%>
-									
 									<liferay-ui:search-container-column-text name="name"
 										property="fullName" orderable="true" orderableProperty="<%= CustomComparatorUtil.COLUMN_FIRST_NAME %>"
 										href='<%=columnHref%>' />
 											
 									<liferay-ui:search-container-column-text name="email"
 										property="emailAddress" orderable="true"
-										orderableProperty="<%= CustomComparatorUtil.COLUMN_EMAIL_ADDRESS %>" href='<%=columnHref%>' />
+										orderableProperty="<%= CustomComparatorUtil.COLUMN_EMAIL_ADDRESS %>" href='<%="mailto:"+user.getEmailAddress()%>' />
 						
 									<liferay-ui:search-container-column-text name="job-title"
 										property="jobTitle" orderable="true" orderableProperty="<%= CustomComparatorUtil.COLUMN_JOB_TITLE %>"

@@ -1,6 +1,16 @@
 @import url(main_responsive.css);
 
 
+.people-directory-portlet .results {
+    float: none;
+    margin: 0;
+    border: none;
+}
+
+.people-directory-portlet .button-holder button i {
+    background: none !important;
+}
+
 #people-directory-container {
     border: 1px solid #C3C3C3;
     border-radius: 10px 10px 0px 0px;
@@ -10,7 +20,7 @@
 }
 
 input.simple-search-keywords {
-    width: 35%;
+    width: 40%;
 }
 
 .business-card {
