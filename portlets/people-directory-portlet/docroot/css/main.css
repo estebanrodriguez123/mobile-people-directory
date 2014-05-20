@@ -321,7 +321,7 @@ margin-top: 10px;
 	color: #FFF;
 }
 
-select.paginator-rows-per-page {
+#people-directory-container select.paginator-rows-per-page {
 	display: none;
 }
 

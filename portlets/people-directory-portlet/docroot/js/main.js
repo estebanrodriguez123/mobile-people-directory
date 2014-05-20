@@ -22,7 +22,7 @@ AUI.add(
 
             init: function (params) {
                 var instance = this;
-                
+                instance.paginator = null;
                 instance.portletId = params.portletId;
                 instance.namespace = params.namespace;
                 instance.container = params.container;
