@@ -110,7 +110,7 @@ AUI.add(
                             }
                         },
                         failure: function () {
-                            displayError("Error searching for keywords");
+                            instance.showMessage(Liferay.Language.get("error"), Liferay.PeopleDirectory.CONSTANTS.ERROR_KEYWORDS);
                         }
                     }
     			});
@@ -140,7 +140,7 @@ AUI.add(
                             instance.showCompleteProfile(responseData);
                         },
                         failure: function (xhr, ajaxOptions, thrownError) {
-                            displayError("Error searching for complete profile for userId" + userId);
+                        	instance.showMessage(Liferay.Language.get("error"), instance.CONSTANTS.ERROR_COMPLETE_SEARCH + fullName);
                         }
                     } 
     			});
@@ -159,18 +159,18 @@ AUI.add(
                     prevPageLinkLabel: 'Prev',
                     on: {
                         changeRequest: function (event) {
-                            A.all('#searchResults .small-profile-box').setStyle('display', 'none');
+                            instance.container.all('#searchResults .small-profile-box').setStyle('display', 'none');
                             var paginator = this;
                             var newState = event.state;
                             var page = newState.page;
                             if (instance.rowCount == 1) {
-                                A.one('#searchResults .page' + page).setStyle('display', 'block');
+                                instance.container.one('#searchResults .page' + page).setStyle('display', 'block');
                             } else {
                                 var total = page * instance.rowCount;
                                 var i = page == 1 ? total - instance.rowCount : total - instance.rowCount + 1;
 
                                 for (i; i <= total; i++) {
-                                    var item = A.one('#searchResults .page' + i);
+                                    var item = instance.container.one('#searchResults .page' + i);
                                     if (item != null)
                                         item.setStyle('display', 'block');
                                 }
@@ -212,20 +212,20 @@ AUI.add(
                     searchResults += Liferay.Language.get("no-search-results-found");
                 }
                 if (A.UA.gecko > 0) {
-                    A.one("#searchResults").html(searchResults);
+                    instance.container.one("#searchResults").html(searchResults);
                 } else {
-                    A.one("#searchResults").empty().append(searchResults);
+                	instance.container.one("#searchResults").empty().append(searchResults);
                 }
                 // add handlers for the new elements
-                A.all('div.slide-down').on('click', A.bind(instance.performCompleteProfileSearch, this));
-                A.all('div.slide-down').on('click', A.bind(instance.slideDown, this));
-                A.all('div.slide-up').on('click', A.bind(instance.slideUp, this));
+                instance.container.all('div.slide-down').on('click', A.bind(instance.performCompleteProfileSearch, this));
+                instance.container.all('div.slide-down').on('click', A.bind(instance.slideDown, this));
+                instance.container.all('div.slide-up').on('click', A.bind(instance.slideUp, this));
 
             },
 
             showCompleteProfile: function (responseData) {
                 var instance = this;
-                var element = A.one("#" + responseData.id + "-small-profile-box .more-info");
+                var element = instance.container.one("#" + responseData.id + "-small-profile-box .more-info");
                 element.setContent("");
                 var box = A.Handlebars.compile(instance.PEOPLE_DIRECTORY_TEMPLATES.profileInfoTable); 
                 element.append(box(responseData));
@@ -242,12 +242,15 @@ AUI.add(
             
             /** Expands user information */
             slideDown: function (event) {
+            	var instance = this,
+            	container = $(instance.container.getDOMNode());
+            	
                 event.halt();
                 /* to adjust size for some mobile devices 768 comes from liferay default mobile viewport breakpoints */
                 var boxWidth = (A.one('body').get('winWidth') <= Liferay.PeopleDirectory.CONSTANTS.LIFERAY_PHONE_BREAKPOINT) ? Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE_PHONE : Liferay.PeopleDirectory.CONSTANTS.SLIDE_DOWN_PICTURE_SIZE,
                 	item = event.currentTarget,
                 	userId = item.attr('data-user-id'),
-                	box = $("#" + userId + "-small-profile-box"),
+                	box = container.find("#" + userId + "-small-profile-box"),
                 	image = box.find(".small-photo-box img"),
                 	/*calculating image proportional height*/
                 	boxHeight = image.height() * boxWidth.substring(0, boxWidth.length -2) / image.width();
@@ -269,12 +272,14 @@ AUI.add(
             },
 
             slideUp: function (event) {
+            	var instance = this,
+            		container = $(instance.container.getDOMNode());
             	
                 event.halt();
                 
                 var item = event.currentTarget,
                 	userId = item.attr('data-user-id'),
-                	box = $("#" + userId + "-small-profile-box"),
+                	box = container.find("#" + userId + "-small-profile-box"),
                 	image = box.find(".small-photo-box img"),
                 	boxWidth = Liferay.PeopleDirectory.CONSTANTS.PICTURE_SIZE,
                 	/*calculating image proportional height*/
@@ -311,6 +316,18 @@ AUI.add(
             		
             	});
             },
+            
+            showMessage: function (title, message) {
+            	var instance = this;
+                new A.Modal({
+                    bodyContent: '<p>' + message + '</p>',
+                    centered: true,
+                    headerContent: '<h2>' + title + '</h2>',
+                    render: instance.container.one('#modal'),
+                    height: 250,
+                    modal: true
+                }).render();
+            },
 
             PEOPLE_DIRECTORY_TEMPLATES: {
                 searchResultsHeader: null,
@@ -331,14 +348,16 @@ AUI.add(
                 LIFERAY_PHONE_BREAKPOINT: 768, // phone media query breakpoint defined by liferay
                 PICTURE_SIZE: '55px', // picture size, width and height
                 SLIDE_DOWN_PICTURE_SIZE_PHONE: '80px', // image size when user is expanded
-                SLIDE_DOWN_PICTURE_SIZE: '130px' // image size when user is expanded
+                SLIDE_DOWN_PICTURE_SIZE: '130px', // image size when user is expanded
+                ERROR_KEYWORDS: "Error searching for keywords",
+                ERROR_COMPLETE_SEARCH: "Error searching for complete profile for user "
             }
         };
     },
     '', {
         requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate', 'handlebars',
             'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse',
-            'jquery'
+            'jquery', 'aui-modal'
         ]
     }
 );

@@ -144,22 +144,22 @@
 	            async : false,
 	            modules : {
 	            	'aui-paginator-old': {
-	        			path: '/js/aui-paginator-old.js',
+	        			path: '/js/third-party/aui-paginator-old.js',
 	        			requires: ['aui-paginator.css','aui-paginator-core-css', 'aui-paginator-skin.css']
 	        		},
 	        		'aui-paginator-core-css': {
-	        			path: '/css/aui-paginator-core.css'
+	        			path: '/css/third-party/aui-paginator-core.css'
 	        		}, 
 	        		'aui-paginator-skin.css': {
-	        			path: '/css/aui-paginator-skin.css'
+	        			path: '/css/third-party/aui-paginator-skin.css'
 	        		},
 	        		'aui-paginator.css': {
-	        			path: '/css/aui-paginator.css'
+	        			path: '/css/third-party/aui-paginator.css'
 	        		}
 	            }		
 	    	},
 	    	'jquery': {
-	    		base : '<%= request.getContextPath()%>/js/',
+	    		base : '<%= request.getContextPath()%>/js/third-party/',
 	            async : false,
 	            modules : {
 	            	'jquery': {
@@ -177,7 +177,7 @@
 	        			requires: ['skype-ui']
 	        		},
 	        		'skype-ui': {
-	        			path: 'skype-uri.js'
+	        			path: 'third-party/skype-uri.js'
 	        		}
 	        	</c:if>
 	            }
@@ -204,4 +204,4 @@
 		);	
 	</c:if>
 </aui:script>
-<%@ include file="templates.jspf"%>
+<%@ include file="include/templates.jspf"%>
