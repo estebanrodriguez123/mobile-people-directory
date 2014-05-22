@@ -99,7 +99,23 @@
  			hr {
  				margin: 20px 0;
  			}
-		} 
+		}
+		
+		.pagination {
+            li {
+                display: none;
+                a {
+                    padding: 10px 5px;
+                }
+            }
+            li.first-pagination-control,
+            li.last-pagination-control,
+            li.pagination-control,
+            li.active {
+                display: inline;
+            }
+        }
+		
     }
 }
 

@@ -146,20 +146,25 @@ AUI.add(
     			});
             },
 
-            createPaginator: function (maxPagesLinks) {
-                var instance = this;
-
-                return new A.PaginatorOld({
-                    alwaysVisible: false,
-                    containers: '#paginator',
-                    total: maxPagesLinks,
-                    maxPageLinks: 15,
-                    rowsPerPage: instance.rowCount,
-                    nextPageLinkLabel: 'Next',
-                    prevPageLinkLabel: 'Prev',
-                    on: {
-                        changeRequest: function (event) {
-                            instance.container.all('#searchResults .small-profile-box').setStyle('display', 'none');
+            createPaginator: function (total) {
+                var instance = this,
+                	usersPerPage = instance.CONSTANTS.MAX_PAGE_LINKS;
+                
+                return new A.Rivet.Pagination({
+                    boundingBox: instance.container.one("#paginator"),
+                    total: Math.floor((total + usersPerPage - 1) / usersPerPage),
+                    page: 1,
+                    circular: false,
+                    maxPagesNavItems: usersPerPage,
+                    strings: {
+                    	firstNavLinkText: Liferay.Language.get("pagination.first.label"),
+                    	lastNavLinkText: Liferay.Language.get("pagination.last.label"),
+                    	prev: Liferay.Language.get("pagination.prev.label"),
+                    	next: Liferay.Language.get("pagination.next.label")
+                    },
+                    after: {
+                        changeRequest: function(event) {
+                        	instance.container.all('#searchResults .small-profile-box').setStyle('display', 'none');
                             var paginator = this;
                             var newState = event.state;
                             var page = newState.page;
@@ -177,8 +182,7 @@ AUI.add(
                             }
                             paginator.setState(newState);
                         }
-                    },
-                    template: '{FirstPageLink} {PrevPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} {Total}'
+                    }
                 });
             },
 
@@ -350,14 +354,15 @@ AUI.add(
                 SLIDE_DOWN_PICTURE_SIZE_PHONE: '80px', // image size when user is expanded
                 SLIDE_DOWN_PICTURE_SIZE: '130px', // image size when user is expanded
                 ERROR_KEYWORDS: "Error searching for keywords",
-                ERROR_COMPLETE_SEARCH: "Error searching for complete profile for user "
+                ERROR_COMPLETE_SEARCH: "Error searching for complete profile for user ",
+                MAX_PAGE_LINKS: 10
             }
         };
     },
     '', {
         requires: ['node', 'event', 'event-key', 'aui-io-request', 'node-event-simulate', 'handlebars',
-            'event-base', 'aui-paginator-old', 'aui-form-validator', 'liferay-portlet-url', 'json-parse',
-            'jquery', 'aui-modal'
+            'event-base', 'aui-form-validator', 'liferay-portlet-url', 'json-parse',
+            'jquery', 'aui-modal', 'rivet-aui-pagination', 'skype-ui'
         ]
     }
 );

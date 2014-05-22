@@ -311,6 +311,10 @@ margin-top: 10px;
 	margin-top: -28px;
 }
 
+.pagination {
+	text-align: center;
+}
+
 .paginator-link.paginator-page-link {
 	width: 25px;
 	margin: 2px;
