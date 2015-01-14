@@ -78,5 +78,26 @@ public class PeopleDirectoryServiceSoap {
 		}
 	}
 
+	/**
+	* Retrieves all the system users
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public static com.rivetlogic.service.data.UserData[] fetchAll()
+		throws RemoteException {
+		try {
+			java.util.List<com.rivetlogic.service.data.UserData> returnValue = PeopleDirectoryServiceUtil.fetchAll();
+
+			return returnValue.toArray(new com.rivetlogic.service.data.UserData[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceSoap.class);
 }

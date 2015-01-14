@@ -35,6 +35,10 @@ public class PeopleDirectoryServiceClpInvoker {
 		_methodName18 = "search";
 
 		_methodParameterTypes18 = new String[] { "java.lang.String", "int", "int" };
+
+		_methodName19 = "fetchAll";
+
+		_methodParameterTypes19 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -58,6 +62,11 @@ public class PeopleDirectoryServiceClpInvoker {
 				((Integer)arguments[2]).intValue());
 		}
 
+		if (_methodName19.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes19, parameterTypes)) {
+			return PeopleDirectoryServiceUtil.fetchAll();
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -67,4 +76,6 @@ public class PeopleDirectoryServiceClpInvoker {
 	private String[] _methodParameterTypes15;
 	private String _methodName18;
 	private String[] _methodParameterTypes18;
+	private String _methodName19;
+	private String[] _methodParameterTypes19;
 }

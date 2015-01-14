@@ -81,6 +81,19 @@ public class PeopleDirectoryServiceUtil {
 		return getService().search(keywords, start, end);
 	}
 
+	/**
+	* Retrieves all the system users
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public static java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchAll();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

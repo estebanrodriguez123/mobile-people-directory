@@ -83,6 +83,25 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     }
     
     /**
+     * Retrieves all the system users
+     * 
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public List<UserData> fetchAll() throws SystemException, PortalException {
+        List<UserData> resultUsers = new ArrayList<UserData>();
+        int total = UserLocalServiceUtil.getUsersCount();
+        List<User> users = UserLocalServiceUtil.getUsers(0, total);
+        
+        for (User user : users) {
+            resultUsers.add(processUserInformation(user));
+        }
+        
+        return resultUsers;
+    }
+    
+    /**
      * Retrieves and processes user information
      * 
      * @param user

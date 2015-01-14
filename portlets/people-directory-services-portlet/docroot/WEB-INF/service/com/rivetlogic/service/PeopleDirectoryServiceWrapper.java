@@ -78,6 +78,20 @@ public class PeopleDirectoryServiceWrapper implements PeopleDirectoryService,
 	}
 
 	/**
+	* Retrieves all the system users
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	@Override
+	public java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _peopleDirectoryService.fetchAll();
+	}
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public PeopleDirectoryService getWrappedPeopleDirectoryService() {
