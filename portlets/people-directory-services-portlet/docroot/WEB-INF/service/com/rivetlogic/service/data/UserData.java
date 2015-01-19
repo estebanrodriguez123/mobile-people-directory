@@ -23,6 +23,8 @@ public class UserData {
     String screenName;
     Date birthDate;
     String city;
+    Date modifiedDate;
+    boolean male;
     
     public String getPortraitUrl() {
         return portraitUrl;
@@ -102,6 +104,22 @@ public class UserData {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public boolean isMale() {
+        return male;
+    }
+
+    public void setMale(boolean male) {
+        this.male = male;
     }
     
     

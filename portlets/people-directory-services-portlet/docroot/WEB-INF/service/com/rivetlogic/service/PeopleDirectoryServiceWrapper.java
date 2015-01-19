@@ -85,7 +85,7 @@ public class PeopleDirectoryServiceWrapper implements PeopleDirectoryService,
 	* @throws PortalException
 	*/
 	@Override
-	public java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+	public com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _peopleDirectoryService.fetchAll();

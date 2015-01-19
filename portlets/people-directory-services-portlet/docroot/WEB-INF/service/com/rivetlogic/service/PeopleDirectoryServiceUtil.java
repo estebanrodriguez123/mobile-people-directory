@@ -88,7 +88,7 @@ public class PeopleDirectoryServiceUtil {
 	* @throws SystemException
 	* @throws PortalException
 	*/
-	public static java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+	public static com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService().fetchAll();

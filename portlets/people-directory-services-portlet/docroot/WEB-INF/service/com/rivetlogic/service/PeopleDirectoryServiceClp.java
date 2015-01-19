@@ -133,7 +133,7 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+	public com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
@@ -162,7 +162,7 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 			}
 		}
 
-		return (java.util.List<com.rivetlogic.service.data.UserData>)ClpSerializer.translateOutput(returnObj);
+		return (com.rivetlogic.service.data.PeopleDirectoryResult)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableService _invokableService;

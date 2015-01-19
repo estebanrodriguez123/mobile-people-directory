@@ -90,7 +90,7 @@ public interface PeopleDirectoryService extends BaseService, InvokableService {
 	* @throws PortalException
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.rivetlogic.service.data.UserData> fetchAll()
+	public com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 }

@@ -85,12 +85,12 @@ public class PeopleDirectoryServiceSoap {
 	* @throws SystemException
 	* @throws PortalException
 	*/
-	public static com.rivetlogic.service.data.UserData[] fetchAll()
+	public static com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws RemoteException {
 		try {
-			java.util.List<com.rivetlogic.service.data.UserData> returnValue = PeopleDirectoryServiceUtil.fetchAll();
+			com.rivetlogic.service.data.PeopleDirectoryResult returnValue = PeopleDirectoryServiceUtil.fetchAll();
 
-			return returnValue.toArray(new com.rivetlogic.service.data.UserData[returnValue.size()]);
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);

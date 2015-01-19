@@ -89,7 +89,7 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
      * @throws SystemException
      * @throws PortalException
      */
-    public List<UserData> fetchAll() throws SystemException, PortalException {
+    public PeopleDirectoryResult fetchAll() throws SystemException, PortalException {
         List<UserData> resultUsers = new ArrayList<UserData>();
         int total = UserLocalServiceUtil.getUsersCount();
         List<User> users = UserLocalServiceUtil.getUsers(0, total);
@@ -98,7 +98,10 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
             resultUsers.add(processUserInformation(user));
         }
         
-        return resultUsers;
+        PeopleDirectoryResult p = new PeopleDirectoryResult();
+        p.setTotal((int) total);
+        p.setUsers(resultUsers);
+        return p;
     }
     
     /**
@@ -122,6 +125,8 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
         curUser.setBirthDate(user.getBirthday());
         curUser.setCity(getCityField(user));
         curUser.setPortraitUrl(UserConstants.getPortraitURL("/image", user.isMale(), user.getPortraitId()));
+        curUser.setModifiedDate(user.getModifiedDate());
+        curUser.setMale(user.isMale());
         return curUser;
     }
     
