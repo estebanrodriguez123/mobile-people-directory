@@ -39,6 +39,10 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 		_methodName4 = "fetchAll";
 
 		_methodParameterTypes4 = new String[] {  };
+
+		_methodName5 = "usersFetchByDate";
+
+		_methodParameterTypes5 = new String[] { "java.sql.Timestamp" };
 	}
 
 	@Override
@@ -165,6 +169,41 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 		return (com.rivetlogic.service.data.PeopleDirectoryResult)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
+		java.sql.Timestamp modifiedDate)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] { ClpSerializer.translateInput(modifiedDate) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.rivetlogic.service.data.PeopleDirectoryResult)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -174,4 +213,6 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 	private String[] _methodParameterTypes3;
 	private String _methodName4;
 	private String[] _methodParameterTypes4;
+	private String _methodName5;
+	private String[] _methodParameterTypes5;
 }

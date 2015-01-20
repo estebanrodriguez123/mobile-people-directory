@@ -93,4 +93,16 @@ public interface PeopleDirectoryService extends BaseService, InvokableService {
 	public com.rivetlogic.service.data.PeopleDirectoryResult fetchAll()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Retrieves all the system users from the given date
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
+		java.sql.Timestamp modifiedDate)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

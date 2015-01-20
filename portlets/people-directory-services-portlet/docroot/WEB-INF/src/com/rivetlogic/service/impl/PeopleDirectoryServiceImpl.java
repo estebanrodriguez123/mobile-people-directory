@@ -14,14 +14,21 @@
 
 package com.rivetlogic.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserConstants;
@@ -105,6 +112,39 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     }
     
     /**
+     * Retrieves all the system users from the given date
+     * 
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    
+    public PeopleDirectoryResult usersFetchByDate(Timestamp modifiedDate) throws SystemException, PortalException {
+    	DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(
+    			User.class, PortalClassLoaderUtil.getClassLoader());
+    	
+    	List<UserData> resultUsers = new ArrayList<UserData>();
+    	
+    	Date date = new Date(modifiedDate.getTime());
+    	
+    	Criterion criterion = null;
+    	criterion = RestrictionsFactoryUtil.gt("modifiedDate", date);
+    	userQuery.add(criterion);
+    	
+    	List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
+    	
+    	for (User user : users) {
+            resultUsers.add(processUserInformation(user));
+        }
+    	
+    	PeopleDirectoryResult usersPD = new PeopleDirectoryResult();
+    	
+    	usersPD.setTotal(users.size());
+    	usersPD.setUsers(resultUsers);
+        return usersPD;
+    }
+    
+    /**
      * Retrieves and processes user information
      * 
      * @param user
@@ -127,6 +167,8 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
         curUser.setPortraitUrl(UserConstants.getPortraitURL("/image", user.isMale(), user.getPortraitId()));
         curUser.setModifiedDate(user.getModifiedDate());
         curUser.setMale(user.isMale());
+        curUser.setDeleted(user.getStatus() == 5 ? true : false);
+        
         return curUser;
     }
     

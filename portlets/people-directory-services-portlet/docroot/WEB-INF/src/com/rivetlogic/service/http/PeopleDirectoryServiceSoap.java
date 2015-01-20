@@ -99,5 +99,26 @@ public class PeopleDirectoryServiceSoap {
 		}
 	}
 
+	/**
+	* Retrieves all the system users from the given date
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public static com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
+		java.sql.Timestamp modifiedDate) throws RemoteException {
+		try {
+			com.rivetlogic.service.data.PeopleDirectoryResult returnValue = PeopleDirectoryServiceUtil.usersFetchByDate(modifiedDate);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceSoap.class);
 }

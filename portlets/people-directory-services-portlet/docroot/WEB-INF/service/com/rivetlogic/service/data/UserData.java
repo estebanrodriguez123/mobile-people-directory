@@ -25,6 +25,7 @@ public class UserData {
     String city;
     Date modifiedDate;
     boolean male;
+    boolean deleted;
     
     public String getPortraitUrl() {
         return portraitUrl;
@@ -122,6 +123,12 @@ public class UserData {
         this.male = male;
     }
     
-    
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
     
 }

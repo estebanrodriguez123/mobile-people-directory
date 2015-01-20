@@ -92,6 +92,21 @@ public class PeopleDirectoryServiceWrapper implements PeopleDirectoryService,
 	}
 
 	/**
+	* Retrieves all the system users from the given date
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	@Override
+	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
+		java.sql.Timestamp modifiedDate)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _peopleDirectoryService.usersFetchByDate(modifiedDate);
+	}
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public PeopleDirectoryService getWrappedPeopleDirectoryService() {

@@ -94,6 +94,20 @@ public class PeopleDirectoryServiceUtil {
 		return getService().fetchAll();
 	}
 
+	/**
+	* Retrieves all the system users from the given date
+	*
+	* @return
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public static com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
+		java.sql.Timestamp modifiedDate)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().usersFetchByDate(modifiedDate);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
