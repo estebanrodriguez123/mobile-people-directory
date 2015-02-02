@@ -108,6 +108,19 @@ public class PeopleDirectoryServiceUtil {
 		return getService().usersFetchByDate(modifiedDate);
 	}
 
+	/**
+	* Get the count of active users
+	*
+	* @return
+	* @throws PortalException
+	* @throws SystemException
+	*/
+	public static int getActiveUsersCount()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getActiveUsersCount();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

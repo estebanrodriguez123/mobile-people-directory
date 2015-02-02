@@ -105,4 +105,16 @@ public interface PeopleDirectoryService extends BaseService, InvokableService {
 		java.sql.Timestamp modifiedDate)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Get the count of active users
+	*
+	* @return
+	* @throws PortalException
+	* @throws SystemException
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getActiveUsersCount()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserConstants;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -142,6 +143,20 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     	usersPD.setTotal(users.size());
     	usersPD.setUsers(resultUsers);
         return usersPD;
+    }
+    
+    /**
+     * Get the count of active users
+     * 
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public int getActiveUsersCount() throws PortalException, SystemException {
+        long globalGroupId = PortalUtil.getDefaultCompanyId();
+        LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+        return UserLocalServiceUtil.searchCount(globalGroupId, null, 0, params);
     }
     
     /**

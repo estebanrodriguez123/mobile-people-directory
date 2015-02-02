@@ -43,6 +43,10 @@ public class PeopleDirectoryServiceClpInvoker {
 		_methodName20 = "usersFetchByDate";
 
 		_methodParameterTypes20 = new String[] { "java.sql.Timestamp" };
+
+		_methodName21 = "getActiveUsersCount";
+
+		_methodParameterTypes21 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -76,6 +80,11 @@ public class PeopleDirectoryServiceClpInvoker {
 			return PeopleDirectoryServiceUtil.usersFetchByDate((java.sql.Timestamp)arguments[0]);
 		}
 
+		if (_methodName21.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes21, parameterTypes)) {
+			return PeopleDirectoryServiceUtil.getActiveUsersCount();
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -89,4 +98,6 @@ public class PeopleDirectoryServiceClpInvoker {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
 }

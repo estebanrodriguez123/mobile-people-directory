@@ -120,5 +120,25 @@ public class PeopleDirectoryServiceSoap {
 		}
 	}
 
+	/**
+	* Get the count of active users
+	*
+	* @return
+	* @throws PortalException
+	* @throws SystemException
+	*/
+	public static int getActiveUsersCount() throws RemoteException {
+		try {
+			int returnValue = PeopleDirectoryServiceUtil.getActiveUsersCount();
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceSoap.class);
 }

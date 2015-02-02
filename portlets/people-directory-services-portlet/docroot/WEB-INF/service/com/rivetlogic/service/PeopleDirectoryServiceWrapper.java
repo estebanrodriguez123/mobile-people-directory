@@ -107,6 +107,20 @@ public class PeopleDirectoryServiceWrapper implements PeopleDirectoryService,
 	}
 
 	/**
+	* Get the count of active users
+	*
+	* @return
+	* @throws PortalException
+	* @throws SystemException
+	*/
+	@Override
+	public int getActiveUsersCount()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _peopleDirectoryService.getActiveUsersCount();
+	}
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public PeopleDirectoryService getWrappedPeopleDirectoryService() {
