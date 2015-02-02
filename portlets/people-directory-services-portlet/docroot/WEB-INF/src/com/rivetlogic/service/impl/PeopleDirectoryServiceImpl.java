@@ -128,10 +128,11 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     	
     	Date date = new Date(modifiedDate.getTime());
     	
-    	Criterion criterion = null;
-    	criterion = RestrictionsFactoryUtil.gt("modifiedDate", date);
-    	userQuery.add(criterion);
-    	
+    	Criterion criterion1 = null, criterion2 = null, criterionBundled = null;
+    	criterion1 = RestrictionsFactoryUtil.gt("modifiedDate", date);
+    	criterion2 = RestrictionsFactoryUtil.eq("status", 0);
+    	criterionBundled = RestrictionsFactoryUtil.and(criterion1, criterion2);
+    	userQuery.add(criterionBundled);
     	List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
     	
     	for (User user : users) {
@@ -153,10 +154,16 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
      * @throws SystemException
      */
     public int getActiveUsersCount() throws PortalException, SystemException {
-        long globalGroupId = PortalUtil.getDefaultCompanyId();
-        LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+        DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(
+                User.class, PortalClassLoaderUtil.getClassLoader());
+        
+        List<UserData> resultUsers = new ArrayList<UserData>();
+        
+        Criterion criterion1 = null;
+        criterion1 = RestrictionsFactoryUtil.eq("status", 0);
 
-        return UserLocalServiceUtil.searchCount(globalGroupId, null, 0, params);
+        userQuery.add(criterion1);
+        return (int) UserLocalServiceUtil.dynamicQueryCount(userQuery);
     }
     
     /**
