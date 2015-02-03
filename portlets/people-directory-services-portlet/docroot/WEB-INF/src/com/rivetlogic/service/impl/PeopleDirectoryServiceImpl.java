@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserConstants;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -98,18 +97,26 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
      * @throws PortalException
      */
     public PeopleDirectoryResult fetchAll() throws SystemException, PortalException {
+        DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(
+                User.class, PortalClassLoaderUtil.getClassLoader());
+        
         List<UserData> resultUsers = new ArrayList<UserData>();
-        int total = UserLocalServiceUtil.getUsersCount();
-        List<User> users = UserLocalServiceUtil.getUsers(0, total);
+        
+        Criterion criterion1 = null;
+        criterion1 = RestrictionsFactoryUtil.eq("status", 0);
+        userQuery.add(criterion1);
+        List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
         
         for (User user : users) {
             resultUsers.add(processUserInformation(user));
         }
         
-        PeopleDirectoryResult p = new PeopleDirectoryResult();
-        p.setTotal((int) total);
-        p.setUsers(resultUsers);
-        return p;
+        PeopleDirectoryResult usersPD = new PeopleDirectoryResult();
+        
+        usersPD.setTotal(users.size());
+        usersPD.setUsers(resultUsers);
+        usersPD.setActiveUsersCount(users.size());
+        return usersPD;
     }
     
     /**
@@ -143,6 +150,7 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     	
     	usersPD.setTotal(users.size());
     	usersPD.setUsers(resultUsers);
+    	usersPD.setActiveUsersCount(this.getActiveUsersCount());
         return usersPD;
     }
     

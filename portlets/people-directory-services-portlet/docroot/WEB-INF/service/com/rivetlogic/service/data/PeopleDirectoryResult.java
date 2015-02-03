@@ -13,6 +13,9 @@ import com.liferay.portal.kernel.json.JSON;
  */
 public class PeopleDirectoryResult {
     @JSON
+    public int activeUsersCount = 0;
+    
+    @JSON
     int total;
     
     @JSON
@@ -32,6 +35,14 @@ public class PeopleDirectoryResult {
 
     public void setUsers(List<UserData> users) {
         this.users = users;
+    }
+
+    public int getActiveUsersCount() {
+        return activeUsersCount;
+    }
+
+    public void setActiveUsersCount(int activeUsersCount) {
+        this.activeUsersCount = activeUsersCount;
     }
     
     
