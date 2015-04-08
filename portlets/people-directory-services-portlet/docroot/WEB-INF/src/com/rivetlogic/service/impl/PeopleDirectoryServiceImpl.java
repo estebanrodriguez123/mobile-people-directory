@@ -54,8 +54,8 @@ import com.rivetlogic.service.data.UserData;
  * @see com.rivetlogic.service.PeopleDirectoryServiceUtil
  */
 public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
-private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl.class);
-    
+    private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl.class);
+    private static final String DEFAULT_EMAIL = "default@liferay.com";
     /**
      * Search for all the portal users
      * 
@@ -80,9 +80,11 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
         Integer searchCount = UserLocalServiceUtil.searchCount(globalGroupId, keywords, 0, params);
         
         for (User user : resultUsers) {
-            userList.add(processUserInformation(user));
+            if (!user.getEmailAddress().equals(DEFAULT_EMAIL)) {
+                userList.add(processUserInformation(user));
+            }
         }
-        
+
         PeopleDirectoryResult p = new PeopleDirectoryResult();
         p.setTotal((int) searchCount);
         p.setUsers(userList);
@@ -108,7 +110,9 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
         List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
         
         for (User user : users) {
-            resultUsers.add(processUserInformation(user));
+            if (!user.getEmailAddress().equals(DEFAULT_EMAIL)) {
+                resultUsers.add(processUserInformation(user));
+            }
         }
         
         PeopleDirectoryResult usersPD = new PeopleDirectoryResult();
@@ -135,15 +139,18 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
     	
     	Date date = new Date(modifiedDate.getTime());
     	
-    	Criterion criterion1 = null, criterion2 = null, criterionBundled = null;
+    	Criterion criterion1 = null, criterion2 = null, criterion3 = null, criterionBundled = null;
     	criterion1 = RestrictionsFactoryUtil.gt("modifiedDate", date);
     	criterion2 = RestrictionsFactoryUtil.eq("status", 0);
+    	criterion3 = RestrictionsFactoryUtil.ne("emailAddress", DEFAULT_EMAIL);
     	criterionBundled = RestrictionsFactoryUtil.and(criterion1, criterion2);
     	userQuery.add(criterionBundled);
+    	userQuery.add(criterion3);
     	List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
     	
+    	
     	for (User user : users) {
-            resultUsers.add(processUserInformation(user));
+    	    resultUsers.add(processUserInformation(user));
         }
     	
     	PeopleDirectoryResult usersPD = new PeopleDirectoryResult();
@@ -168,9 +175,11 @@ private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl
         List<UserData> resultUsers = new ArrayList<UserData>();
         
         Criterion criterion1 = null;
+        Criterion criterion2 = null;
         criterion1 = RestrictionsFactoryUtil.eq("status", 0);
-
+        criterion2 = RestrictionsFactoryUtil.ne("emailAddress", DEFAULT_EMAIL);
         userQuery.add(criterion1);
+        userQuery.add(criterion2);
         return (int) UserLocalServiceUtil.dynamicQueryCount(userQuery);
     }
     
