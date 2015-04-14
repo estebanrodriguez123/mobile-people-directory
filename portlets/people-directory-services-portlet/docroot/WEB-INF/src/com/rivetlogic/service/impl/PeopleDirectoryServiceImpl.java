@@ -1,15 +1,18 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * Copyright (C) 2005-2014 Rivet Logic Corporation.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; version 3 of the License.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 package com.rivetlogic.service.impl;
@@ -56,6 +59,9 @@ import com.rivetlogic.service.data.UserData;
 public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
     private static final Log _log = LogFactoryUtil.getLog(PeopleDirectoryServiceImpl.class);
     private static final String DEFAULT_EMAIL = "default@liferay.com";
+    private static final String FIELD_STATUS = "status";
+    private static final String FIELD_EMAIL = "emailAddress";
+    private static final String FIELD_MODIFIED_DATE = "modifiedDate";
     /**
      * Search for all the portal users
      * 
@@ -105,7 +111,7 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
         List<UserData> resultUsers = new ArrayList<UserData>();
         
         Criterion criterion1 = null;
-        criterion1 = RestrictionsFactoryUtil.eq("status", 0);
+        criterion1 = RestrictionsFactoryUtil.eq(FIELD_STATUS, 0);
         userQuery.add(criterion1);
         List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
         
@@ -140,9 +146,9 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
     	Date date = new Date(modifiedDate.getTime());
     	
     	Criterion criterion1 = null, criterion2 = null, criterion3 = null, criterionBundled = null;
-    	criterion1 = RestrictionsFactoryUtil.gt("modifiedDate", date);
-    	criterion2 = RestrictionsFactoryUtil.eq("status", 0);
-    	criterion3 = RestrictionsFactoryUtil.ne("emailAddress", DEFAULT_EMAIL);
+    	criterion1 = RestrictionsFactoryUtil.gt(FIELD_MODIFIED_DATE, date);
+    	criterion2 = RestrictionsFactoryUtil.eq(FIELD_STATUS, 0);
+    	criterion3 = RestrictionsFactoryUtil.ne(FIELD_EMAIL, DEFAULT_EMAIL);
     	criterionBundled = RestrictionsFactoryUtil.and(criterion1, criterion2);
     	userQuery.add(criterionBundled);
     	userQuery.add(criterion3);
@@ -176,8 +182,8 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
         
         Criterion criterion1 = null;
         Criterion criterion2 = null;
-        criterion1 = RestrictionsFactoryUtil.eq("status", 0);
-        criterion2 = RestrictionsFactoryUtil.ne("emailAddress", DEFAULT_EMAIL);
+        criterion1 = RestrictionsFactoryUtil.eq(FIELD_STATUS, 0);
+        criterion2 = RestrictionsFactoryUtil.ne(FIELD_EMAIL, DEFAULT_EMAIL);
         userQuery.add(criterion1);
         userQuery.add(criterion2);
         return (int) UserLocalServiceUtil.dynamicQueryCount(userQuery);
