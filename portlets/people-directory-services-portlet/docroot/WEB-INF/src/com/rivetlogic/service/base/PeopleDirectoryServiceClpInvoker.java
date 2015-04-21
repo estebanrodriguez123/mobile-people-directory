@@ -42,7 +42,9 @@ public class PeopleDirectoryServiceClpInvoker {
 
 		_methodName20 = "usersFetchByDate";
 
-		_methodParameterTypes20 = new String[] { "java.sql.Timestamp" };
+		_methodParameterTypes20 = new String[] {
+				"java.sql.Timestamp", "int", "int"
+			};
 
 		_methodName21 = "getActiveUsersCount";
 
@@ -77,7 +79,9 @@ public class PeopleDirectoryServiceClpInvoker {
 
 		if (_methodName20.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes20, parameterTypes)) {
-			return PeopleDirectoryServiceUtil.usersFetchByDate((java.sql.Timestamp)arguments[0]);
+			return PeopleDirectoryServiceUtil.usersFetchByDate((java.sql.Timestamp)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
 		}
 
 		if (_methodName21.equals(name) &&

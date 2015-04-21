@@ -100,10 +100,10 @@ public class PeopleDirectoryServiceWrapper implements PeopleDirectoryService,
 	*/
 	@Override
 	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
-		java.sql.Timestamp modifiedDate)
+		java.sql.Timestamp modifiedDate, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _peopleDirectoryService.usersFetchByDate(modifiedDate);
+		return _peopleDirectoryService.usersFetchByDate(modifiedDate, start, end);
 	}
 
 	/**

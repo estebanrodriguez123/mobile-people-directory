@@ -107,9 +107,11 @@ public class PeopleDirectoryServiceSoap {
 	* @throws PortalException
 	*/
 	public static com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
-		java.sql.Timestamp modifiedDate) throws RemoteException {
+		java.sql.Timestamp modifiedDate, int start, int end)
+		throws RemoteException {
 		try {
-			com.rivetlogic.service.data.PeopleDirectoryResult returnValue = PeopleDirectoryServiceUtil.usersFetchByDate(modifiedDate);
+			com.rivetlogic.service.data.PeopleDirectoryResult returnValue = PeopleDirectoryServiceUtil.usersFetchByDate(modifiedDate,
+					start, end);
 
 			return returnValue;
 		}

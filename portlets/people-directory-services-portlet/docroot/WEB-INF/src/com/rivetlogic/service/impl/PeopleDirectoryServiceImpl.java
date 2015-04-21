@@ -131,13 +131,17 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
     
     /**
      * Retrieves all the system users from the given date
-     * 
+     *
+     * @param modifiedDate modified date
+     * @param start Page beginning
+     * @param end Page end
+     *
      * @return
      * @throws SystemException
      * @throws PortalException
      */
     
-    public PeopleDirectoryResult usersFetchByDate(Timestamp modifiedDate) throws SystemException, PortalException {
+    public PeopleDirectoryResult usersFetchByDate(Timestamp modifiedDate, int start, int end) throws SystemException, PortalException {
     	DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(
     			User.class, PortalClassLoaderUtil.getClassLoader());
     	
@@ -152,7 +156,7 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
     	criterionBundled = RestrictionsFactoryUtil.and(criterion1, criterion2);
     	userQuery.add(criterionBundled);
     	userQuery.add(criterion3);
-    	List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
+    	List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery, start, end);
     	
     	
     	for (User user : users) {

@@ -13,6 +13,8 @@
 		</operation>
 		<operation xmlns:operNS="urn:http.service.rivetlogic.com" xmlns:rtns="http://data.service.rivetlogic.com" name="usersFetchByDate" qname="operNS:usersFetchByDate" returnQName="usersFetchByDateReturn" returnType="rtns:PeopleDirectoryResult" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="modifiedDate" type="tns:anyType"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="start" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="end" type="tns:int"></parameter>
 		</operation>
 		<parameter name="allowedMethods" value="fetchAll getActiveUsersCount search usersFetchByDate" />
 		<parameter name="className" value="com.rivetlogic.service.http.PeopleDirectoryServiceSoap" />
