@@ -42,7 +42,7 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 
 		_methodName5 = "usersFetchByDate";
 
-		_methodParameterTypes5 = new String[] { "java.sql.Timestamp" };
+		_methodParameterTypes5 = new String[] { "java.sql.Timestamp", "int", "int" };
 
 		_methodName6 = "getActiveUsersCount";
 
@@ -175,7 +175,7 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 
 	@Override
 	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
-		java.sql.Timestamp modifiedDate)
+		java.sql.Timestamp modifiedDate, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
@@ -183,7 +183,13 @@ public class PeopleDirectoryServiceClp implements PeopleDirectoryService {
 		try {
 			returnObj = _invokableService.invokeMethod(_methodName5,
 					_methodParameterTypes5,
-					new Object[] { ClpSerializer.translateInput(modifiedDate) });
+					new Object[] {
+						ClpSerializer.translateInput(modifiedDate),
+						
+					start,
+						
+					end
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

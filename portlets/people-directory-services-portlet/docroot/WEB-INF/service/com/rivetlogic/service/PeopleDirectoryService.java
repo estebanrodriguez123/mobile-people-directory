@@ -102,7 +102,7 @@ public interface PeopleDirectoryService extends BaseService, InvokableService {
 	* @throws PortalException
 	*/
 	public com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
-		java.sql.Timestamp modifiedDate)
+		java.sql.Timestamp modifiedDate, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 

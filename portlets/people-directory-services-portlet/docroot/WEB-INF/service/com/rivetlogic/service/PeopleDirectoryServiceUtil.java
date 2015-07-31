@@ -102,10 +102,10 @@ public class PeopleDirectoryServiceUtil {
 	* @throws PortalException
 	*/
 	public static com.rivetlogic.service.data.PeopleDirectoryResult usersFetchByDate(
-		java.sql.Timestamp modifiedDate)
+		java.sql.Timestamp modifiedDate, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().usersFetchByDate(modifiedDate);
+		return getService().usersFetchByDate(modifiedDate, start, end);
 	}
 
 	/**
