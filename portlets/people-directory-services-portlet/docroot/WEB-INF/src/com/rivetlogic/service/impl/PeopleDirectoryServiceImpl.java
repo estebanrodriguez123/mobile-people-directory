@@ -94,6 +94,7 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
         PeopleDirectoryResult p = new PeopleDirectoryResult();
         p.setTotal((int) searchCount);
         p.setUsers(userList);
+        p.setActiveUsersCount(this.getActiveUsersCount());
         return p;
     }
     
@@ -110,15 +111,15 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
         
         List<UserData> resultUsers = new ArrayList<UserData>();
         
-        Criterion criterion1 = null;
+        Criterion criterion1 = null, criterion2 = null;
         criterion1 = RestrictionsFactoryUtil.eq(FIELD_STATUS, 0);
+        criterion2 = RestrictionsFactoryUtil.ne(FIELD_EMAIL, DEFAULT_EMAIL);
         userQuery.add(criterion1);
+        userQuery.add(criterion2);
         List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
         
         for (User user : users) {
-            if (!user.getEmailAddress().equals(DEFAULT_EMAIL)) {
-                resultUsers.add(processUserInformation(user));
-            }
+            resultUsers.add(processUserInformation(user));
         }
         
         PeopleDirectoryResult usersPD = new PeopleDirectoryResult();
@@ -181,9 +182,6 @@ public class PeopleDirectoryServiceImpl extends PeopleDirectoryServiceBaseImpl {
     public int getActiveUsersCount() throws PortalException, SystemException {
         DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(
                 User.class, PortalClassLoaderUtil.getClassLoader());
-        
-        List<UserData> resultUsers = new ArrayList<UserData>();
-        
         Criterion criterion1 = null;
         Criterion criterion2 = null;
         criterion1 = RestrictionsFactoryUtil.eq(FIELD_STATUS, 0);

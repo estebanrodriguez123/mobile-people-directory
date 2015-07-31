@@ -104,9 +104,10 @@ AUI.add(
                                 instance.paginator = instance.createPaginator(responseData.searchCount);
                                 instance.paginator.render();
                             } else {
-                                instance.paginator.set('total', responseData.searchCount);
+                                instance.paginator.set('total', Math.ceil(responseData.searchCount / instance.rowCount));
                                 instance.paginator.set('page', 1);
-                                instance.paginator.changeRequest();
+                                instance.paginator.fire('changeRequest', { state: { page: 1 }, lastState: null });
+                                instance.paginator._syncNavigationUI();
                             }
                         },
                         failure: function () {
@@ -148,14 +149,14 @@ AUI.add(
 
             createPaginator: function (total) {
                 var instance = this,
-                	usersPerPage = instance.CONSTANTS.MAX_PAGE_LINKS;
+                	usersPerPage = instance.rowCount;
                 
                 return new A.Rivet.Pagination({
                     boundingBox: instance.container.one("#paginator"),
-                    total: Math.floor((total + usersPerPage - 1) / usersPerPage),
+                    total: Math.ceil(total / usersPerPage),
                     page: 1,
                     circular: false,
-                    maxPagesNavItems: usersPerPage,
+                    maxPagesNavItems: instance.CONSTANTS.MAX_PAGE_LINKS,
                     strings: {
                     	firstNavLinkText: Liferay.Language.get("pagination.first.label"),
                     	lastNavLinkText: Liferay.Language.get("pagination.last.label"),
