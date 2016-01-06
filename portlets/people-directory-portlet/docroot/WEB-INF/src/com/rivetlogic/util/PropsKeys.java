@@ -25,4 +25,6 @@ public class PropsKeys {
 	
 	public static final String SKYPE_ENABLED = "peopledirectory.skype.enabled";
 	
+	public static final String HANGOUTS_INTEGRATION = "peopledirectory.hangouts.enabled";
+	
 }

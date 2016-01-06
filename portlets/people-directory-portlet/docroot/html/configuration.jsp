@@ -27,6 +27,7 @@
 	        <aui:input name="<%= Constants.PARAMETER_VIEW_ALL_RESULTS_PER_PAGE%>" label="view-all-results-per-page" value='<%=viewAllResultsPerPage%>' />
 			<aui:input name="<%= Constants.PARAMETER_SEARCH_RESULTS_PER_PAGE%>" label="search-results-per-page" type="text" value="<%=searchResultsPerPage%>"/>
 			<aui:input name="<%= Constants.SKYPE_INTEGRATION%>" label="skype-integrated" type="checkbox" value="<%= skypeEnabled %>"/>
+			<aui:input name="<%= Constants.HANGOUTS_INTEGRATION%>" label="hangouts-integrated" type="checkbox" value="<%= hangoutsEnabled %>"/>
 	    </aui:fieldset>
 			<aui:button type="submit" />
 	</aui:form>

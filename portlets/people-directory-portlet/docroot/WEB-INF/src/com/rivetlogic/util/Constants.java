@@ -91,4 +91,6 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     
     static final String SKYPE_INTEGRATION = "skypeIntegratiion";
     
+    static final String HANGOUTS_INTEGRATION = "hangoutsIntegration";
+    
 }

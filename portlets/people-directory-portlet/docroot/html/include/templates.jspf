@@ -71,16 +71,19 @@
             <div class="brief-wrapper">
                 <div class="name field-value">{{fullName}}</div>
        		    <div class="mail field-value"><a href="mailto:{{emailAddress}}">{{emailAddress}}</a></div>
-                <c:if test="<%= skypeEnabled %>">
-                    <div class="contact-short-info">
+				<div class="contact-short-info">
+                	<c:if test="<%= skypeEnabled %>">
                         {{#if skypeName}}
                             <span class="icon icon-skype" title="{{skypeName}}" userId="{{id}}" username="{{fullName}}"></span>
                         {{/if}}
                         {{#if phone}}
                             <span class="icon icon-phone" title="{{phone}}" userId="{{id}}" username="{{fullName}}"></span>
                         {{/if}}
-                    </div>
-                </c:if>
+                	</c:if>
+					<c:if test="<%= hangoutsEnabled %>">
+						<span class="icon icon-google-plus" userId="{{emailAddress}}" username="{{fullName}}"></span>
+					</c:if>
+				</div>
             </div>
        		
        		<div class="more-info" style="display:none"></div>
@@ -96,6 +99,15 @@
     	<li class="{{type}}-chat" skypeId="{{skypeId}}" user="{{userId}}">
         	<span class="icon-{{type}}"></span>
         	{{name}}
+        	<span class="handle"></span>
+    	</li>
+	</script>
+</c:if>
+<c:if test="<%= hangoutsEnabled %>">
+	<script id="hangouts-item-template" type="text/x-handlebars-template">
+    	<li class="hangouts-chat" hangoutsId="{{email}}">
+        	<span class="icon-google-plus"></span>
+        	{{username}}
         	<span class="handle"></span>
     	</li>
 	</script>

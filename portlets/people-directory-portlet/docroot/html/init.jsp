@@ -67,4 +67,5 @@ PortletPreferences preferences = renderRequest.getPreferences();
 int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.PREFERENCE_SEARCH_RESULTS_PER_PAGE, PropsValues.DEFAULT_RECORD_COUNT));
 int viewAllResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, PropsValues.DEFAULT_RECORD_COUNT));
 boolean skypeEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKYPE_INTEGRATION, PropsValues.SKYPE_ENABLED));
+boolean hangoutsEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.HANGOUTS_INTEGRATION, PropsValues.HANGOUTS_INTEGRATION));
 %>
