@@ -50,6 +50,8 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
                     ParamUtil.getString(actionRequest, Constants.PARAMETER_SEARCH_RESULTS_PER_PAGE));
             setPreference(actionRequest, Constants.SKYPE_INTEGRATION,
                 ParamUtil.getString(actionRequest, Constants.SKYPE_INTEGRATION));
+            setPreference(actionRequest, Constants.HANGOUTS_INTEGRATION,
+                    ParamUtil.getString(actionRequest, Constants.HANGOUTS_INTEGRATION));
         }
         super.processAction(portletConfig, actionRequest, actionResponse);
     }

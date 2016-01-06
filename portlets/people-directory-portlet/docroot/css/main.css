@@ -429,3 +429,66 @@ div.people-directory-portlet {
 #modal * {
 	z-index: 300 !important;
 }
+
+/* -------------- HANGOUTS INTEGRATION -------------- */
+
+.hangouts-users-to-call {
+	border: solid 1px #CCC;
+	padding: 1em;
+	margin: 2em 0;
+	background-color: white;
+}
+
+.hangouts-users-to-call #hangouts-users li {
+	list-style: none;
+	background: #DEF;
+	padding: .5em;
+	display: inline-block;
+	margin: 0 .5em .5em 0;
+	border: 1px solid #B5D2FF;
+	
+	.icon-skype, .icon-phone {
+		margin-left: .5em;
+	}
+}
+
+.hangouts-users-to-call button {
+	min-width: 135px;
+}
+
+.hangouts-users-to-call #hangouts-users li:hover {
+	background: #CDE;
+}
+
+.hangouts-users-to-call .handle:after {
+	content: "\f00d";
+	width: 1em;
+	height: 1em;
+	font-family: 'fontawesome-alloy';
+	padding: 0.5em;
+	color: #b7414d;
+	font-size: 1.2em;
+}
+
+.hangouts-users-to-call .handle {
+ 	cursor: pointer;
+ }
+
+#hangouts-users {
+	padding: 0;
+	margin: 0;
+}
+
+.hangouts-users-to-call .action-header {
+	font-weight: bold;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.hangouts-users-to-call .button-holder {
+	margin: 10px 0 0;
+}
+
+.hangouts-users-to-call hr {
+	margin: 0;
+}

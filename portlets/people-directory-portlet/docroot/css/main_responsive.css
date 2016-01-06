@@ -101,6 +101,21 @@
  			}
 		}
 		
+		.hangouts-users-to-call {
+			#hangouts-users li {
+				display: block;
+				text-align: center;
+				margin-right: 0;
+				
+				.handle {
+ 					float: right;
+ 				}
+			}
+ 			hr {
+ 				margin: 20px 0;
+ 			}
+		}
+		
 		.pagination {
             li {
                 display: none;

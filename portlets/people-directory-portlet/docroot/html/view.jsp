@@ -36,8 +36,8 @@
 					
 				<c:choose>
 					<c:when test='<%= tabValue.equals(Constants.SEARCH) %>'>
+						<div id="modal"></div>
 						<c:if test="<%= skypeEnabled %>">
-							<div id="modal"></div>
 							<div class="skype-users-to-call">
 								<span class="action-header"><liferay-ui:message key="skype-actions"/></span>
 								<ul id="users">
@@ -47,6 +47,21 @@
 							    <aui:button-row>
 									<aui:button name="skype-open" icon="icon-skype" value="action.open.skype"/>
 									<aui:button name="skype-call" icon="icon-phone" value="action.call.skype"/>
+							    </aui:button-row>
+							    <div class="alredy-in-list-msg">
+								    <h3 class="header"><liferay-ui:message key="error"/></h3>
+									<p class="content"><liferay-ui:message key="already-in-list"/></p>							    
+							    </div>
+							</div>
+						</c:if>
+						<c:if test="<%= hangoutsEnabled %>">
+							<div class="hangouts-users-to-call">
+								<span class="action-header"><liferay-ui:message key="hangouts-actions"/></span>
+								<ul id="hangouts-users">
+								</ul>
+							    <hr>
+							    <aui:button-row>
+							    	<div id="hangouts-button-placeholder"></div>
 							    </aui:button-row>
 							    <div class="alredy-in-list-msg">
 								    <h3 class="header"><liferay-ui:message key="error"/></h3>
@@ -152,20 +167,21 @@
 	            base : '<%= request.getContextPath()%>/js/',
 	            async : false,
 	            modules : {
-	        	<c:if test="<%= skypeEnabled %>">
 	        		'skype-plugin-people-directory': {
 	        			path: 'skype-plugin.js'
 	        		},
 	        		'skype-ui': {
 	        			path: 'third-party/skype-uri.js'
+	        		},
+	        		'hangouts-plugin-people-directory': {
+	        			path: 'hangouts-plugin.js'
 	        		}
-	        	</c:if>
 	            }
 	        }
 	    }
 	});
 </aui:script>
-<aui:script use="people-directory-plugin,skype-plugin-people-directory">
+<aui:script use="people-directory-plugin,skype-plugin-people-directory,hangouts-plugin-people-directory">
 	Liferay.PeopleDirectory.init(
 		{
 			portletId: "<%= request.getAttribute(WebKeys.PORTLET_ID) %>",
@@ -183,5 +199,14 @@
 			}
 		);	
 	</c:if>
+	<c:if test="<%= hangoutsEnabled %>">
+		Liferay.HangoutsPluginPeopleDirectory.init(
+			{
+				namespace: "<portlet:namespace/>",
+				container: A.one("#<portlet:namespace/>view"),
+			}
+		);	
+	</c:if>
 </aui:script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <%@ include file="include/templates.jspf"%>

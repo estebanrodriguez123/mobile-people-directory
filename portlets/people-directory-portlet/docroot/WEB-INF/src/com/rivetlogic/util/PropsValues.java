@@ -27,4 +27,6 @@ public class PropsValues {
 	
 	public static final String SKYPE_ENABLED = PropsUtil.get(PropsKeys.SKYPE_ENABLED);
 	
+	public static final String HANGOUTS_INTEGRATION = PropsUtil.get(PropsKeys.HANGOUTS_INTEGRATION);
+	
 }
