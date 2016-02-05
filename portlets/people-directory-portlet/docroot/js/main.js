@@ -97,6 +97,10 @@ AUI.add(
     					resiltFields: [ 'text', 'value' ]
     				}
     			});
+            	
+            	params.dataSource.plug(A.Plugin.DataSourceCache, {
+            		max: 200
+            	});
 
             	instance.skillsTagSelector = new Liferay.AssetTagsSelector(params);
             	instance.skillsTagSelector.entries.after('add', function(e) {
@@ -108,6 +112,7 @@ AUI.add(
             	instance.skillsTagSelector.generateRequest = function(query) {
             		return { request: '&'+ instance.namespace +'q=' + query }
             	}
+            	instance.skillsTagSelector._renderIcons = function() {};
             	instance.skillsTagSelector.render();
             },
 

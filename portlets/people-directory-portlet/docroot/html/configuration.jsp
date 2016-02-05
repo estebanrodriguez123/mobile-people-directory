@@ -28,7 +28,7 @@
 			<aui:input name="<%= Constants.PARAMETER_SEARCH_RESULTS_PER_PAGE%>" label="search-results-per-page" type="text" value="<%=searchResultsPerPage%>"/>
 			<aui:input name="<%= Constants.SKYPE_INTEGRATION%>" label="skype-integrated" type="checkbox" value="<%= skypeEnabled %>"/>
 			<aui:input name="<%= Constants.HANGOUTS_INTEGRATION%>" label="hangouts-integrated" type="checkbox" value="<%= hangoutsEnabled %>"/>
-	    	<aui:input name="<%= Constants.SKILLS_INTEGRATION %>" label="skills-integrated" type="checkbox" value="<%= skillsEnabled %>"/>
+			<aui:input name="<%= Constants.SKILLS_INTEGRATION %>" label="skills-integrated" type="checkbox" value="<%= skillsEnabled %>"/>
 	 </aui:fieldset>
 			<aui:button type="submit" />
 	</aui:form>
