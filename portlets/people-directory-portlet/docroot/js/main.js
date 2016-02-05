@@ -83,6 +83,21 @@ AUI.add(
             initSkillSelector: function(params) {
             	var instance = this;
             	
+            	var resourceURL = Liferay.PortletURL.createResourceURL();
+     			resourceURL.setPortletId(instance.portletId);
+     			resourceURL.setParameter("pdAction", "skills-suggestion");
+            	
+            	params.dataSource = new A.DataSource.IO({
+    				source: resourceURL.toString()
+    			}),
+    			
+    			params.dataSource.plug(A.Plugin.DataSourceJSONSchema, {
+    				schema: {
+    					resultListLocator: 'response',
+    					resiltFields: [ 'text', 'value' ]
+    				}
+    			});
+
             	instance.skillsTagSelector = new Liferay.AssetTagsSelector(params);
             	instance.skillsTagSelector.entries.after('add', function(e) {
             		if(e.attrName) { instance.performSkillSearch(e.target.keys.join(',')); }
@@ -90,6 +105,9 @@ AUI.add(
             	instance.skillsTagSelector.entries.after('remove', function(e) {
             		if(e.attrName) { instance.performSkillSearch(e.target.keys.join(',')); }
             	});
+            	instance.skillsTagSelector.generateRequest = function(query) {
+            		return { request: '&'+ instance.namespace +'q=' + query }
+            	}
             	instance.skillsTagSelector.render();
             },
 

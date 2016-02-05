@@ -73,25 +73,21 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
     	throws IOException, PortletException {
     	
         String cmd = ParamUtil.getString(request, Constants.COMMAND);
-        
-        if (cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH)) {
-            try {
+        try {
+            if (cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH)) {
                 performKeywordSearch(request, response);
-            } catch (SystemException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
-            } catch (PortalException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
-            }
-        } else if (cmd.equalsIgnoreCase(Constants.COMMAND_SHOW_COMPLETE_PROFILE)) {
-            performCompleteProfileSearch(request, response);
-        } else if(cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH_SKILLS)) {
-            try {
+            } else if (cmd.equalsIgnoreCase(Constants.COMMAND_SHOW_COMPLETE_PROFILE)) {
+                performCompleteProfileSearch(request, response);
+            } else if(cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH_SKILLS)) {
                 performSkillSearch(request, response);
-            } catch (SystemException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
-            } catch (PortalException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
+            } else if(cmd.equalsIgnoreCase(Constants.COMMAND_SKILLS_SUGGESTION)) {
+                JSONArray array = SkillsUtil.searchSuggestions(ParamUtil.getString(request, Constants.PARAMETER_SKILL_SUGGESTION));
+                writeJSON(request, response, array);
             }
+        } catch (SystemException e) {
+            _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
+        } catch (PortalException e) {
+            _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
         }
     }
     
