@@ -68,4 +68,5 @@ int searchResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.
 int viewAllResultsPerPage = GetterUtil.getInteger(preferences.getValue(Constants.PREFERENCE_VIEW_ALL_RESULTS_PER_PAGE, PropsValues.DEFAULT_RECORD_COUNT));
 boolean skypeEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKYPE_INTEGRATION, PropsValues.SKYPE_ENABLED));
 boolean hangoutsEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.HANGOUTS_INTEGRATION, PropsValues.HANGOUTS_INTEGRATION));
+boolean skillsEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKILLS_INTEGRATION, PropsValues.SKILLS_INTEGRATION));
 %>
