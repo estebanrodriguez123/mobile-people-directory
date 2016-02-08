@@ -75,7 +75,11 @@
 									<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
 										cssClass="simple-search-keywords" label="people-directory.label.search-user" placeholder="people-directory.label.type-keywords"
 									/>
-									<a class="toggle-search-type" href="javascript:;"><liferay-ui:message key="people-directory.label.search-by-skills"/></a>
+									<c:if test="<%= skillsEnabled %>">
+										<a class="toggle-search-type" href="javascript:;">
+											<liferay-ui:message key="people-directory.label.search-by-skills"/>
+										</a>
+									</c:if>
 								</aui:fieldset>
 								<c:if test="<%= skillsEnabled %>">
 								<aui:fieldset cssClass="skills-criteria hide">

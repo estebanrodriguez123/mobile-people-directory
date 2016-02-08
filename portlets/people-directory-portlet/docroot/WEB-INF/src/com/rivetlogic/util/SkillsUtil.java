@@ -71,6 +71,7 @@ public class SkillsUtil {
         return query;
     }
     
+    @SuppressWarnings("unchecked")
     private static List<String> executeTagsQuery(DynamicQuery query, String term) throws SystemException {
         List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
         List<String> tags = new ArrayList<String>();
@@ -83,6 +84,7 @@ public class SkillsUtil {
         return tags;
     }
     
+    @SuppressWarnings("unchecked")
     private static List<String> executeCategoriesQuery(DynamicQuery query, String term) throws SystemException {
         List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
         List<String> categories = new ArrayList<String>();
@@ -96,36 +98,41 @@ public class SkillsUtil {
         return categories;
     }
     
+    @SuppressWarnings("unchecked")
     private static List<AssetEntry> executeUserQuery(DynamicQuery query, String skills) throws SystemException {
         List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
         List<AssetEntry> tagged = new ArrayList<AssetEntry>();
         String [] skillsArray = skills.split(",");
         for(AssetEntry entry : results) {
-            if(hasAllSkills(entry.getTagNames(), skillsArray) || hasAllSkills(entry.getCategories(), skillsArray))
+            if(checkSkills(entry.getTagNames(), skillsArray) + checkSkills(entry.getCategories(), skillsArray) >= skillsArray.length)
                 tagged.add(entry);
         }
         return tagged;
     }
     
-    private static boolean hasAllSkills(String[] currentTags, String[] searchTags) {
-        boolean match = currentTags.length > 0 && searchTags.length > 0;
+    private static int checkSkills(String[] currentTags, String[] searchTags) {
+        int count = 0;
         List<String> current = Arrays.asList(currentTags);
         for(String tag : searchTags) {
-            match = match && current.contains(tag);
+            if(current.contains(tag)) {
+                count++;
+            }
         }
-        return match;
+        return count;
     }
     
-    private static boolean hasAllSkills(List<AssetCategory> cats, String[] searchTags) {
-        boolean match = cats.size() > 0 && searchTags.length > 0;
+    private static int checkSkills(List<AssetCategory> cats, String[] searchTags) {
+        int count = 0;
         List<String> current = new ArrayList<String>();
         for(AssetCategory cat : cats) {
             current.add(cat.getTitleCurrentValue());
         }
         for(String tag : searchTags) {
-            match = match && current.contains(tag);
+            if(current.contains(tag)) {
+                count++;
+            }
         }
-        return match;
+        return count;
     }
     
     private static List<User> getUsers(List<AssetEntry> results) throws PortalException, SystemException {
