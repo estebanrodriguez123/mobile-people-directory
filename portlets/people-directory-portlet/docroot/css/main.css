@@ -11,6 +11,22 @@
     background: none !important;
 }
 
+.people-directory-portlet .toggle-search-type:after {
+    content: ' »';
+}
+
+.people-directory-portlet  .search-criteria {
+  margin-bottom: 30px;
+}
+
+.people-directory-portlet  .search-criteria .control-group {
+  margin: 0;
+}
+
+.tagselector-content {
+  margin-bottom: 5px;
+}
+
 #people-directory-container {
     border: 1px solid #C3C3C3;
     border-radius: 10px 10px 0px 0px;

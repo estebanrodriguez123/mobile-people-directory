@@ -28,7 +28,8 @@ AUI.add(
                 instance.container = params.container;
                 instance.rowCount = params.rowCount;
                 instance.fields = params.fields;
-                
+                instance.skillsEnabled = params.skillsEnabled;
+                instance.skiilsTagSelector = null;
                 instance.setComponents();
             },
 
@@ -78,6 +79,42 @@ AUI.add(
                     
                 }
             },
+            
+            initSkillSelector: function(params) {
+            	var instance = this;
+            	
+            	var resourceURL = Liferay.PortletURL.createResourceURL();
+     			resourceURL.setPortletId(instance.portletId);
+     			resourceURL.setParameter("pdAction", "skills-suggestion");
+            	
+            	params.dataSource = new A.DataSource.IO({
+    				source: resourceURL.toString()
+    			}),
+    			
+    			params.dataSource.plug(A.Plugin.DataSourceJSONSchema, {
+    				schema: {
+    					resultListLocator: 'response',
+    					resiltFields: [ 'text', 'value' ]
+    				}
+    			});
+            	
+            	params.dataSource.plug(A.Plugin.DataSourceCache, {
+            		max: 200
+            	});
+
+            	instance.skillsTagSelector = new Liferay.AssetTagsSelector(params);
+            	instance.skillsTagSelector.entries.after('add', function(e) {
+            		if(e.attrName) { instance.performSkillSearch(e.target.keys.join(',')); }
+            	});
+            	instance.skillsTagSelector.entries.after('remove', function(e) {
+            		if(e.attrName) { instance.performSkillSearch(e.target.keys.join(',')); }
+            	});
+            	instance.skillsTagSelector.generateRequest = function(query) {
+            		return { request: '&'+ instance.namespace +'q=' + query }
+            	}
+            	instance.skillsTagSelector._renderIcons = function() {};
+            	instance.skillsTagSelector.render();
+            },
 
             performSearch: function (searchText, maxItems) {
                 var instance = this;
@@ -96,7 +133,45 @@ AUI.add(
                     on: {
                         success: function (transactionid, response) {
                         	var responseData = A.JSON.parse(response.responseText);
-                        	
+                            instance.showSearchResults(responseData, pdAction);
+                            
+                            //creates paginator
+                            if (!instance.paginator) {
+                                instance.paginator = instance.createPaginator(responseData.searchCount);
+                                instance.paginator.render();
+                            } else {
+                                instance.paginator.set('total', Math.ceil(responseData.searchCount / instance.rowCount));
+                                instance.paginator.set('page', 1);
+                                instance.paginator.fire('changeRequest', { state: { page: 1 }, lastState: null });
+                                instance.paginator._syncNavigationUI();
+                            }
+                        },
+                        failure: function () {
+                            instance.showMessage(Liferay.Language.get("error"), Liferay.PeopleDirectory.CONSTANTS.ERROR_KEYWORDS);
+                        }
+                    }
+    			});
+
+            },
+            
+            performSkillSearch: function (skills) {
+                var instance = this;
+                var maxItems = A.one('#' + instance.namespace + 'maxItems').get('value');
+                var pdAction = "skills-search";
+                var resourceURL = Liferay.PortletURL.createResourceURL();
+    			resourceURL.setPortletId(instance.portletId);
+    			resourceURL.setParameter("pdAction", pdAction);
+    			resourceURL.setParameter("start", 0);
+    			resourceURL.setParameter("end", maxItems);
+    			resourceURL.setParameter("skills", skills);
+  
+    			
+    			A.io(resourceURL.toString(), {
+                    method: "GET",
+                    dataType: 'json',
+                    on: {
+                        success: function (transactionid, response) {
+                        	var responseData = A.JSON.parse(response.responseText);
                             instance.showSearchResults(responseData, pdAction);
                             
                             //creates paginator
@@ -199,7 +274,7 @@ AUI.add(
                         results: searchResultsText
                     });
 
-                    if (pdAction == "keyword-search") {
+                    if (pdAction == "keyword-search" || pdAction == "skills-search") {
                         for (var i = 0; i < responseData.resultsArray.length; i++) {
                             searchResults += instance.addSearchResult(responseData.resultsArray[i], i);
                         }

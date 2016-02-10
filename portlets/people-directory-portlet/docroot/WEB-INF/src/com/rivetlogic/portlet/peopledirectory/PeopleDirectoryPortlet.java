@@ -17,15 +17,6 @@
 
 package com.rivetlogic.portlet.peopledirectory;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.portlet.PortletException;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -33,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -40,9 +32,25 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.comparator.UserScreenNameComparator;
+import com.liferay.portlet.asset.model.AssetCategory;
+import com.liferay.portlet.asset.model.AssetTag;
+import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
+import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.util.Constants;
 import com.rivetlogic.util.PeopleDirectoryUtil;
+import com.rivetlogic.util.PropsValues;
+import com.rivetlogic.util.SkillsUtil;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * The Class PeopleDirectoryPortlet.
@@ -65,17 +73,21 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
     	throws IOException, PortletException {
     	
         String cmd = ParamUtil.getString(request, Constants.COMMAND);
-        
-        if (cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH)) {
-            try {
+        try {
+            if (cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH)) {
                 performKeywordSearch(request, response);
-            } catch (SystemException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
-            } catch (PortalException e) {
-                _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
+            } else if (cmd.equalsIgnoreCase(Constants.COMMAND_SHOW_COMPLETE_PROFILE)) {
+                performCompleteProfileSearch(request, response);
+            } else if(cmd.equalsIgnoreCase(Constants.COMMAND_SEARCH_SKILLS)) {
+                performSkillSearch(request, response);
+            } else if(cmd.equalsIgnoreCase(Constants.COMMAND_SKILLS_SUGGESTION)) {
+                JSONArray array = SkillsUtil.searchSuggestions(ParamUtil.getString(request, Constants.PARAMETER_SKILL_SUGGESTION));
+                writeJSON(request, response, array);
             }
-        } else if (cmd.equalsIgnoreCase(Constants.COMMAND_SHOW_COMPLETE_PROFILE)) {
-            performCompleteProfileSearch(request, response);
+        } catch (SystemException e) {
+            _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
+        } catch (PortalException e) {
+            _log.error(Constants.LOG_SERVER_RESOURCE_ERROR, e);
         }
     }
     
@@ -109,15 +121,7 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
             JSONArray usersArray = JSONFactoryUtil.createJSONArray();
             
             for (User user : resultUsers) {
-                JSONObject jsonUser = JSONFactoryUtil.createJSONObject();
-                jsonUser.put(Constants.JSON_USER_ID, user.getUserId());
-                jsonUser.put(Constants.JSON_USER_FULL_NAME, user.getFullName());
-                jsonUser.put(Constants.JSON_USER_EMAIL_ADDRESS, user.getDisplayEmailAddress());
-                jsonUser.put(Constants.JSON_USER_PORTRAIT_URL,
-                        user.getPortraitURL((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)));
-                jsonUser.put(Constants.JSON_USER_PHONE, PeopleDirectoryUtil.getPhoneField(user));
-                jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
-                usersArray.put(jsonUser);
+                usersArray.put(buildJsonObject(user, request));
             }
             
             JSONObject resultsObject = JSONFactoryUtil.createJSONObject();
@@ -128,6 +132,34 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
         } catch (SystemException e) {
             _log.error(Constants.LOG_KEYWORD_SEARCH_ERROR, e);
         }
+    }
+    
+    private JSONObject buildJsonObject(User user, ResourceRequest request) throws SystemException, PortalException {
+        PortletPreferences preferences = request.getPreferences();
+        boolean skillsEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKILLS_INTEGRATION, PropsValues.SKILLS_INTEGRATION));
+        
+        JSONObject jsonUser = JSONFactoryUtil.createJSONObject();
+        jsonUser.put(Constants.JSON_USER_ID, user.getUserId());
+        jsonUser.put(Constants.JSON_USER_FULL_NAME, user.getFullName());
+        jsonUser.put(Constants.JSON_USER_EMAIL_ADDRESS, user.getDisplayEmailAddress());
+        jsonUser.put(Constants.JSON_USER_PORTRAIT_URL,
+                user.getPortraitURL((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)));
+        jsonUser.put(Constants.JSON_USER_PHONE, PeopleDirectoryUtil.getPhoneField(user));
+        jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
+        
+        if(skillsEnabled) {
+            JSONArray jsonSkills = JSONFactoryUtil.createJSONArray();
+            List<AssetTag> tags = AssetTagLocalServiceUtil.getTags(User.class.getName(), user.getPrimaryKey());
+            List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getCategories(User.class.getName(), user.getPrimaryKey());
+            for(AssetTag tag : tags) {
+                jsonSkills.put(tag.getName());
+            }
+            for(AssetCategory category : categories) {
+                jsonSkills.put(category.getName());
+            }
+            jsonUser.put(Constants.JSON_SKILLS_ARRAY, jsonSkills);
+        }
+        return jsonUser;
     }
     
     /**
@@ -143,6 +175,8 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
     	throws IOException {
     	
         long userId = ParamUtil.getLong(request, Constants.PARAMETER_USER_ID);
+        PortletPreferences preferences = request.getPreferences();
+        boolean skillsEnabled = GetterUtil.getBoolean(preferences.getValue(Constants.SKILLS_INTEGRATION, PropsValues.SKILLS_INTEGRATION));
         
         try {
             User user = UserLocalServiceUtil.getUser(userId);
@@ -154,6 +188,19 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
             jsonUser.put(Constants.JSON_USER_PHONE, PeopleDirectoryUtil.getPhoneField(user));
             jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
             
+            if(skillsEnabled) {
+                JSONArray jsonSkills = JSONFactoryUtil.createJSONArray();
+                List<AssetTag> tags = AssetTagLocalServiceUtil.getTags(User.class.getName(), user.getPrimaryKey());
+                List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getCategories(User.class.getName(), user.getPrimaryKey());
+                for(AssetTag tag : tags) {
+                    jsonSkills.put(tag.getName());
+                }
+                for(AssetCategory category : categories) {
+                    jsonSkills.put(category.getName());
+                }
+                jsonUser.put(Constants.JSON_SKILLS_ARRAY, jsonSkills);
+            }
+            
             writeJSON(request, response, jsonUser);
             
         } catch (PortalException e) {
@@ -162,5 +209,28 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
             _log.error(Constants.LOG_COMPLETE_PROFILE_SEARCH_ERROR, e);
         }
     }
+    
+    private void performSkillSearch(ResourceRequest request, ResourceResponse response) throws SystemException, PortalException, IOException {
+
+        String skills = request.getParameter(Constants.PARAMETER_SKILLS);
+        int start = ParamUtil.getInteger(request, Constants.PARAMETER_START);
+        int end = ParamUtil.getInteger(request, Constants.PARAMETER_END);
+        JSONArray usersArray = JSONFactoryUtil.createJSONArray();
+        
+        int searchCount = SkillsUtil.countTaggedUsers(skills);
+        List<User> users = SkillsUtil.searchTaggedUsers(skills, start, end);
+      
+        for(User user : users) {
+            usersArray.put(buildJsonObject(user, request));
+        }
+        
+        JSONObject resultsObject = JSONFactoryUtil.createJSONObject();
+        resultsObject.put(Constants.JSON_RESULTS_ARRAY, usersArray);
+        resultsObject.put(Constants.JSON_RESULTS_SEARCH_COUNT, searchCount);
+        writeJSON(request, response, resultsObject);
+        
+    }
+    
+    
 
 }

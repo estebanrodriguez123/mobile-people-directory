@@ -29,4 +29,6 @@ public class PropsValues {
 	
 	public static final String HANGOUTS_INTEGRATION = PropsUtil.get(PropsKeys.HANGOUTS_INTEGRATION);
 	
+	public static final String SKILLS_INTEGRATION = PropsUtil.get(PropsKeys.SKILLS_INTEGRATION);
+	
 }

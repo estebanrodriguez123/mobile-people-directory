@@ -59,6 +59,12 @@
 		{{/if}}
       </tr>
 	</c:if>
+	<c:if test="<%= skillsEnabled %>">
+	  <tr>
+		<td class="field-value more-info-title"><liferay-ui:message key="people-directory.label.skills" />:</td>
+		<td class="info">{{#skills}}<span class="label">{{.}}</span> {{/skills}}</td>
+	  </tr>
+	</c:if>
   </table>  
 </script>
 <script id="profile-result-template" type="text/x-handlebars-template">

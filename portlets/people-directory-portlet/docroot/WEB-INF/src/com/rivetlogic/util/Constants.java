@@ -26,6 +26,10 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     static final String COMMAND_SEARCH = "keyword-search";
 
     static final String COMMAND_SHOW_COMPLETE_PROFILE = "show-complete-profile";
+    
+    static final String COMMAND_SEARCH_SKILLS = "skills-search";
+    
+    static final String COMMAND_SKILLS_SUGGESTION = "skills-suggestion";
 
     static final String LOG_SERVER_RESOURCE_ERROR = "Error from server resource";
 
@@ -50,6 +54,10 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     static final String PARAMETER_START = "start";
 
     static final String PARAMETER_END = "end";
+    
+    static final String PARAMETER_SKILLS = "skills";
+    
+    static final String PARAMETER_SKILL_SUGGESTION = "q";
 
     static final String JSON_USER_ID = "id";
 
@@ -75,6 +83,8 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
 
     static final String JSON_RESULTS_SEARCH_COUNT = "searchCount";
     
+    static final String JSON_SKILLS_ARRAY = "skills";
+    
     static final String PEOPLE_DIRECTORY_PROFILE_PAGE = "/html/profile.jsp";
     
     static final String BACK_URL = "backURL";
@@ -92,5 +102,7 @@ public interface Constants extends com.liferay.portal.kernel.util.Constants  {
     static final String SKYPE_INTEGRATION = "skypeIntegratiion";
     
     static final String HANGOUTS_INTEGRATION = "hangoutsIntegration";
+    
+    static final String SKILLS_INTEGRATION = "skillsIntegration";
     
 }

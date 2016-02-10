@@ -70,11 +70,29 @@
 							</div>
 						</c:if>
 						<div id="simpleSearchForm">
-							<aui:fieldset cssClass="search-criteria">
-								<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
-									cssClass="simple-search-keywords" label="people-directory.label.search-user" placeholder="people-directory.label.type-keywords"
-								/>
-							</aui:fieldset>
+								<aui:fieldset cssClass="search-criteria">
+									
+									<aui:input id="<%= Constants.PARAMETER_KEYWORDS %>" name="<%= Constants.PARAMETER_KEYWORDS %>" type="text"
+										cssClass="simple-search-keywords" label="people-directory.label.search-user" placeholder="people-directory.label.type-keywords"
+									/>
+									<c:if test="<%= skillsEnabled %>">
+										<a class="toggle-search-type" href="javascript:;">
+											<liferay-ui:message key="people-directory.label.search-by-skills"/>
+										</a>
+									</c:if>
+								</aui:fieldset>
+								<c:if test="<%= skillsEnabled %>">
+								<aui:fieldset cssClass="skills-criteria hide">
+									<form>
+										<label class="control-label"><liferay-ui:message key="people-directory.label.search-skills"/></label>
+										<div class="lfr-tags-selector-content" id="<portlet:namespace/>assetTagsSelector">
+											<aui:input name="search-skills" type="hidden" />
+											<input class="lfr-tag-selector-input" id="<portlet:namespace/>assetTagsNames" maxlength="75" size="15" title="<liferay-ui:message key="add-tags" />" type="text" />
+										</div>
+										<a class="toggle-search-type" href="javascript:;"><liferay-ui:message key="people-directory.label.search-by-name"/></a>
+									</form>
+								</aui:fieldset>
+								</c:if>
 						</div>
 					</c:when>
 	 				<c:when test='<%= tabValue.equals(Constants.VIEW) %>'>
@@ -181,14 +199,15 @@
 	    }
 	});
 </aui:script>
-<aui:script use="people-directory-plugin,skype-plugin-people-directory,hangouts-plugin-people-directory">
+<aui:script use="people-directory-plugin,skype-plugin-people-directory,hangouts-plugin-people-directory,liferay-asset-tags-selector">
 	Liferay.PeopleDirectory.init(
 		{
 			portletId: "<%= request.getAttribute(WebKeys.PORTLET_ID) %>",
 			namespace: "<portlet:namespace/>",
 			container: A.one("#<portlet:namespace/>view"),
 			rowCount: "<%=searchResultsPerPage%>",
-			fields: ["name", "email", "job-title", "city", "phone"]
+			fields: ["name", "email", "job-title", "city", "phone"],
+			skillsEnabled: <%= skillsEnabled %>
 		}
 	);
 	<c:if test="<%= skypeEnabled %>">
@@ -206,6 +225,22 @@
 				container: A.one("#<portlet:namespace/>view"),
 			}
 		);	
+	</c:if>
+	<c:if test="<%= skillsEnabled %>">
+		Liferay.PeopleDirectory.initSkillSelector({
+			allowSuggestions: true,
+			contentBox: '#<portlet:namespace/>assetTagsSelector',
+			groupIds: String(Liferay.ThemeDisplay.getCompanyGroupId()),
+			hiddenInput: '#<portlet:namespace/>search-skills',
+			input: '#<portlet:namespace/>assetTagsNames',
+			portalModelResource: false
+		});
+		
+		function toggleSearchType() {
+			A.all('.skills-criteria, .search-criteria').toggleView();
+		}
+		
+		A.all('.toggle-search-type').on('click', toggleSearchType);
 	</c:if>
 </aui:script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>

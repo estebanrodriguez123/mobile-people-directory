@@ -27,4 +27,6 @@ public class PropsKeys {
 	
 	public static final String HANGOUTS_INTEGRATION = "peopledirectory.hangouts.enabled";
 	
+	public static final String SKILLS_INTEGRATION = "peopledirectory.skills.enabled";
+	
 }
