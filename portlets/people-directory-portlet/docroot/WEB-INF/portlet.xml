@@ -13,10 +13,15 @@
 			<name>config-jsp</name>
 			<value>/html/configuration.jsp</value>
 		</init-param>
+		<init-param>
+			<name>help-template</name>
+			<value>/html/help.jsp</value>
+		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>VIEW</portlet-mode>
+			<portlet-mode>help</portlet-mode>
 		</supports>
 		<resource-bundle>content/Language</resource-bundle>
 		<portlet-info>
