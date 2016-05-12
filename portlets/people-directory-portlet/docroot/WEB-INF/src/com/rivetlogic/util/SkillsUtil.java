@@ -24,15 +24,25 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
+import com.liferay.portlet.asset.model.AssetVocabulary;
+import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
+import com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.model.ExpandoValue;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,110 +52,92 @@ import java.util.List;
  */
 public class SkillsUtil {
 
-    public static int countTaggedUsers(String skills) throws SystemException {
-        DynamicQuery query = buildQuery();
-        List<AssetEntry> results = executeUserQuery(query, skills);
-        return results.size();
-    }
-    
-    public static List<User> searchTaggedUsers(String skills, int start, int end) throws SystemException, PortalException {
-        DynamicQuery query = buildQuery();
-        query.setLimit(start, end);
-        List<AssetEntry> results = executeUserQuery(query, skills);
-        return getUsers(results);
-    }
-    
-    public static List<String> searchExistingTags(String term) throws SystemException {
-        DynamicQuery query = buildQuery();
-        return executeTagsQuery(query, term);
-    }
-    
-    public static List<String> searchExistingCategories(String term) throws SystemException {
-        DynamicQuery query = buildQuery();
-        return executeCategoriesQuery(query, term);
-    }
-    
-    private static DynamicQuery buildQuery() {
-        DynamicQuery query = AssetEntryLocalServiceUtil.dynamicQuery();
-        query.add(RestrictionsFactoryUtil.eq("classNameId", PortalUtil.getClassNameId(User.class)));
-        return query;
+    public static long countUsersBySkills(String skills) throws SystemException, PortalException {
+        DynamicQuery query = buildQuery(skills);
+        
+        if(query != null) {
+            return ExpandoValueLocalServiceUtil.dynamicQueryCount(query);
+        }
+        
+        return 0;
     }
     
     @SuppressWarnings("unchecked")
-    private static List<String> executeTagsQuery(DynamicQuery query, String term) throws SystemException {
-        List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
-        List<String> tags = new ArrayList<String>();
-        for(AssetEntry entry : results) {
-            for(String tag : entry.getTagNames()) {
-                if(tag.toLowerCase().contains(term.toLowerCase()) && !tags.contains(tag))
-                    tags.add(tag);
-            }
+    public static List<User> searchUsersBySkills(String skills, int start, int end) throws SystemException, PortalException {
+        DynamicQuery query = buildQuery(skills);
+        
+        if(query != null) {
+            query.setLimit(start, end);
+            List<ExpandoValue> results = ExpandoValueLocalServiceUtil.dynamicQuery(query);
+            return getUsers(results);
         }
-        return tags;
+        
+        return Collections.emptyList();
     }
     
     @SuppressWarnings("unchecked")
-    private static List<String> executeCategoriesQuery(DynamicQuery query, String term) throws SystemException {
-        List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
-        List<String> categories = new ArrayList<String>();
-        for(AssetEntry entry : results) {
-            for(AssetCategory category : entry.getCategories()) {
-                String name = category.getTitleCurrentValue();
-                if(name.toLowerCase().contains(term.toLowerCase()) && !categories.contains(name))
-                    categories.add(name);
+    public static List<String> searchExistingCategories(String term) throws SystemException, PortalException {
+        long companyId = PortalUtil.getDefaultCompanyId();
+        long groupId = CompanyLocalServiceUtil.fetchCompany(companyId).getGroupId();
+        
+        AssetVocabulary skills = null;
+        
+        List<AssetVocabulary> vocabularies = AssetVocabularyLocalServiceUtil.getGroupVocabularies(groupId, false);
+        for(AssetVocabulary vocabulary : vocabularies) {
+            if(vocabulary.getName().equals("Skills")) skills = vocabulary;
+        }
+        
+        if(skills != null) {
+            DynamicQuery query = AssetCategoryLocalServiceUtil.dynamicQuery();
+            query.add(RestrictionsFactoryUtil.eq("vocabularyId", skills.getVocabularyId()));
+            query.add(RestrictionsFactoryUtil.ilike("name", String.format("%%%s%%",term)));
+            List<AssetCategory> categories = (List<AssetCategory>) AssetCategoryLocalServiceUtil.dynamicQuery(query);
+            List<String> values = new ArrayList<String>();
+            for(AssetCategory cat : categories) {
+                values.add(cat.getName());
             }
+            return values;
         }
-        return categories;
+        
+        return Collections.emptyList();
     }
     
-    @SuppressWarnings("unchecked")
-    private static List<AssetEntry> executeUserQuery(DynamicQuery query, String skills) throws SystemException {
-        List<AssetEntry> results = AssetEntryLocalServiceUtil.dynamicQuery(query);
-        List<AssetEntry> tagged = new ArrayList<AssetEntry>();
-        String [] skillsArray = skills.split(",");
-        for(AssetEntry entry : results) {
-            if(checkSkills(entry.getTagNames(), skillsArray) + checkSkills(entry.getCategories(), skillsArray) >= skillsArray.length)
-                tagged.add(entry);
-        }
-        return tagged;
-    }
-    
-    private static int checkSkills(String[] currentTags, String[] searchTags) {
-        int count = 0;
-        List<String> current = Arrays.asList(currentTags);
-        for(String tag : searchTags) {
-            if(current.contains(tag)) {
-                count++;
+    private static DynamicQuery buildQuery(String terms) throws PortalException, SystemException {
+        long companyId = PortalUtil.getDefaultCompanyId();
+        long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
+        ExpandoTable table = ExpandoTableLocalServiceUtil.getDefaultTable(companyId, classNameId);
+        ExpandoColumn column = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), "skills");
+        
+        if(column != null) {
+            DynamicQuery query = ExpandoValueLocalServiceUtil.dynamicQuery();
+            
+            query.add(RestrictionsFactoryUtil.eq("companyId", companyId));
+            query.add(RestrictionsFactoryUtil.eq("tableId", table.getTableId()));
+            query.add(RestrictionsFactoryUtil.eq("columnId", column.getColumnId()));
+            
+            String[] skills = terms.split(StringPool.COMMA);
+            if(skills.length > 0) {
+                for(String skill : skills) {
+                    query.add(RestrictionsFactoryUtil.ilike("data", String.format("%%%s%%", skill)));
+                }
             }
+            
+            return query;
         }
-        return count;
+        
+        return null;
     }
-    
-    private static int checkSkills(List<AssetCategory> cats, String[] searchTags) {
-        int count = 0;
-        List<String> current = new ArrayList<String>();
-        for(AssetCategory cat : cats) {
-            current.add(cat.getTitleCurrentValue());
-        }
-        for(String tag : searchTags) {
-            if(current.contains(tag)) {
-                count++;
-            }
-        }
-        return count;
-    }
-    
-    private static List<User> getUsers(List<AssetEntry> results) throws PortalException, SystemException {
+     
+    private static List<User> getUsers(List<ExpandoValue> results) throws PortalException, SystemException {
         List<User> users = new ArrayList<User>();
-        for(AssetEntry entry : results) {
+        for(ExpandoValue entry : results) {
             users.add(UserLocalServiceUtil.getUser(entry.getClassPK()));
         }
         return users;
     }
 
-    public static JSONArray searchSuggestions(String term) throws SystemException {
+    public static JSONArray searchSuggestions(String term) throws SystemException, PortalException {
         List<String> suggestions = new ArrayList<String>();
-        suggestions.addAll(searchExistingTags(term));
         suggestions.addAll(searchExistingCategories(term));
         JSONArray array = JSONFactoryUtil.createJSONArray();
         for(String suggestion : suggestions) {
