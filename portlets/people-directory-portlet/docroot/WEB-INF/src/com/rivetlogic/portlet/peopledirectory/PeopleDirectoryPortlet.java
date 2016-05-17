@@ -32,10 +32,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.comparator.UserScreenNameComparator;
-import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
-import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.util.Constants;
 import com.rivetlogic.util.PeopleDirectoryUtil;
@@ -43,6 +39,7 @@ import com.rivetlogic.util.PropsValues;
 import com.rivetlogic.util.SkillsUtil;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -148,15 +145,7 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
         jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
         
         if(skillsEnabled) {
-            JSONArray jsonSkills = JSONFactoryUtil.createJSONArray();
-            List<AssetTag> tags = AssetTagLocalServiceUtil.getTags(User.class.getName(), user.getPrimaryKey());
-            List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getCategories(User.class.getName(), user.getPrimaryKey());
-            for(AssetTag tag : tags) {
-                jsonSkills.put(tag.getName());
-            }
-            for(AssetCategory category : categories) {
-                jsonSkills.put(category.getName());
-            }
+            JSONArray jsonSkills = getSkillsArray(user);
             jsonUser.put(Constants.JSON_SKILLS_ARRAY, jsonSkills);
         }
         return jsonUser;
@@ -189,15 +178,7 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
             jsonUser.put(Constants.JSON_USER_SKYPE_NAME, user.getContact().getSkypeSn());
             
             if(skillsEnabled) {
-                JSONArray jsonSkills = JSONFactoryUtil.createJSONArray();
-                List<AssetTag> tags = AssetTagLocalServiceUtil.getTags(User.class.getName(), user.getPrimaryKey());
-                List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getCategories(User.class.getName(), user.getPrimaryKey());
-                for(AssetTag tag : tags) {
-                    jsonSkills.put(tag.getName());
-                }
-                for(AssetCategory category : categories) {
-                    jsonSkills.put(category.getName());
-                }
+                JSONArray jsonSkills = getSkillsArray(user);
                 jsonUser.put(Constants.JSON_SKILLS_ARRAY, jsonSkills);
             }
             
@@ -210,6 +191,29 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
         }
     }
     
+    private JSONArray getSkillsArray(User user) {
+        JSONArray array = JSONFactoryUtil.createJSONArray();
+            try {
+            Serializable value = user.getExpandoBridge().getAttribute("skills");
+            if(value != null) {
+                String[] skills = value.toString().split(",");
+                for(String skill : skills) {
+                    array.put(skill);
+                }
+            }
+        } catch(Exception e) {
+            _log.warn("Error getting user skills");
+        }
+        return array;
+    }
+    
+    /**
+     * @param request
+     * @param response
+     * @throws SystemException
+     * @throws PortalException
+     * @throws IOException
+     */
     private void performSkillSearch(ResourceRequest request, ResourceResponse response) throws SystemException, PortalException, IOException {
 
         String skills = request.getParameter(Constants.PARAMETER_SKILLS);
@@ -217,8 +221,9 @@ public class PeopleDirectoryPortlet extends MVCPortlet {
         int end = ParamUtil.getInteger(request, Constants.PARAMETER_END);
         JSONArray usersArray = JSONFactoryUtil.createJSONArray();
         
-        int searchCount = SkillsUtil.countTaggedUsers(skills);
-        List<User> users = SkillsUtil.searchTaggedUsers(skills, start, end);
+        long searchCount = SkillsUtil.countUsersBySkills(skills);
+        _log.debug(String.format("Found %s users for skills: %s", searchCount, skills));
+        List<User> users = SkillsUtil.searchUsersBySkills(skills, start, end);
       
         for(User user : users) {
             usersArray.put(buildJsonObject(user, request));
