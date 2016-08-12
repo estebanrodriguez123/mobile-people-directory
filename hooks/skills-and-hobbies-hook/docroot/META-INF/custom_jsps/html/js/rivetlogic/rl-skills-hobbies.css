@@ -1,0 +1,28 @@
+
+.sh-list ul,
+.sh-list li {
+  list-style: none;
+}
+
+.sh-list i {
+  margin-right: 5px;
+}
+
+.sh-list .delete,
+.sh-list .delete:hover,
+.sh-list .delete:visited {
+    color: #FFF;
+    display: inline-block;
+    padding: 0 0 0 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 15px;
+}
+
+.sh-list .delete i {
+    margin: 0;
+}
+
+.input-inline {
+	margin-bottom: 0px !important;
+}
